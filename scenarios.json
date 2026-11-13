@@ -1,0 +1,812 @@
+{
+    "scenarios": [
+        {
+            "id": "button-loading-is-announced",
+            "component": "button",
+            "fixture": "button.loading",
+            "summary": "A loading button tells assistive technology that it is busy and carries the loading state.",
+            "steps": [
+                {"action": "expectVisible", "target": {"role": "button", "name": "Save"}},
+                {"action": "expectAttribute", "target": {"role": "button", "name": "Save"}, "attribute": "aria-busy", "value": "true"},
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-button"}, "attribute": "data-studeo-loading"}
+            ]
+        },
+        {
+            "id": "button-takes-focus-from-the-keyboard",
+            "component": "button",
+            "fixture": "button.default",
+            "summary": "A button receives the focus and keeps it.",
+            "steps": [
+                {"action": "focus", "target": {"role": "button", "name": "Save"}},
+                {"action": "expectFocus", "target": {"role": "button", "name": "Save"}}
+            ]
+        },
+        {
+            "id": "button-shows-its-icon",
+            "component": "button",
+            "fixture": "button.with-icon",
+            "summary": "A button with an icon shows the icon before the label.",
+            "steps": [
+                {"action": "expectVisible", "target": {"attribute": "data-studeo-button-icon"}},
+                {"action": "expectVisible", "target": {"role": "button", "name": "Save"}}
+            ]
+        },
+        {
+            "id": "button-that-is-loading-shows-a-spinner",
+            "component": "button",
+            "fixture": "button.loading",
+            "summary": "A loading button shows a spinner before its label.",
+            "steps": [
+                {"action": "expectVisible", "target": {"attribute": "data-studeo-button-spinner"}}
+            ]
+        },
+        {
+            "id": "icon-with-a-label-is-an-image",
+            "component": "icon",
+            "fixture": "icon.labelled",
+            "summary": "An icon that has a label is an image with that name.",
+            "steps": [
+                {"action": "expectVisible", "target": {"role": "img", "name": "Saved"}}
+            ]
+        },
+        {
+            "id": "spinner-with-a-label-is-a-status",
+            "component": "spinner",
+            "fixture": "spinner.labelled",
+            "summary": "A spinner that has a label is a status with that name.",
+            "steps": [
+                {"action": "expectVisible", "target": {"role": "status", "name": "Loading"}}
+            ]
+        },
+        {
+            "id": "spinner-without-a-label-is-hidden",
+            "component": "spinner",
+            "fixture": "spinner.decorative",
+            "summary": "A spinner that only decorates is hidden from assistive technology.",
+            "steps": [
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-spinner"}, "attribute": "aria-hidden", "value": "true"}
+            ]
+        },
+        {
+            "id": "spinner-is-named-by-its-label",
+            "component": "spinner",
+            "fixture": "spinner.labelled",
+            "summary": "A spinner that has a label carries it as its name.",
+            "steps": [
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-spinner"}, "attribute": "aria-label", "value": "Loading"}
+            ]
+        },
+        {
+            "id": "label-shows-its-text",
+            "component": "label",
+            "fixture": "label.default",
+            "summary": "A label shows its text.",
+            "steps": [
+                {"action": "expectText", "target": {"attribute": "data-studeo-label"}, "text": "Email"}
+            ]
+        },
+        {
+            "id": "error-shows-its-message",
+            "component": "error",
+            "fixture": "error.default",
+            "summary": "An error shows its message.",
+            "steps": [
+                {"action": "expectText", "target": {"attribute": "data-studeo-error"}, "text": "Enter a valid email address."}
+            ]
+        },
+        {
+            "id": "field-ties-the-hint-to-the-control",
+            "component": "field",
+            "fixture": "field.default",
+            "summary": "The control of a field is named by its label and described by its hint.",
+            "steps": [
+                {"action": "expectVisible", "target": {"role": "textbox", "name": "Email"}},
+                {"action": "expectAttribute", "target": {"role": "textbox", "name": "Email"}, "attribute": "aria-describedby"}
+            ]
+        },
+        {
+            "id": "field-describes-and-invalidates-the-control-together",
+            "component": "field",
+            "fixture": "field.invalid",
+            "summary": "While its error shows, the control of a field is described by the error and is invalid.",
+            "steps": [
+                {"action": "expectAttribute", "target": {"role": "textbox", "name": "Email"}, "attribute": "aria-describedby"},
+                {"action": "expectAttribute", "target": {"role": "textbox", "name": "Email"}, "attribute": "aria-invalid", "value": "true"}
+            ]
+        },
+        {
+            "id": "field-marks-the-control-invalid",
+            "component": "field",
+            "fixture": "field.invalid",
+            "summary": "While the error of a field shows, the field and its control are invalid.",
+            "steps": [
+                {"action": "expectAttribute", "target": {"role": "textbox", "name": "Email"}, "attribute": "aria-invalid", "value": "true"},
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-field"}, "attribute": "data-studeo-invalid"}
+            ]
+        },
+        {
+            "id": "input-is-named-by-its-label",
+            "component": "input",
+            "fixture": "input.default",
+            "summary": "An input is found by its label and takes the focus.",
+            "steps": [
+                {"action": "focus", "target": {"role": "textbox", "name": "Email"}},
+                {"action": "expectFocus", "target": {"role": "textbox", "name": "Email"}}
+            ]
+        },
+        {
+            "id": "input-reports-its-error",
+            "component": "input",
+            "fixture": "input.invalid",
+            "summary": "An input whose value is refused is invalid and shows the error.",
+            "steps": [
+                {"action": "expectAttribute", "target": {"role": "textbox", "name": "Email"}, "attribute": "aria-invalid", "value": "true"},
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-input"}, "attribute": "data-studeo-invalid"},
+                {"action": "expectText", "target": {"attribute": "data-studeo-input-error"}, "text": "Enter a valid email address."}
+            ]
+        },
+        {
+            "id": "input-can-be-switched-off",
+            "component": "input",
+            "fixture": "input.disabled",
+            "summary": "A disabled input carries the disabled state.",
+            "steps": [
+                {"action": "expectAttribute", "target": {"role": "textbox", "name": "Email"}, "attribute": "disabled"},
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-input"}, "attribute": "data-studeo-disabled"}
+            ]
+        },
+        {
+            "id": "input-loading-is-announced",
+            "component": "input",
+            "fixture": "input.loading",
+            "summary": "A loading input is busy and carries the loading state.",
+            "steps": [
+                {"action": "expectAttribute", "target": {"role": "textbox", "name": "Email"}, "attribute": "aria-busy", "value": "true"},
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-input"}, "attribute": "data-studeo-loading"}
+            ]
+        },
+        {
+            "id": "input-shows-and-hides-a-password",
+            "component": "input",
+            "fixture": "input.password",
+            "summary": "The reveal button of a password shows and hides the value, and says which.",
+            "steps": [
+                {"action": "expectAttribute", "target": {"role": "button", "name": "Show password"}, "attribute": "aria-pressed", "value": "false"},
+                {"action": "click", "target": {"role": "button", "name": "Show password"}},
+                {"action": "expectAttribute", "target": {"role": "button", "name": "Show password"}, "attribute": "aria-pressed", "value": "true"}
+            ]
+        },
+        {
+            "id": "input-shows-its-icon",
+            "component": "input",
+            "fixture": "input.with-icon",
+            "summary": "An input with an icon shows the icon before the text.",
+            "steps": [
+                {"action": "expectVisible", "target": {"attribute": "data-studeo-input-icon"}}
+            ]
+        },
+        {
+            "id": "select-is-named-by-its-label",
+            "component": "select",
+            "fixture": "select.default",
+            "summary": "A select is a combobox that takes the focus and is named by its label.",
+            "steps": [
+                {"action": "expectVisible", "target": {"role": "combobox", "name": "Role"}},
+                {"action": "focus", "target": {"role": "combobox", "name": "Role"}},
+                {"action": "expectFocus", "target": {"role": "combobox", "name": "Role"}}
+            ]
+        },
+        {
+            "id": "select-is-described-by-its-hint",
+            "component": "select",
+            "fixture": "select.hint",
+            "summary": "The control of a select with a hint is described by it.",
+            "steps": [
+                {"action": "expectAttribute", "target": {"role": "combobox", "name": "Role"}, "attribute": "aria-describedby"}
+            ]
+        },
+        {
+            "id": "select-is-invalid-when-its-choice-is-refused",
+            "component": "select",
+            "fixture": "select.invalid",
+            "summary": "A select whose choice is refused is invalid and carries the invalid state.",
+            "steps": [
+                {"action": "expectAttribute", "target": {"role": "combobox", "name": "Role"}, "attribute": "aria-invalid", "value": "true"},
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-select"}, "attribute": "data-studeo-invalid"}
+            ]
+        },
+        {
+            "id": "select-can-be-switched-off",
+            "component": "select",
+            "fixture": "select.disabled",
+            "summary": "A disabled select carries the disabled state.",
+            "steps": [
+                {"action": "expectAttribute", "target": {"role": "combobox", "name": "Role"}, "attribute": "disabled"},
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-select"}, "attribute": "data-studeo-disabled"}
+            ]
+        },
+        {
+            "id": "select-loading-is-announced",
+            "component": "select",
+            "fixture": "select.loading",
+            "summary": "A select while something is in progress is busy and carries the loading state.",
+            "steps": [
+                {"action": "expectAttribute", "target": {"role": "combobox", "name": "Role"}, "attribute": "aria-busy", "value": "true"},
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-select"}, "attribute": "data-studeo-loading"}
+            ]
+        },
+        {
+            "id": "checkbox-turns-on-with-the-keyboard",
+            "component": "checkbox",
+            "fixture": "checkbox.default",
+            "summary": "A checkbox takes the focus and is turned on by the space key.",
+            "steps": [
+                {"action": "focus", "target": {"role": "checkbox", "name": "Remember me"}},
+                {"action": "press", "key": "Space"},
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-checkbox"}, "attribute": "data-studeo-checked"}
+            ]
+        },
+        {
+            "id": "checkbox-shows-the-mixed-state",
+            "component": "checkbox",
+            "fixture": "checkbox.indeterminate",
+            "summary": "A checkbox that is neither on nor off says so to assistive technology and carries the state.",
+            "steps": [
+                {"action": "expectAttribute", "target": {"role": "checkbox", "name": "Select all"}, "attribute": "aria-checked", "value": "mixed"},
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-checkbox"}, "attribute": "data-studeo-indeterminate"}
+            ]
+        },
+        {
+            "id": "checkbox-reports-its-error",
+            "component": "checkbox",
+            "fixture": "checkbox.invalid",
+            "summary": "A checkbox whose choice is refused is invalid and shows the error.",
+            "steps": [
+                {"action": "expectAttribute", "target": {"role": "checkbox", "name": "I accept the terms"}, "attribute": "aria-invalid", "value": "true"},
+                {"action": "expectText", "target": {"attribute": "data-studeo-checkbox-error"}, "text": "You must accept the terms."}
+            ]
+        },
+        {
+            "id": "checkbox-can-be-switched-off",
+            "component": "checkbox",
+            "fixture": "checkbox.disabled",
+            "summary": "A disabled checkbox carries the disabled state.",
+            "steps": [
+                {"action": "expectAttribute", "target": {"role": "checkbox", "name": "Remember me"}, "attribute": "disabled"},
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-checkbox"}, "attribute": "data-studeo-disabled"}
+            ]
+        },
+        {
+            "id": "switch-turns-on-with-the-keyboard",
+            "component": "switch",
+            "fixture": "switch.default",
+            "summary": "A switch takes the focus and is turned on by the space key.",
+            "steps": [
+                {"action": "focus", "target": {"role": "switch", "name": "Notifications"}},
+                {"action": "press", "key": "Space"},
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-switch"}, "attribute": "data-studeo-checked"}
+            ]
+        },
+        {
+            "id": "switch-loading-is-announced",
+            "component": "switch",
+            "fixture": "switch.loading",
+            "summary": "A switch whose change is being saved is busy and carries the loading state.",
+            "steps": [
+                {"action": "expectAttribute", "target": {"role": "switch", "name": "Notifications"}, "attribute": "aria-busy", "value": "true"},
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-switch"}, "attribute": "data-studeo-loading"}
+            ]
+        },
+        {
+            "id": "switch-ignores-the-keyboard-while-it-is-loading",
+            "component": "switch",
+            "fixture": "switch.loading",
+            "summary": "A switch whose change is being saved stays as it is when the space key is pressed.",
+            "steps": [
+                {"action": "focus", "target": {"role": "switch", "name": "Notifications"}},
+                {"action": "press", "key": "Space"},
+                {"action": "expectNoAttribute", "target": {"attribute": "data-studeo-switch"}, "attribute": "data-studeo-checked"}
+            ]
+        },
+        {
+            "id": "switch-can-be-switched-off",
+            "component": "switch",
+            "fixture": "switch.disabled",
+            "summary": "A disabled switch carries the disabled state.",
+            "steps": [
+                {"action": "expectAttribute", "target": {"role": "switch", "name": "Notifications"}, "attribute": "disabled"},
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-switch"}, "attribute": "data-studeo-disabled"}
+            ]
+        },
+        {
+            "id": "code-input-is-named-by-its-label",
+            "component": "code-input",
+            "fixture": "code-input.default",
+            "summary": "A code input is found by its label and takes the focus.",
+            "steps": [
+                {"action": "focus", "target": {"role": "textbox", "name": "Authentication code"}},
+                {"action": "expectFocus", "target": {"role": "textbox", "name": "Authentication code"}}
+            ]
+        },
+        {
+            "id": "code-input-takes-a-code",
+            "component": "code-input",
+            "fixture": "code-input.default",
+            "summary": "A code can be typed or pasted into the one element.",
+            "steps": [
+                {"action": "fill", "target": {"role": "textbox", "name": "Authentication code"}, "value": "123456"},
+                {"action": "expectVisible", "target": {"role": "textbox", "name": "Authentication code"}}
+            ]
+        },
+        {
+            "id": "code-input-reports-its-error",
+            "component": "code-input",
+            "fixture": "code-input.invalid",
+            "summary": "A code input whose code is refused is invalid and shows the error.",
+            "steps": [
+                {"action": "expectAttribute", "target": {"role": "textbox", "name": "Authentication code"}, "attribute": "aria-invalid", "value": "true"},
+                {"action": "expectText", "target": {"attribute": "data-studeo-code-input-error"}, "text": "The code is not valid."}
+            ]
+        },
+        {
+            "id": "code-input-can-be-switched-off",
+            "component": "code-input",
+            "fixture": "code-input.disabled",
+            "summary": "A disabled code input carries the disabled state.",
+            "steps": [
+                {"action": "expectAttribute", "target": {"role": "textbox", "name": "Authentication code"}, "attribute": "disabled"},
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-code-input"}, "attribute": "data-studeo-disabled"}
+            ]
+        },
+        {
+            "id": "heading-is-a-title",
+            "component": "heading",
+            "fixture": "heading.page-title",
+            "summary": "A heading is announced as a heading and shows its text.",
+            "steps": [
+                {"action": "expectVisible", "target": {"role": "heading", "name": "Account settings"}},
+                {"action": "expectText", "target": {"attribute": "data-studeo-heading"}, "text": "Account settings"}
+            ]
+        },
+        {
+            "id": "text-shows-its-words",
+            "component": "text",
+            "fixture": "text.default",
+            "summary": "A paragraph shows its text.",
+            "steps": [
+                {"action": "expectText", "target": {"attribute": "data-studeo-text"}, "text": "Choose how you sign in."}
+            ]
+        },
+        {
+            "id": "link-takes-focus-from-the-keyboard",
+            "component": "link",
+            "fixture": "link.default",
+            "summary": "A link receives the focus and keeps it.",
+            "steps": [
+                {"action": "focus", "target": {"role": "link", "name": "Settings"}},
+                {"action": "expectFocus", "target": {"role": "link", "name": "Settings"}}
+            ]
+        },
+        {
+            "id": "link-marks-the-current-place",
+            "component": "link",
+            "fixture": "link.current",
+            "summary": "The link of the current place is marked for assistive technology and carries the current state.",
+            "steps": [
+                {"action": "expectAttribute", "target": {"role": "link", "name": "Settings"}, "attribute": "aria-current", "value": "page"},
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-link"}, "attribute": "data-studeo-current"}
+            ]
+        },
+        {
+            "id": "link-says-that-it-opens-elsewhere",
+            "component": "link",
+            "fixture": "link.external",
+            "summary": "A link that opens in a new window or tab says so to assistive technology.",
+            "steps": [
+                {"action": "expectText", "target": {"attribute": "data-studeo-link-external"}, "text": "Opens in a new tab"}
+            ]
+        },
+        {
+            "id": "link-can-look-like-a-button",
+            "component": "link",
+            "fixture": "link.button",
+            "summary": "A link of the variant button is still a link that goes to an address.",
+            "steps": [
+                {"action": "expectVisible", "target": {"role": "link", "name": "Settings"}}
+            ]
+        },
+        {
+            "id": "link-without-an-address-is-disabled",
+            "component": "link",
+            "fixture": "link.button-disabled",
+            "summary": "A link with no address is not a link: it is marked disabled and carries the disabled state.",
+            "steps": [
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-link"}, "attribute": "aria-disabled", "value": "true"},
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-link"}, "attribute": "data-studeo-disabled"}
+            ]
+        },
+        {
+            "id": "alert-shows-its-message",
+            "component": "alert",
+            "fixture": "alert.danger",
+            "summary": "An alert shows its message.",
+            "steps": [
+                {"action": "expectVisible", "target": {"attribute": "data-studeo-alert"}},
+                {"action": "expectText", "target": {"attribute": "data-studeo-alert-body"}, "text": "The code is not valid."}
+            ]
+        },
+        {
+            "id": "alert-shows-its-title",
+            "component": "alert",
+            "fixture": "alert.with-title",
+            "summary": "An alert with a title shows the title above the message.",
+            "steps": [
+                {"action": "expectText", "target": {"attribute": "data-studeo-alert-title"}, "text": "Your account has one way in"},
+                {"action": "expectText", "target": {"attribute": "data-studeo-alert-body"}, "text": "Add a second way to sign in."}
+            ]
+        },
+        {
+            "id": "alert-can-be-dismissed",
+            "component": "alert",
+            "fixture": "alert.dismissible",
+            "summary": "Pressing the dismiss button hides the alert.",
+            "steps": [
+                {"action": "expectVisible", "target": {"role": "button", "name": "Dismiss"}},
+                {"action": "click", "target": {"role": "button", "name": "Dismiss"}},
+                {"action": "expectHidden", "target": {"attribute": "data-studeo-alert"}}
+            ]
+        },
+        {
+            "id": "card-shows-its-parts",
+            "component": "card",
+            "fixture": "card.with-header-and-footer",
+            "summary": "A card shows its header, its body and its footer.",
+            "steps": [
+                {"action": "expectText", "target": {"attribute": "data-studeo-card-header"}, "text": "Account settings"},
+                {"action": "expectText", "target": {"attribute": "data-studeo-card-body"}, "text": "Choose how you sign in."},
+                {"action": "expectText", "target": {"attribute": "data-studeo-card-footer"}, "text": "Settings"}
+            ]
+        },
+        {
+            "id": "table-shows-its-rows",
+            "component": "table",
+            "fixture": "table.default",
+            "summary": "A table shows its column header and its rows.",
+            "steps": [
+                {"action": "expectText", "target": {"attribute": "data-studeo-table-head"}, "text": "Name"},
+                {"action": "expectText", "target": {"attribute": "data-studeo-table-body"}, "text": "Ada Lovelace"}
+            ]
+        },
+        {
+            "id": "table-explains-when-it-is-empty",
+            "component": "table",
+            "fixture": "table.empty",
+            "summary": "A table with no rows shows its message.",
+            "steps": [
+                {"action": "expectText", "target": {"attribute": "data-studeo-table-empty"}, "text": "No users yet."}
+            ]
+        },
+        {
+            "id": "table-is-busy-while-loading",
+            "component": "table",
+            "fixture": "table.loading",
+            "summary": "A table whose rows are being replaced says that it is busy and carries the loading state.",
+            "steps": [
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-table"}, "attribute": "aria-busy", "value": "true"},
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-table"}, "attribute": "data-studeo-loading"}
+            ]
+        },
+        {
+            "id": "table-column-without-an-address-is-not-a-link",
+            "component": "table-column",
+            "fixture": "table-column.default",
+            "summary": "A column that cannot be sorted by shows its name and is not a link.",
+            "steps": [
+                {"action": "expectText", "target": {"attribute": "data-studeo-table-column"}, "text": "Name"},
+                {"action": "expectHidden", "target": {"role": "link", "name": "Name"}}
+            ]
+        },
+        {
+            "id": "table-column-links-to-its-sort",
+            "component": "table-column",
+            "fixture": "table-column.sortable",
+            "summary": "A column that the list can be sorted by is a link.",
+            "steps": [
+                {"action": "expectVisible", "target": {"role": "link", "name": "Name"}},
+                {"action": "focus", "target": {"role": "link", "name": "Name"}},
+                {"action": "expectFocus", "target": {"role": "link", "name": "Name"}}
+            ]
+        },
+        {
+            "id": "table-column-says-how-it-is-sorted",
+            "component": "table-column",
+            "fixture": "table-column.ascending",
+            "summary": "The column that the list is sorted by tells assistive technology the direction.",
+            "steps": [
+                {"action": "expectAttribute", "target": {"role": "columnheader", "name": "Name"}, "attribute": "aria-sort", "value": "ascending"}
+            ]
+        },
+        {
+            "id": "table-row-shows-its-cells",
+            "component": "table-row",
+            "fixture": "table-row.default",
+            "summary": "A row shows the cells that it holds.",
+            "steps": [
+                {"action": "expectText", "target": {"attribute": "data-studeo-table-row"}, "text": "Ada Lovelace"}
+            ]
+        },
+        {
+            "id": "table-cell-shows-its-text",
+            "component": "table-cell",
+            "fixture": "table-cell.default",
+            "summary": "A cell shows its text.",
+            "steps": [
+                {"action": "expectText", "target": {"attribute": "data-studeo-table-cell"}, "text": "Ada Lovelace"}
+            ]
+        },
+        {
+            "id": "data-table-says-which-page-it-shows",
+            "component": "data-table",
+            "fixture": "data-table.default",
+            "summary": "A data table says how many rows there are and which page is shown, and the line is announced when it changes.",
+            "steps": [
+                {"action": "expectText", "target": {"attribute": "data-studeo-data-table-summary"}, "text": "60 results, page 1 of 3"},
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-data-table-summary"}, "attribute": "aria-live", "value": "polite"}
+            ]
+        },
+        {
+            "id": "data-table-has-no-previous-page-on-the-first-page",
+            "component": "data-table",
+            "fixture": "data-table.default",
+            "summary": "On the first page the controls to go back are not links and carry the disabled state; the controls to go on are links.",
+            "steps": [
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-data-table-previous"}, "attribute": "aria-disabled", "value": "true"},
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-data-table-previous"}, "attribute": "data-studeo-disabled"},
+                {"action": "expectVisible", "target": {"role": "link", "name": "Next page"}}
+            ]
+        },
+        {
+            "id": "data-table-has-no-next-page-on-the-last-page",
+            "component": "data-table",
+            "fixture": "data-table.last-page",
+            "summary": "On the last page the controls to go on are not links; the controls to go back are links.",
+            "steps": [
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-data-table-next"}, "attribute": "aria-disabled", "value": "true"},
+                {"action": "expectVisible", "target": {"role": "link", "name": "Previous page"}}
+            ]
+        },
+        {
+            "id": "data-table-can-be-searched-and-resized",
+            "component": "data-table",
+            "fixture": "data-table.default",
+            "summary": "A data table has a search field and a choice of the page size.",
+            "steps": [
+                {"action": "expectVisible", "target": {"role": "searchbox", "name": "Search"}},
+                {"action": "expectVisible", "target": {"role": "combobox", "name": "Rows per page"}}
+            ]
+        },
+        {
+            "id": "data-table-explains-when-it-is-empty",
+            "component": "data-table",
+            "fixture": "data-table.empty",
+            "summary": "A data table with no rows shows its message instead of the table.",
+            "steps": [
+                {"action": "expectText", "target": {"attribute": "data-studeo-data-table-empty"}, "text": "No users match your search."}
+            ]
+        },
+        {
+            "id": "data-table-is-busy-while-loading",
+            "component": "data-table",
+            "fixture": "data-table.loading",
+            "summary": "A data table says that it is busy while another page loads and carries the loading state.",
+            "steps": [
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-data-table"}, "attribute": "aria-busy", "value": "true"},
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-data-table"}, "attribute": "data-studeo-loading"}
+            ]
+        },
+        {
+            "id": "dialog-is-named-by-its-title",
+            "component": "dialog",
+            "fixture": "dialog.default",
+            "summary": "An open dialog is announced as a modal dialog named by its title and carries the open state.",
+            "steps": [
+                {"action": "expectVisible", "target": {"role": "dialog", "name": "Delete account"}},
+                {"action": "expectAttribute", "target": {"role": "dialog", "name": "Delete account"}, "attribute": "aria-modal", "value": "true"},
+                {"action": "expectAttribute", "target": {"role": "dialog", "name": "Delete account"}, "attribute": "aria-labelledby"},
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-dialog"}, "attribute": "data-studeo-open"}
+            ]
+        },
+        {
+            "id": "dialog-shows-its-parts",
+            "component": "dialog",
+            "fixture": "dialog.with-footer",
+            "summary": "A dialog shows its title, its body and its actions.",
+            "steps": [
+                {"action": "expectText", "target": {"attribute": "data-studeo-dialog-title"}, "text": "Delete account"},
+                {"action": "expectText", "target": {"attribute": "data-studeo-dialog-body"}, "text": "This cannot be undone."},
+                {"action": "expectText", "target": {"attribute": "data-studeo-dialog-footer"}, "text": "Cancel or delete"}
+            ]
+        },
+        {
+            "id": "dialog-closes-with-its-button",
+            "component": "dialog",
+            "fixture": "dialog.default",
+            "summary": "Pressing the close button closes the dialog.",
+            "steps": [
+                {"action": "click", "target": {"role": "button", "name": "Close"}},
+                {"action": "expectHidden", "target": {"role": "dialog", "name": "Delete account"}}
+            ]
+        },
+        {
+            "id": "dialog-closes-with-escape",
+            "component": "dialog",
+            "fixture": "dialog.default",
+            "summary": "The Escape key closes the dialog.",
+            "steps": [
+                {"action": "press", "key": "Escape"},
+                {"action": "expectHidden", "target": {"role": "dialog", "name": "Delete account"}}
+            ]
+        },
+        {
+            "id": "dialog-stays-hidden-until-it-is-opened",
+            "component": "dialog",
+            "fixture": "dialog.closed",
+            "summary": "A dialog that is not open is not shown.",
+            "steps": [
+                {"action": "expectHidden", "target": {"role": "dialog", "name": "Delete account"}}
+            ]
+        },
+        {
+            "id": "toast-shows-its-message",
+            "component": "toast",
+            "fixture": "toast.with-title",
+            "summary": "A toast shows its title and its message.",
+            "steps": [
+                {"action": "expectText", "target": {"attribute": "data-studeo-toast-title"}, "text": "Saved"},
+                {"action": "expectText", "target": {"attribute": "data-studeo-toast-body"}, "text": "Your changes were saved."}
+            ]
+        },
+        {
+            "id": "toast-can-be-dismissed",
+            "component": "toast",
+            "fixture": "toast.danger",
+            "summary": "A toast that never hides itself is hidden by the dismiss button.",
+            "steps": [
+                {"action": "expectVisible", "target": {"role": "button", "name": "Dismiss"}},
+                {"action": "click", "target": {"role": "button", "name": "Dismiss"}},
+                {"action": "expectHidden", "target": {"attribute": "data-studeo-toast"}}
+            ]
+        },
+        {
+            "id": "toast-region-announces-politely",
+            "component": "toast-region",
+            "fixture": "toast-region.default",
+            "summary": "The region that holds the toasts announces what appears in it without interrupting the user.",
+            "steps": [
+                {"action": "expectVisible", "target": {"role": "region", "name": "Notifications"}},
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-toast-region"}, "attribute": "aria-live", "value": "polite"}
+            ]
+        },
+        {
+            "id": "button-that-is-loading-stays-focusable",
+            "component": "button",
+            "fixture": "button.loading",
+            "summary": "A loading button is marked as disabled for activation while it keeps the focus.",
+            "steps": [
+                {"action": "focus", "target": {"role": "button", "name": "Save"}},
+                {"action": "expectFocus", "target": {"role": "button", "name": "Save"}},
+                {"action": "expectAttribute", "target": {"role": "button", "name": "Save"}, "attribute": "aria-disabled", "value": "true"}
+            ]
+        },
+        {
+            "id": "button-carries-the-disabled-state",
+            "component": "button",
+            "fixture": "button.disabled",
+            "summary": "A disabled button carries the disabled state.",
+            "steps": [
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-button"}, "attribute": "data-studeo-disabled"}
+            ]
+        },
+        {
+            "id": "icon-without-a-label-is-hidden",
+            "component": "icon",
+            "fixture": "icon.decorative",
+            "summary": "An icon that only decorates is hidden from assistive technology.",
+            "steps": [
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-icon"}, "attribute": "aria-hidden", "value": "true"}
+            ]
+        },
+        {
+            "id": "icon-is-named-by-its-label",
+            "component": "icon",
+            "fixture": "icon.labelled",
+            "summary": "An icon that has a label carries it as its name.",
+            "steps": [
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-icon"}, "attribute": "aria-label", "value": "Saved"}
+            ]
+        },
+        {
+            "id": "input-is-described-by-its-hint",
+            "component": "input",
+            "fixture": "input.hint",
+            "summary": "The control of an input with a hint is described by it.",
+            "steps": [
+                {"action": "expectAttribute", "target": {"role": "textbox", "name": "Email"}, "attribute": "aria-describedby"}
+            ]
+        },
+        {
+            "id": "input-can-be-read-only",
+            "component": "input",
+            "fixture": "input.readonly",
+            "summary": "A read-only input carries the read-only state.",
+            "steps": [
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-input"}, "attribute": "data-studeo-readonly"}
+            ]
+        },
+        {
+            "id": "checkbox-is-described-by-its-hint",
+            "component": "checkbox",
+            "fixture": "checkbox.with-hint",
+            "summary": "The control of a checkbox with a hint is described by it.",
+            "steps": [
+                {"action": "expectAttribute", "target": {"role": "checkbox", "name": "Remember me"}, "attribute": "aria-describedby"}
+            ]
+        },
+        {
+            "id": "checkbox-carries-the-invalid-state",
+            "component": "checkbox",
+            "fixture": "checkbox.invalid",
+            "summary": "A checkbox whose choice is refused carries the invalid state.",
+            "steps": [
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-checkbox"}, "attribute": "data-studeo-invalid"}
+            ]
+        },
+        {
+            "id": "switch-is-described-by-its-hint",
+            "component": "switch",
+            "fixture": "switch.with-hint",
+            "summary": "The control of a switch with a hint is described by it.",
+            "steps": [
+                {"action": "expectAttribute", "target": {"role": "switch", "name": "Notifications"}, "attribute": "aria-describedby"}
+            ]
+        },
+        {
+            "id": "switch-is-invalid-when-its-change-is-refused",
+            "component": "switch",
+            "fixture": "switch.invalid",
+            "summary": "A switch whose change is refused is invalid and carries the invalid state.",
+            "steps": [
+                {"action": "expectAttribute", "target": {"role": "switch", "name": "Notifications"}, "attribute": "aria-invalid", "value": "true"},
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-switch"}, "attribute": "data-studeo-invalid"}
+            ]
+        },
+        {
+            "id": "code-input-is-described-by-its-hint",
+            "component": "code-input",
+            "fixture": "code-input.hint",
+            "summary": "The control of a code input with a hint is described by it.",
+            "steps": [
+                {"action": "expectAttribute", "target": {"role": "textbox", "name": "Authentication code"}, "attribute": "aria-describedby"}
+            ]
+        },
+        {
+            "id": "code-input-carries-the-invalid-state",
+            "component": "code-input",
+            "fixture": "code-input.invalid",
+            "summary": "A code input whose code is refused carries the invalid state.",
+            "steps": [
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-code-input"}, "attribute": "data-studeo-invalid"}
+            ]
+        },
+        {
+            "id": "code-input-is-busy-while-the-code-is-checked",
+            "component": "code-input",
+            "fixture": "code-input.loading",
+            "summary": "A code input whose code is being checked says that it is busy and carries the loading state.",
+            "steps": [
+                {"action": "expectAttribute", "target": {"role": "textbox", "name": "Authentication code"}, "attribute": "aria-busy", "value": "true"},
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-code-input"}, "attribute": "data-studeo-loading"}
+            ]
+        }
+    ]
+}

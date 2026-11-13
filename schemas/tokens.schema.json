@@ -1,0 +1,78 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "The design tokens of the specification (tokens.json)",
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["tokens", "contrast"],
+    "properties": {
+        "tokens": {
+            "type": "array",
+            "minItems": 1,
+            "items": {"$ref": "#/$defs/token"}
+        },
+        "contrast": {
+            "description": "The pairs of colours that are used together and the lowest contrast ratio each must reach in both modes.",
+            "type": "array",
+            "minItems": 1,
+            "items": {"$ref": "#/$defs/pair"}
+        }
+    },
+    "$defs": {
+        "text": {
+            "type": "string",
+            "minLength": 1
+        },
+        "name": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$"
+        },
+        "token": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "category", "css", "description"],
+            "properties": {
+                "name": {"$ref": "#/$defs/name"},
+                "category": {"enum": ["color", "space", "radius", "size", "font", "shadow"]},
+                "css": {
+                    "description": "The name of the CSS variable.",
+                    "type": "string",
+                    "pattern": "^--studeo-[a-z0-9]+(-[a-z0-9]+)*$"
+                },
+                "description": {"$ref": "#/$defs/text"},
+                "light": {
+                    "description": "The colour in the light mode: hex, six digits, or eight with an alpha channel.",
+                    "type": "string",
+                    "pattern": "^#[0-9a-f]{6}([0-9a-f]{2})?$"
+                },
+                "dark": {
+                    "description": "The colour in the dark mode: hex, six digits, or eight with an alpha channel.",
+                    "type": "string",
+                    "pattern": "^#[0-9a-f]{6}([0-9a-f]{2})?$"
+                },
+                "value": {"$ref": "#/$defs/text"}
+            },
+            "if": {"properties": {"category": {"const": "color"}}},
+            "then": {
+                "description": "A colour has a light value and a dark value and no single value.",
+                "required": ["light", "dark"],
+                "not": {"required": ["value"]}
+            },
+            "else": {
+                "description": "Every other category has one value for both modes.",
+                "required": ["value"],
+                "not": {"anyOf": [{"required": ["light"]}, {"required": ["dark"]}]}
+            }
+        },
+        "pair": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["foreground", "background", "minimum", "description"],
+            "properties": {
+                "foreground": {"$ref": "#/$defs/name"},
+                "background": {"$ref": "#/$defs/name"},
+                "minimum": {"enum": [3, 4.5, 7]},
+                "description": {"$ref": "#/$defs/text"}
+            }
+        }
+    }
+}

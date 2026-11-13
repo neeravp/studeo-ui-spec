@@ -1,0 +1,29 @@
+{
+    "name": "studeo/ui-spec",
+    "description": "A stack-neutral specification of the Studeo user interface: principles, patterns, tokens, components and browser scenarios.",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^8.4"
+    },
+    "require-dev": {
+        "opis/json-schema": "^2.4",
+        "pestphp/pest": "^5.2",
+        "laravel/pint": "^1.27"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Studeo\\UiSpec\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "scripts": {
+        "test": "pest",
+        "pint": "pint --dirty --format agent",
+        "lint": "pint --test"
+    }
+}

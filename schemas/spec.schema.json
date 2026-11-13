@@ -1,0 +1,41 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "The manifest of the specification (spec.json)",
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["specVersion", "files"],
+    "properties": {
+        "specVersion": {
+            "description": "The version of the specification, in the form major.minor.patch.",
+            "type": "string",
+            "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+        },
+        "files": {
+            "description": "The data files of the specification and the schema of each.",
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["components", "tokens", "scenarios"],
+            "properties": {
+                "components": {"$ref": "#/$defs/file"},
+                "tokens": {"$ref": "#/$defs/file"},
+                "scenarios": {"$ref": "#/$defs/file"}
+            }
+        }
+    },
+    "$defs": {
+        "path": {
+            "description": "A path relative to the root of the package: no leading slash and no segment of two dots.",
+            "type": "string",
+            "pattern": "^(?!/)(?!.*(^|/)\\.\\.(/|$))[A-Za-z0-9._/-]+\\.json$"
+        },
+        "file": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["data", "schema"],
+            "properties": {
+                "data": {"$ref": "#/$defs/path"},
+                "schema": {"$ref": "#/$defs/path"}
+            }
+        }
+    }
+}

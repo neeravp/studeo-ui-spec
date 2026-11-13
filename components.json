@@ -1,0 +1,1369 @@
+{
+    "states": [
+        {"name": "data-studeo-loading", "description": "Present while an action is in progress."},
+        {"name": "data-studeo-disabled", "description": "Present while the component is switched off."},
+        {"name": "data-studeo-invalid", "description": "Present while the value of the component is refused."},
+        {"name": "data-studeo-readonly", "description": "Present while the value can be read and selected but not changed."},
+        {"name": "data-studeo-checked", "description": "Present while a choice is on."},
+        {"name": "data-studeo-indeterminate", "description": "Present while a choice is neither on nor off."},
+        {"name": "data-studeo-selected", "description": "Present while an item is picked from a set."},
+        {"name": "data-studeo-open", "description": "Present while a component that can unfold is unfolded."},
+        {"name": "data-studeo-current", "description": "Present on the item that stands for the place the user is in."}
+    ],
+    "icons": [
+        {"name": "check", "description": "A tick, for success and for a choice that is on."},
+        {"name": "chevron-down", "description": "A downward chevron, for a descending order and for something that unfolds."},
+        {"name": "chevron-up", "description": "An upward chevron, for an ascending order."},
+        {"name": "close", "description": "A cross, for dismissing and clearing."},
+        {"name": "eye", "description": "An open eye, for showing a hidden value."},
+        {"name": "eye-off", "description": "A struck-through eye, for hiding a shown value."},
+        {"name": "info", "description": "A circled letter i, for information."},
+        {"name": "minus", "description": "A dash, for a choice that is neither on nor off."},
+        {"name": "search", "description": "A magnifying glass, for searching."},
+        {"name": "warning", "description": "A triangle with an exclamation mark, for a warning or an error."}
+    ],
+    "components": [
+        {
+            "name": "button",
+            "summary": "A control that starts an action.",
+            "status": "draft",
+            "props": [
+                {
+                    "name": "variant",
+                    "type": "enum",
+                    "values": ["primary", "secondary", "danger", "ghost"],
+                    "default": "secondary",
+                    "description": "The visual weight and meaning of the button."
+                },
+                {
+                    "name": "size",
+                    "type": "enum",
+                    "values": ["sm", "md", "lg"],
+                    "default": "md",
+                    "description": "The size of the control."
+                },
+                {
+                    "name": "type",
+                    "type": "enum",
+                    "values": ["button", "submit", "reset"],
+                    "default": "button",
+                    "description": "What the button does inside a form."
+                },
+                {
+                    "name": "disabled",
+                    "type": "boolean",
+                    "default": false,
+                    "description": "The button cannot be activated and is not focusable."
+                },
+                {
+                    "name": "loading",
+                    "type": "boolean",
+                    "default": false,
+                    "description": "The button shows progress and ignores activation until it ends. While it loads, a spinner takes the place of the icon before the label."
+                },
+                {
+                    "name": "icon",
+                    "type": "icon",
+                    "description": "The icon shown before the label. The slot of the same name replaces it."
+                },
+                {
+                    "name": "icon-trailing",
+                    "type": "icon",
+                    "description": "The icon shown after the label. The slot of the same name replaces it."
+                }
+            ],
+            "slots": [
+                {"name": "default", "description": "The label of the button.", "required": true},
+                {"name": "icon", "description": "Any content in place of the icon before the label.", "required": false},
+                {"name": "icon-trailing", "description": "Any content in place of the icon after the label.", "required": false}
+            ],
+            "attributes": {
+                "root": "data-studeo-button",
+                "parts": [
+                    {"name": "data-studeo-button-icon", "description": "The element that holds the icon before the label."},
+                    {"name": "data-studeo-button-icon-trailing", "description": "The element that holds the icon after the label."},
+                    {"name": "data-studeo-button-spinner", "description": "The element that holds the spinner while the button loads."}
+                ],
+                "states": ["data-studeo-loading", "data-studeo-disabled"]
+            },
+            "attributesTarget": "root",
+            "accessibility": {
+                "role": "button",
+                "label": "content",
+                "keyboard": [
+                    {"key": "Enter", "behavior": "Activates the button."},
+                    {"key": "Space", "behavior": "Activates the button."}
+                ],
+                "aria": [
+                    {"attribute": "aria-busy", "when": "The button is loading."},
+                    {"attribute": "aria-disabled", "when": "The button is loading, so that it stays focusable while it ignores activation."}
+                ]
+            },
+            "script": {"need": "none", "reason": null},
+            "tokens": [
+                "color-accent",
+                "color-accent-foreground",
+                "color-accent-subtle",
+                "color-danger",
+                "color-danger-foreground",
+                "color-surface",
+                "color-text",
+                "color-text-muted",
+                "color-border",
+                "color-border-strong",
+                "color-focus-ring",
+                "space-2",
+                "space-3",
+                "space-4",
+                "radius-control",
+                "size-control-sm",
+                "size-control-md",
+                "size-control-lg",
+                "font-size-sm",
+                "font-weight-medium"
+            ],
+            "composes": ["icon", "spinner"],
+            "fixtures": [
+                {"name": "default", "description": "A button with a label.", "props": {}, "slots": {"default": "Save"}},
+                {"name": "loading", "description": "A button while its action runs.", "props": {"loading": true}, "slots": {"default": "Save"}},
+                {"name": "disabled", "description": "A button that is switched off.", "props": {"disabled": true}, "slots": {"default": "Save"}},
+                {"name": "with-icon", "description": "A button with an icon before its label.", "props": {"icon": "check"}, "slots": {"default": "Save"}}
+            ]
+        },
+        {
+            "name": "icon",
+            "summary": "A small picture that carries a meaning or decorates.",
+            "status": "draft",
+            "props": [
+                {
+                    "name": "name",
+                    "type": "icon",
+                    "required": true,
+                    "description": "The name of the icon."
+                },
+                {
+                    "name": "size",
+                    "type": "enum",
+                    "values": ["sm", "md", "lg"],
+                    "default": "md",
+                    "description": "The size of the icon."
+                },
+                {
+                    "name": "label",
+                    "type": "string",
+                    "description": "A name for assistive technology. Without it the icon only decorates and is hidden from assistive technology."
+                }
+            ],
+            "slots": [],
+            "attributes": {
+                "root": "data-studeo-icon",
+                "parts": [],
+                "states": []
+            },
+            "attributesTarget": "root",
+            "accessibility": {
+                "role": "img",
+                "label": "aria-label",
+                "keyboard": [],
+                "aria": [
+                    {"attribute": "aria-hidden", "when": "The icon has no label."},
+                    {"attribute": "aria-label", "when": "The icon has a label."}
+                ]
+            },
+            "script": {"need": "none", "reason": null},
+            "tokens": ["size-icon-sm", "size-icon-md", "size-icon-lg"],
+            "composes": [],
+            "fixtures": [
+                {"name": "decorative", "description": "An icon that only decorates.", "props": {"name": "eye"}, "slots": {}},
+                {"name": "labelled", "description": "An icon that carries a meaning.", "props": {"name": "check", "label": "Saved"}, "slots": {}}
+            ]
+        },
+        {
+            "name": "spinner",
+            "summary": "A turning picture that shows that something is loading; it stands still when the user asks for less motion.",
+            "status": "draft",
+            "props": [
+                {
+                    "name": "size",
+                    "type": "enum",
+                    "values": ["sm", "md", "lg"],
+                    "default": "md",
+                    "description": "The size of the spinner."
+                },
+                {
+                    "name": "label",
+                    "type": "string",
+                    "description": "A name for assistive technology. Without it the spinner only decorates and is hidden from assistive technology."
+                }
+            ],
+            "slots": [],
+            "attributes": {
+                "root": "data-studeo-spinner",
+                "parts": [],
+                "states": []
+            },
+            "attributesTarget": "root",
+            "accessibility": {
+                "role": "status",
+                "label": "aria-label",
+                "keyboard": [],
+                "aria": [
+                    {"attribute": "aria-hidden", "when": "The spinner has no label."},
+                    {"attribute": "aria-label", "when": "The spinner has a label."}
+                ]
+            },
+            "script": {"need": "none", "reason": null},
+            "tokens": ["size-icon-sm", "size-icon-md", "size-icon-lg"],
+            "composes": [],
+            "fixtures": [
+                {"name": "decorative", "description": "A spinner that only decorates.", "props": {}, "slots": {}},
+                {"name": "labelled", "description": "A spinner that tells that content is loading.", "props": {"label": "Loading"}, "slots": {}}
+            ]
+        },
+        {
+            "name": "label",
+            "summary": "The visible name of a control.",
+            "status": "draft",
+            "props": [
+                {
+                    "name": "required",
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Adds a mark that tells the reader that the control must be filled in."
+                }
+            ],
+            "slots": [
+                {"name": "default", "description": "The text of the label.", "required": true}
+            ],
+            "attributes": {
+                "root": "data-studeo-label",
+                "parts": [],
+                "states": []
+            },
+            "attributesTarget": "root",
+            "accessibility": {
+                "role": null,
+                "label": "content",
+                "keyboard": [],
+                "aria": []
+            },
+            "script": {"need": "none", "reason": null},
+            "tokens": ["color-text", "font-size-sm", "font-weight-medium"],
+            "composes": [],
+            "fixtures": [
+                {"name": "default", "description": "A label.", "props": {}, "slots": {"default": "Email"}},
+                {"name": "required", "description": "A label of a control that must be filled in.", "props": {"required": true}, "slots": {"default": "Email"}}
+            ]
+        },
+        {
+            "name": "error",
+            "summary": "The message that says why a value is refused.",
+            "status": "draft",
+            "props": [],
+            "slots": [
+                {"name": "default", "description": "The text of the message.", "required": true}
+            ],
+            "attributes": {
+                "root": "data-studeo-error",
+                "parts": [],
+                "states": []
+            },
+            "attributesTarget": "root",
+            "accessibility": {
+                "role": "alert",
+                "label": "none",
+                "keyboard": [],
+                "aria": []
+            },
+            "script": {"need": "none", "reason": null},
+            "tokens": ["color-danger-text", "font-size-sm"],
+            "composes": [],
+            "fixtures": [
+                {"name": "default", "description": "An error message.", "props": {}, "slots": {"default": "Enter a valid email address."}}
+            ]
+        },
+        {
+            "name": "field",
+            "summary": "A control with its label, its hint and its error, tied together.",
+            "status": "draft",
+            "props": [],
+            "slots": [
+                {"name": "default", "description": "The control. The first form control of this slot is the one that the field ties to its label, its hint and its error. A control that draws its own label, hint or error, such as a checkbox or a switch, is not put in a field.", "required": true},
+                {"name": "label", "description": "The label of the control.", "required": false},
+                {"name": "hint", "description": "A line that helps to fill the control in.", "required": false},
+                {"name": "error", "description": "The message that says why the value is refused.", "required": false}
+            ],
+            "attributes": {
+                "root": "data-studeo-field",
+                "parts": [],
+                "states": ["data-studeo-invalid"]
+            },
+            "attributesTarget": "root",
+            "accessibility": {
+                "role": null,
+                "label": "none",
+                "keyboard": [],
+                "aria": [
+                    {"attribute": "aria-describedby", "when": "On the control, naming the hint and the error that are showing."},
+                    {"attribute": "aria-invalid", "when": "On the control, while the error is showing."}
+                ]
+            },
+            "script": {"need": "none", "reason": null},
+            "tokens": ["space-2"],
+            "composes": ["label", "error"],
+            "fixtures": [
+                {
+                    "name": "default",
+                    "description": "A field with a label and a hint.",
+                    "props": {},
+                    "slots": {"default": {"fixture": "input.bare"}, "label": "Email", "hint": "We never share it."}
+                },
+                {
+                    "name": "invalid",
+                    "description": "A field whose value is refused.",
+                    "props": {},
+                    "slots": {"default": {"fixture": "input.bare"}, "label": "Email", "error": "Enter a valid email address."}
+                }
+            ]
+        },
+        {
+            "name": "input",
+            "summary": "A control for a line of text.",
+            "status": "draft",
+            "props": [
+                {
+                    "name": "variant",
+                    "type": "enum",
+                    "values": ["outline", "filled"],
+                    "default": "outline",
+                    "description": "Whether the control is outlined or filled."
+                },
+                {
+                    "name": "size",
+                    "type": "enum",
+                    "values": ["sm", "md", "lg"],
+                    "default": "md",
+                    "description": "The size of the control."
+                },
+                {
+                    "name": "type",
+                    "type": "enum",
+                    "values": ["text", "email", "password", "search", "tel", "url", "number"],
+                    "default": "text",
+                    "description": "The kind of value."
+                },
+                {
+                    "name": "label",
+                    "type": "string",
+                    "description": "The compact form: a label, which builds the field around the control."
+                },
+                {
+                    "name": "hint",
+                    "type": "string",
+                    "description": "The compact form: a line that helps to fill the control in."
+                },
+                {
+                    "name": "error",
+                    "type": "string",
+                    "description": "The compact form: the message that says why the value is refused. It also marks the control as invalid."
+                },
+                {
+                    "name": "icon",
+                    "type": "icon",
+                    "description": "The icon shown before the text. The slot of the same name replaces it."
+                },
+                {
+                    "name": "icon-trailing",
+                    "type": "icon",
+                    "description": "The icon shown after the text. The slot of the same name replaces it."
+                },
+                {
+                    "name": "viewable",
+                    "type": "boolean",
+                    "default": false,
+                    "description": "For a password: adds a button that shows and hides the value."
+                },
+                {
+                    "name": "disabled",
+                    "type": "boolean",
+                    "default": false,
+                    "description": "The control cannot be changed or focused."
+                },
+                {
+                    "name": "readonly",
+                    "type": "boolean",
+                    "default": false,
+                    "description": "The value can be read and selected but not changed."
+                },
+                {
+                    "name": "loading",
+                    "type": "boolean",
+                    "default": false,
+                    "description": "The control shows that something is in progress."
+                },
+                {"name": "control-class", "type": "class", "description": "Classes for the element that does the work, merged with its own. The author's classes win over them."}
+            ],
+            "slots": [
+                {"name": "icon", "description": "Any content in place of the icon before the text.", "required": false},
+                {"name": "icon-trailing", "description": "Any content in place of the icon after the text.", "required": false}
+            ],
+            "attributes": {
+                "root": "data-studeo-input",
+                "parts": [
+                    {"name": "data-studeo-input-control", "description": "The element that takes the text."},
+                    {"name": "data-studeo-input-reveal", "description": "The button that shows and hides a password. Its accessible name is Show password."},
+                    {"name": "data-studeo-input-icon", "description": "The element that holds the icon before the text."},
+                    {"name": "data-studeo-input-icon-trailing", "description": "The element that holds the icon after the text."},
+                    {"name": "data-studeo-input-error", "description": "The element that holds the error message of the compact form."}
+                ],
+                "states": ["data-studeo-invalid", "data-studeo-disabled", "data-studeo-readonly", "data-studeo-loading"]
+            },
+            "attributesTarget": "data-studeo-input-control",
+            "accessibility": {
+                "role": "textbox",
+                "label": "associated-label",
+                "keyboard": [
+                    {"key": "Enter", "behavior": "Submits the form that holds the control."},
+                    {"key": "Enter or Space on the reveal button", "behavior": "Shows or hides the password."}
+                ],
+                "aria": [
+                    {"attribute": "aria-invalid", "when": "On the control, while the error is showing."},
+                    {"attribute": "aria-describedby", "when": "On the control, naming the hint and the error that are showing."},
+                    {"attribute": "aria-busy", "when": "On the control, while it is loading."},
+                    {"attribute": "aria-pressed", "when": "On the reveal button: true while the password is shown."}
+                ]
+            },
+            "script": {"need": "optional", "reason": "The reveal button of a password switches the type of the control; every other use needs no script. Without the script the reveal button does nothing and the password stays hidden."},
+            "tokens": [
+                "color-surface",
+                "color-border-strong",
+                "color-text",
+                "color-text-muted",
+                "color-focus-ring",
+                "color-danger-text",
+                "radius-control",
+                "size-control-sm",
+                "size-control-md",
+                "size-control-lg",
+                "space-3",
+                "font-size-base"
+            ],
+            "composes": ["field", "label", "error", "icon", "button"],
+            "fixtures": [
+                {"name": "default", "description": "A labelled input for an address.", "props": {"label": "Email", "type": "email"}, "slots": {}},
+                {"name": "hint", "description": "An input with a hint.", "props": {"label": "Email", "type": "email", "hint": "We never share it."}, "slots": {}},
+                {"name": "invalid", "description": "An input whose value is refused.", "props": {"label": "Email", "type": "email", "error": "Enter a valid email address."}, "slots": {}},
+                {"name": "disabled", "description": "An input that is switched off.", "props": {"label": "Email", "type": "email", "disabled": true}, "slots": {}},
+                {"name": "loading", "description": "An input while something is in progress.", "props": {"label": "Email", "type": "email", "loading": true}, "slots": {}},
+                {"name": "readonly", "description": "An input whose value can be read but not changed.", "props": {"label": "Email", "type": "email", "readonly": true}, "slots": {}},
+                {"name": "password", "description": "A password with the button that shows it.", "props": {"label": "Password", "type": "password", "viewable": true}, "slots": {}},
+                {"name": "with-icon", "description": "An input with an icon before the text.", "props": {"label": "Search", "type": "search", "icon": "search"}, "slots": {}},
+                {"name": "bare", "description": "A control with no label of its own, to be placed in a field.", "props": {}, "slots": {}}
+            ]
+        },
+        {
+            "name": "checkbox",
+            "summary": "A control that turns one choice on or off.",
+            "status": "draft",
+            "props": [
+                {"name": "label", "type": "string", "description": "The compact form: the text of the label, built next to the box."},
+                {"name": "hint", "type": "string", "description": "The compact form: a line that explains the choice."},
+                {"name": "error", "type": "string", "description": "The compact form: the message that says why the choice is refused. It also marks the control as invalid."},
+                {"name": "checked", "type": "boolean", "default": false, "description": "Whether the choice starts on."},
+                {"name": "indeterminate", "type": "boolean", "default": false, "description": "The choice is neither on nor off, as for the parent of a set that is partly chosen."},
+                {"name": "disabled", "type": "boolean", "default": false, "description": "The control cannot be changed or focused."},
+                {"name": "control-class", "type": "class", "description": "Classes for the element that does the work, merged with its own. The author's classes win over them."}
+            ],
+            "slots": [
+                {"name": "default", "description": "Any content in place of the text of the label.", "required": false}
+            ],
+            "attributes": {
+                "root": "data-studeo-checkbox",
+                "parts": [
+                    {"name": "data-studeo-checkbox-control", "description": "The native element that holds the choice."},
+                    {"name": "data-studeo-checkbox-box", "description": "The drawn box with its mark."},
+                    {"name": "data-studeo-checkbox-label", "description": "The element that holds the label and the hint."},
+                    {"name": "data-studeo-checkbox-error", "description": "The element that holds the error message."}
+                ],
+                "states": ["data-studeo-checked", "data-studeo-indeterminate", "data-studeo-disabled", "data-studeo-invalid"]
+            },
+            "attributesTarget": "data-studeo-checkbox-control",
+            "accessibility": {
+                "role": "checkbox",
+                "label": "associated-label",
+                "keyboard": [
+                    {"key": "Space", "behavior": "Turns the choice on or off."}
+                ],
+                "aria": [
+                    {"attribute": "aria-checked", "when": "On the control: mixed while the choice is indeterminate."},
+                    {"attribute": "aria-invalid", "when": "On the control, while the error is showing."},
+                    {"attribute": "aria-describedby", "when": "On the control, naming the hint and the error that are showing."}
+                ]
+            },
+            "script": {"need": "optional", "reason": "The mixed state of a checkbox can be set only through a property of the element, which takes script. Keeping the state attributes of the root in step with the control after the user changes it takes a small script too; every other use needs none. Without the script a mixed checkbox is announced as mixed but is drawn empty."},
+            "tokens": [
+                "color-accent",
+                "color-accent-foreground",
+                "color-border-strong",
+                "color-surface",
+                "color-focus-ring",
+                "color-text",
+                "color-danger-text",
+                "radius-control",
+                "size-icon-md",
+                "space-2",
+                "font-size-base",
+                "font-size-sm"
+            ],
+            "composes": ["icon", "label", "error"],
+            "fixtures": [
+                {"name": "default", "description": "A checkbox that is off.", "props": {"label": "Remember me"}, "slots": {}},
+                {"name": "checked", "description": "A checkbox that is on.", "props": {"label": "Remember me", "checked": true}, "slots": {}},
+                {"name": "indeterminate", "description": "A checkbox that is neither on nor off.", "props": {"label": "Select all", "indeterminate": true}, "slots": {}},
+                {"name": "disabled", "description": "A checkbox that is switched off.", "props": {"label": "Remember me", "disabled": true}, "slots": {}},
+                {"name": "invalid", "description": "A checkbox whose choice is refused.", "props": {"label": "I accept the terms", "error": "You must accept the terms."}, "slots": {}},
+                {"name": "with-hint", "description": "A checkbox with a hint.", "props": {"label": "Remember me", "hint": "Keeps you signed in on this device."}, "slots": {}}
+            ]
+        },
+        {
+            "name": "switch",
+            "summary": "A control that turns a setting on or off at once.",
+            "status": "draft",
+            "props": [
+                {"name": "label", "type": "string", "description": "The compact form: the text of the label, built next to the switch."},
+                {"name": "hint", "type": "string", "description": "The compact form: a line that explains the setting."},
+                {"name": "error", "type": "string", "description": "The compact form: the message that says why the change is refused. It also marks the control as invalid."},
+                {"name": "checked", "type": "boolean", "default": false, "description": "Whether the setting starts on."},
+                {"name": "disabled", "type": "boolean", "default": false, "description": "The control cannot be changed or focused."},
+                {"name": "loading", "type": "boolean", "default": false, "description": "The change is being saved."},
+                {"name": "control-class", "type": "class", "description": "Classes for the element that does the work, merged with its own. The author's classes win over them."}
+            ],
+            "slots": [
+                {"name": "default", "description": "Any content in place of the text of the label.", "required": false}
+            ],
+            "attributes": {
+                "root": "data-studeo-switch",
+                "parts": [
+                    {"name": "data-studeo-switch-control", "description": "The native element that holds the setting."},
+                    {"name": "data-studeo-switch-track", "description": "The drawn track."},
+                    {"name": "data-studeo-switch-thumb", "description": "The drawn thumb that moves along the track."},
+                    {"name": "data-studeo-switch-label", "description": "The element that holds the label and the hint."},
+                    {"name": "data-studeo-switch-error", "description": "The element that holds the error message."}
+                ],
+                "states": ["data-studeo-checked", "data-studeo-disabled", "data-studeo-invalid", "data-studeo-loading"]
+            },
+            "attributesTarget": "data-studeo-switch-control",
+            "accessibility": {
+                "role": "switch",
+                "label": "associated-label",
+                "keyboard": [
+                    {"key": "Space", "behavior": "Turns the setting on or off."}
+                ],
+                "aria": [
+                    {"attribute": "aria-busy", "when": "On the control, while the change is being saved."},
+                    {"attribute": "aria-invalid", "when": "On the control, while the error is showing."},
+                    {"attribute": "aria-describedby", "when": "On the control, naming the hint and the error that are showing."}
+                ]
+            },
+            "script": {"need": "optional", "reason": "The control, the keyboard and the form work without script. Keeping the state attribute of the root in step with the control after the user changes it takes a small script. A switch that is loading must not change by any route, and a native control cannot ignore the keyboard without script: the Space key and a click on a loading switch are ignored by script."},
+            "tokens": [
+                "color-accent",
+                "color-border-strong",
+                "color-surface",
+                "color-focus-ring",
+                "color-text",
+                "color-danger-text",
+                "radius-pill",
+                "size-icon-lg",
+                "space-2",
+                "font-size-base",
+                "font-size-sm"
+            ],
+            "composes": ["label", "error"],
+            "fixtures": [
+                {"name": "default", "description": "A switch that is off.", "props": {"label": "Notifications"}, "slots": {}},
+                {"name": "checked", "description": "A switch that is on.", "props": {"label": "Notifications", "checked": true}, "slots": {}},
+                {"name": "disabled", "description": "A switch that is switched off.", "props": {"label": "Notifications", "disabled": true}, "slots": {}},
+                {"name": "loading", "description": "A switch while its change is saved.", "props": {"label": "Notifications", "loading": true}, "slots": {}},
+                {"name": "invalid", "description": "A switch whose change is refused.", "props": {"label": "Notifications", "error": "Turn this on to continue."}, "slots": {}},
+                {"name": "with-hint", "description": "A switch with a hint.", "props": {"label": "Notifications", "hint": "Sent by email."}, "slots": {}}
+            ]
+        },
+        {
+            "name": "code-input",
+            "summary": "A control for a short code, such as the code of an authenticator app or a recovery code.",
+            "status": "draft",
+            "props": [
+                {"name": "length", "type": "integer", "default": 6, "description": "The number of characters of the code."},
+                {
+                    "name": "kind",
+                    "type": "enum",
+                    "values": ["numeric", "alphanumeric"],
+                    "default": "numeric",
+                    "description": "Whether the code is made of digits only or of letters and digits."
+                },
+                {"name": "label", "type": "string", "description": "The compact form: a label, which builds the field around the control."},
+                {"name": "hint", "type": "string", "description": "The compact form: a line that helps to fill the control in."},
+                {"name": "error", "type": "string", "description": "The compact form: the message that says why the code is refused. It also marks the control as invalid."},
+                {"name": "disabled", "type": "boolean", "default": false, "description": "The control cannot be changed or focused."},
+                {"name": "loading", "type": "boolean", "default": false, "description": "The code is being checked."},
+                {"name": "control-class", "type": "class", "description": "Classes for the element that does the work, merged with its own. The author's classes win over them."}
+            ],
+            "slots": [],
+            "attributes": {
+                "root": "data-studeo-code-input",
+                "parts": [
+                    {"name": "data-studeo-code-input-control", "description": "The one native element that takes the whole code. Its look of separate boxes is made by style, so that the code can be pasted and filled in by the browser."},
+                    {"name": "data-studeo-code-input-error", "description": "The element that holds the error message."}
+                ],
+                "states": ["data-studeo-invalid", "data-studeo-disabled", "data-studeo-loading"]
+            },
+            "attributesTarget": "data-studeo-code-input-control",
+            "accessibility": {
+                "role": "textbox",
+                "label": "associated-label",
+                "keyboard": [
+                    {"key": "Enter", "behavior": "Submits the form that holds the control."}
+                ],
+                "aria": [
+                    {"attribute": "aria-invalid", "when": "On the control, while the error is showing."},
+                    {"attribute": "aria-describedby", "when": "On the control, naming the hint and the error that are showing."},
+                    {"attribute": "aria-busy", "when": "On the control, while the code is being checked."}
+                ]
+            },
+            "script": {"need": "none", "reason": null},
+            "tokens": [
+                "color-surface",
+                "color-border-strong",
+                "color-text",
+                "color-focus-ring",
+                "color-danger-text",
+                "radius-control",
+                "size-control-lg",
+                "font-family-mono",
+                "font-size-lg",
+                "font-size-sm",
+                "space-3"
+            ],
+            "composes": ["label", "error"],
+            "fixtures": [
+                {"name": "default", "description": "A code input for a numeric code.", "props": {"label": "Authentication code"}, "slots": {}},
+                {"name": "hint", "description": "A code input with a hint.", "props": {"label": "Authentication code", "hint": "Six digits from your authenticator app."}, "slots": {}},
+                {"name": "invalid", "description": "A code input whose code is refused.", "props": {"label": "Authentication code", "error": "The code is not valid."}, "slots": {}},
+                {"name": "alphanumeric", "description": "A code input for a recovery code.", "props": {"label": "Recovery code", "kind": "alphanumeric", "length": 10}, "slots": {}},
+                {"name": "disabled", "description": "A code input that is switched off.", "props": {"label": "Authentication code", "disabled": true}, "slots": {}},
+                {"name": "loading", "description": "A code input while the code is being checked.", "props": {"label": "Authentication code", "loading": true}, "slots": {}}
+            ]
+        },
+        {
+            "name": "heading",
+            "summary": "A title. Its level in the outline of the page is set apart from its size.",
+            "status": "draft",
+            "props": [
+                {"name": "level", "type": "integer", "default": 2, "description": "The level in the outline of the page, from 1 to 6. It does not change the size."},
+                {
+                    "name": "size",
+                    "type": "enum",
+                    "values": ["sm", "md", "lg", "xl"],
+                    "default": "md",
+                    "description": "How large the title is drawn."
+                }
+            ],
+            "slots": [
+                {"name": "default", "description": "The text of the title.", "required": true}
+            ],
+            "attributes": {
+                "root": "data-studeo-heading",
+                "parts": [],
+                "states": []
+            },
+            "attributesTarget": "root",
+            "accessibility": {
+                "role": "heading",
+                "label": "content",
+                "keyboard": [],
+                "aria": []
+            },
+            "script": {"need": "none", "reason": null},
+            "tokens": ["color-text", "font-size-base", "font-size-lg", "font-size-xl", "font-size-2xl", "font-weight-semibold", "font-leading-tight"],
+            "composes": [],
+            "fixtures": [
+                {"name": "default", "description": "A title at level two.", "props": {}, "slots": {"default": "Account settings"}},
+                {"name": "page-title", "description": "A title at level one, drawn large.", "props": {"level": 1, "size": "xl"}, "slots": {"default": "Account settings"}},
+                {"name": "small", "description": "A title at level three, drawn small.", "props": {"level": 3, "size": "sm"}, "slots": {"default": "Two-factor authentication"}}
+            ]
+        },
+        {
+            "name": "text",
+            "summary": "A paragraph of running text.",
+            "status": "draft",
+            "props": [
+                {
+                    "name": "variant",
+                    "type": "enum",
+                    "values": ["default", "muted"],
+                    "default": "default",
+                    "description": "Whether the text has the main colour or the muted one."
+                },
+                {
+                    "name": "size",
+                    "type": "enum",
+                    "values": ["sm", "md", "lg"],
+                    "default": "md",
+                    "description": "How large the text is drawn."
+                }
+            ],
+            "slots": [
+                {"name": "default", "description": "The text.", "required": true}
+            ],
+            "attributes": {
+                "root": "data-studeo-text",
+                "parts": [],
+                "states": []
+            },
+            "attributesTarget": "root",
+            "accessibility": {
+                "role": null,
+                "label": "content",
+                "keyboard": [],
+                "aria": []
+            },
+            "script": {"need": "none", "reason": null},
+            "tokens": ["color-text", "color-text-muted", "font-size-sm", "font-size-base", "font-size-lg", "font-leading-normal"],
+            "composes": [],
+            "fixtures": [
+                {"name": "default", "description": "A paragraph.", "props": {}, "slots": {"default": "Choose how you sign in."}},
+                {"name": "muted", "description": "A paragraph in the muted colour.", "props": {"variant": "muted", "size": "sm"}, "slots": {"default": "Last changed a year ago."}}
+            ]
+        },
+        {
+            "name": "link",
+            "summary": "A way to go to another address. It marks the place the user is in.",
+            "status": "draft",
+            "props": [
+                {"name": "href", "type": "url", "description": "The address: a relative address, or one that starts with http, https, mailto or tel. Any other address, such as one that runs a script, is not used. A link with no address, or with an address that is not used, is a disabled link: it is shown without an address, it is not a link for assistive technology, it cannot take the focus and it does not take the pointer."},
+                {
+                    "name": "variant",
+                    "type": "enum",
+                    "values": ["default", "subtle", "button"],
+                    "default": "default",
+                    "description": "Whether the link is underlined and coloured, has the colour of the text around it, or is drawn like a button of the default variant. A disabled link of the variant button is subdued."
+                },
+                {"name": "current", "type": "boolean", "default": false, "description": "The address is the place the user is in: the link is marked as the current page."},
+                {"name": "external", "type": "boolean", "default": false, "description": "The address opens in a new window or tab, and the link says so."}
+            ],
+            "slots": [
+                {"name": "default", "description": "The text of the link.", "required": true}
+            ],
+            "attributes": {
+                "root": "data-studeo-link",
+                "parts": [
+                    {"name": "data-studeo-link-external", "description": "The text that tells assistive technology that the address opens in a new window or tab. It is hidden from sight. The words are a text of the implementation that a host can translate; in English they are: Opens in a new tab."}
+                ],
+                "states": ["data-studeo-current", "data-studeo-disabled"]
+            },
+            "attributesTarget": "root",
+            "accessibility": {
+                "role": "link",
+                "label": "content",
+                "keyboard": [
+                    {"key": "Enter", "behavior": "Follows the link."}
+                ],
+                "aria": [
+                    {"attribute": "aria-current", "when": "The link is the current place. The value is page."},
+                    {"attribute": "aria-disabled", "when": "The link has no address that is used: it is then not a link, it carries the disabled state and the value is true."}
+                ]
+            },
+            "script": {"need": "none", "reason": null},
+            "tokens": ["color-accent-text", "color-text", "color-text-muted", "color-surface", "color-border", "color-border-strong", "color-accent-subtle", "color-focus-ring", "radius-control", "size-control-md", "space-3", "font-size-sm", "font-weight-medium"],
+            "composes": [],
+            "fixtures": [
+                {"name": "default", "description": "A link.", "props": {"href": "/settings"}, "slots": {"default": "Settings"}},
+                {"name": "current", "description": "The link of the place the user is in.", "props": {"href": "/settings", "current": true}, "slots": {"default": "Settings"}},
+                {"name": "external", "description": "A link that opens in a new window or tab.", "props": {"href": "https://example.com/help", "external": true}, "slots": {"default": "Help"}},
+                {"name": "subtle", "description": "A link in the colour of its text.", "props": {"href": "/settings", "variant": "subtle"}, "slots": {"default": "Settings"}},
+                {"name": "button", "description": "A link that is drawn like a button.", "props": {"href": "/settings", "variant": "button"}, "slots": {"default": "Settings"}},
+                {"name": "disabled", "description": "A link with no address.", "props": {}, "slots": {"default": "Settings"}},
+                {"name": "button-disabled", "description": "A link with no address that is drawn like a button.", "props": {"variant": "button"}, "slots": {"default": "Settings"}}
+            ]
+        },
+        {
+            "name": "alert",
+            "summary": "A message that stays in the page until the situation changes or the user dismisses it.",
+            "status": "draft",
+            "props": [
+                {
+                    "name": "variant",
+                    "type": "enum",
+                    "values": ["info", "success", "warning", "danger"],
+                    "default": "info",
+                    "description": "What the message is about."
+                },
+                {
+                    "name": "icon",
+                    "type": "icon",
+                    "description": "The icon shown before the message. Without it the alert shows the icon of its variant. The slot of the same name replaces it."
+                },
+                {"name": "dismissible", "type": "boolean", "default": false, "description": "Adds a button that hides the alert."}
+            ],
+            "slots": [
+                {"name": "default", "description": "The message.", "required": true},
+                {"name": "title", "description": "A short line above the message.", "required": false},
+                {"name": "icon", "description": "Any content in place of the icon before the message.", "required": false}
+            ],
+            "attributes": {
+                "root": "data-studeo-alert",
+                "parts": [
+                    {"name": "data-studeo-alert-icon", "description": "The element that holds the icon."},
+                    {"name": "data-studeo-alert-title", "description": "The element that holds the title."},
+                    {"name": "data-studeo-alert-body", "description": "The element that holds the message."},
+                    {"name": "data-studeo-alert-dismiss", "description": "The button that hides the alert. Its accessible name is Dismiss."}
+                ],
+                "states": []
+            },
+            "attributesTarget": "root",
+            "accessibility": {
+                "role": "status",
+                "label": "content",
+                "keyboard": [
+                    {"key": "Enter", "behavior": "On the dismiss button: hides the alert."},
+                    {"key": "Space", "behavior": "On the dismiss button: hides the alert."}
+                ],
+                "aria": []
+            },
+            "script": {"need": "optional", "reason": "Hiding the alert at the press of the dismiss button needs a small script, unless the page is drawn again by the server. Without the script the dismiss button does nothing and the alert stays."},
+            "tokens": [
+                "color-info-subtle",
+                "color-info-text",
+                "color-success-subtle",
+                "color-success-text",
+                "color-warning-subtle",
+                "color-warning-text",
+                "color-danger-subtle",
+                "color-danger-text",
+                "color-focus-ring",
+                "radius-container",
+                "size-icon-md",
+                "space-3",
+                "space-4",
+                "font-size-sm",
+                "font-weight-medium"
+            ],
+            "composes": ["icon", "button"],
+            "fixtures": [
+                {"name": "default", "description": "An informing message.", "props": {}, "slots": {"default": "Your session ends in ten minutes."}},
+                {"name": "success", "description": "A message that something worked.", "props": {"variant": "success"}, "slots": {"default": "Your password was changed."}},
+                {"name": "warning", "description": "A message that asks for care.", "props": {"variant": "warning"}, "slots": {"default": "Your password has not changed in a year."}},
+                {"name": "danger", "description": "A message that something failed.", "props": {"variant": "danger"}, "slots": {"default": "The code is not valid."}},
+                {"name": "with-title", "description": "A message with a title.", "props": {"variant": "warning"}, "slots": {"default": "Add a second way to sign in.", "title": "Your account has one way in"}},
+                {"name": "dismissible", "description": "A message that the user can hide.", "props": {"variant": "info", "dismissible": true}, "slots": {"default": "Your session ends in ten minutes."}}
+            ]
+        },
+        {
+            "name": "card",
+            "summary": "A surface that groups what belongs together: a header, a body and a footer.",
+            "status": "draft",
+            "props": [
+                {
+                    "name": "variant",
+                    "type": "enum",
+                    "values": ["outline", "raised"],
+                    "default": "outline",
+                    "description": "Whether the card is set off by a border or by a shadow."
+                }
+            ],
+            "slots": [
+                {"name": "default", "description": "The body.", "required": true},
+                {"name": "header", "description": "What stands above the body, such as a title.", "required": false},
+                {"name": "footer", "description": "What stands below the body, such as actions or links.", "required": false}
+            ],
+            "attributes": {
+                "root": "data-studeo-card",
+                "parts": [
+                    {"name": "data-studeo-card-header", "description": "The element that holds the header."},
+                    {"name": "data-studeo-card-body", "description": "The element that holds the body."},
+                    {"name": "data-studeo-card-footer", "description": "The element that holds the footer."}
+                ],
+                "states": []
+            },
+            "attributesTarget": "root",
+            "accessibility": {
+                "role": null,
+                "label": "none",
+                "keyboard": [],
+                "aria": []
+            },
+            "script": {"need": "none", "reason": null},
+            "tokens": ["color-surface", "color-border", "radius-container", "shadow-sm", "space-4", "space-6"],
+            "composes": [],
+            "fixtures": [
+                {"name": "default", "description": "A card with a body.", "props": {}, "slots": {"default": {"fixture": "text.default"}}},
+                {"name": "with-header-and-footer", "description": "A card with a header, a body and a footer.", "props": {}, "slots": {"default": {"fixture": "text.default"}, "header": {"fixture": "heading.default"}, "footer": {"fixture": "link.default"}}},
+                {"name": "raised", "description": "A card set off by a shadow.", "props": {"variant": "raised"}, "slots": {"default": {"fixture": "text.default"}}}
+            ]
+        },
+        {
+            "name": "table",
+            "summary": "Rows and columns of data, with a caption and a message for when there are no rows.",
+            "status": "draft",
+            "props": [
+                {
+                    "name": "variant",
+                    "type": "enum",
+                    "values": ["plain", "striped"],
+                    "default": "plain",
+                    "description": "Whether every row looks the same or the rows alternate."
+                },
+                {"name": "loading", "type": "boolean", "default": false, "description": "The rows are being replaced."}
+            ],
+            "slots": [
+                {"name": "default", "description": "The rows of the body.", "required": false},
+                {"name": "head", "description": "The column headers. The table puts them in one row.", "required": false},
+                {"name": "caption", "description": "A line that names the table.", "required": false},
+                {"name": "empty", "description": "The message that is shown when the body has no rows.", "required": false}
+            ],
+            "attributes": {
+                "root": "data-studeo-table",
+                "parts": [
+                    {"name": "data-studeo-table-caption", "description": "The element that holds the caption."},
+                    {"name": "data-studeo-table-head", "description": "The element that holds the row of column headers."},
+                    {"name": "data-studeo-table-body", "description": "The element that holds the rows."},
+                    {"name": "data-studeo-table-empty", "description": "The element that holds the message shown when there are no rows."}
+                ],
+                "states": ["data-studeo-loading"]
+            },
+            "attributesTarget": "root",
+            "accessibility": {
+                "role": "table",
+                "label": "associated-label",
+                "keyboard": [],
+                "aria": [
+                    {"attribute": "aria-busy", "when": "While the rows are being replaced."}
+                ]
+            },
+            "script": {"need": "none", "reason": null},
+            "tokens": ["color-surface", "color-border", "color-text", "color-text-muted", "color-accent-subtle", "radius-container", "font-size-sm", "space-3", "space-4"],
+            "composes": ["table-column", "table-row", "table-cell"],
+            "fixtures": [
+                {"name": "bare", "description": "A table with nothing in it: the place where a column, a row or a cell is shown by itself.", "props": {}, "slots": {}},
+                {"name": "default", "description": "A table with a column header and a row.", "props": {}, "slots": {"default": [{"fixture": "table-row.default"}], "head": [{"fixture": "table-column.default"}], "caption": "Users"}},
+                {"name": "striped", "description": "A table whose rows alternate.", "props": {"variant": "striped"}, "slots": {"default": [{"fixture": "table-row.default"}, {"fixture": "table-row.default"}], "head": [{"fixture": "table-column.default"}]}},
+                {"name": "empty", "description": "A table with no rows.", "props": {}, "slots": {"head": [{"fixture": "table-column.default"}], "empty": "No users yet."}},
+                {"name": "loading", "description": "A table whose rows are being replaced.", "props": {"loading": true}, "slots": {"default": [{"fixture": "table-row.default"}], "head": [{"fixture": "table-column.default"}]}}
+            ]
+        },
+        {
+            "name": "table-column",
+            "summary": "The header of one column. When the list can be sorted by the column it is a link to the address that sorts by it.",
+            "status": "draft",
+            "props": [
+                {"name": "href", "type": "url", "description": "The address that sorts the list by this column. Without it the column cannot be sorted by."},
+                {
+                    "name": "sorted",
+                    "type": "enum",
+                    "values": ["ascending", "descending"],
+                    "description": "The direction in which the list is now sorted by this column. Without it the list is not sorted by this column."
+                }
+            ],
+            "slots": [
+                {"name": "default", "description": "The name of the column.", "required": true}
+            ],
+            "attributes": {
+                "root": "data-studeo-table-column",
+                "parts": [
+                    {"name": "data-studeo-table-column-link", "description": "The link that sorts the list. It holds the name of the column and, when the list is sorted by the column, the chevron that shows the direction."}
+                ],
+                "states": []
+            },
+            "attributesTarget": "root",
+            "accessibility": {
+                "role": "columnheader",
+                "label": "content",
+                "keyboard": [
+                    {"key": "Enter", "behavior": "On the link of a sortable column: follows it."}
+                ],
+                "aria": [
+                    {"attribute": "aria-sort", "when": "While the list is sorted by this column. The value is ascending or descending."}
+                ]
+            },
+            "script": {"need": "none", "reason": null},
+            "tokens": ["color-text", "color-text-muted", "color-focus-ring", "font-size-sm", "font-weight-medium", "size-icon-sm"],
+            "composes": ["icon"],
+            "fixtures": [
+                {"name": "default", "description": "A column that cannot be sorted by.", "props": {}, "slots": {"default": "Name"}, "in": {"fixture": "table.bare", "slot": "head"}},
+                {"name": "sortable", "description": "A column that the list can be sorted by.", "props": {"href": "/users?sort=name"}, "slots": {"default": "Name"}, "in": {"fixture": "table.bare", "slot": "head"}},
+                {"name": "ascending", "description": "A column that the list is sorted by, from first to last.", "props": {"href": "/users?sort=-name", "sorted": "ascending"}, "slots": {"default": "Name"}, "in": {"fixture": "table.bare", "slot": "head"}},
+                {"name": "descending", "description": "A column that the list is sorted by, from last to first.", "props": {"href": "/users", "sorted": "descending"}, "slots": {"default": "Name"}, "in": {"fixture": "table.bare", "slot": "head"}}
+            ]
+        },
+        {
+            "name": "table-row",
+            "summary": "One row of the body: the cells of one record.",
+            "status": "draft",
+            "props": [],
+            "slots": [
+                {"name": "default", "description": "The cells of the row.", "required": false}
+            ],
+            "attributes": {
+                "root": "data-studeo-table-row",
+                "parts": [],
+                "states": []
+            },
+            "attributesTarget": "root",
+            "accessibility": {
+                "role": "row",
+                "label": "none",
+                "keyboard": [],
+                "aria": []
+            },
+            "script": {"need": "none", "reason": null},
+            "tokens": ["color-border", "color-accent-subtle"],
+            "composes": ["table-cell"],
+            "fixtures": [
+                {"name": "bare", "description": "A row with no cell: the place where a cell is shown by itself.", "props": {}, "slots": {}, "in": {"fixture": "table.bare", "slot": "default"}},
+                {"name": "default", "description": "A row with a cell.", "props": {}, "slots": {"default": [{"fixture": "table-cell.default"}]}, "in": {"fixture": "table.bare", "slot": "default"}}
+            ]
+        },
+        {
+            "name": "table-cell",
+            "summary": "One cell of a row.",
+            "status": "draft",
+            "props": [],
+            "slots": [
+                {"name": "default", "description": "What the cell shows.", "required": true}
+            ],
+            "attributes": {
+                "root": "data-studeo-table-cell",
+                "parts": [],
+                "states": []
+            },
+            "attributesTarget": "root",
+            "accessibility": {
+                "role": "cell",
+                "label": "content",
+                "keyboard": [],
+                "aria": []
+            },
+            "script": {"need": "none", "reason": null},
+            "tokens": ["color-text", "font-size-sm", "space-3", "space-4"],
+            "composes": [],
+            "fixtures": [
+                {"name": "default", "description": "A cell with a text.", "props": {}, "slots": {"default": "Ada Lovelace"}, "in": {"fixture": "table-row.bare", "slot": "default"}}
+            ]
+        },
+        {
+            "name": "data-table",
+            "summary": "A table of a long list that the server pages, sorts and filters, with a search, filters and paging controls.",
+            "status": "draft",
+            "props": [
+                {"name": "label", "type": "string", "required": true, "description": "The name of the list, for assistive technology."},
+                {"name": "search", "type": "string", "description": "The text that the list is now searched for. It fills the search field."},
+                {"name": "searchable", "type": "boolean", "default": true, "description": "Whether the search field is shown."},
+                {"name": "sort", "type": "string", "description": "The sort the list answer was made with, as the server names it. A minus sign at the start asks for the descending order. It is sent under the name sort, with the search."},
+                {"name": "current-page", "type": "integer", "default": 1, "description": "The page shown (current_page of the answer)."},
+                {"name": "last-page", "type": "integer", "default": 1, "description": "The last page (last_page of the answer)."},
+                {"name": "per-page", "type": "integer", "default": 25, "description": "The number of rows on a page (per_page of the answer)."},
+                {"name": "per-page-options", "type": "list", "default": [10, 25, 50, 100], "description": "The page sizes that the server accepts, as whole numbers. They fill the choice of the page size. When it is left out, the sizes are 10, 25, 50 and 100."},
+                {"name": "total", "type": "integer", "default": 0, "description": "The number of rows in all pages (total of the answer). When it is zero the empty message is shown."},
+                {"name": "first-url", "type": "url", "description": "The address of the first page (first of the links of the answer). Left out when there is none."},
+                {"name": "last-url", "type": "url", "description": "The address of the last page. Left out when there is none."},
+                {"name": "previous-url", "type": "url", "description": "The address of the previous page. Left out when there is none."},
+                {"name": "next-url", "type": "url", "description": "The address of the next page. Left out when there is none."},
+                {"name": "loading", "type": "boolean", "default": false, "description": "Another page is being loaded."}
+            ],
+            "slots": [
+                {"name": "default", "description": "The table.", "required": false},
+                {"name": "filters", "description": "The controls that narrow the list, such as a choice of status.", "required": false},
+                {"name": "actions", "description": "What stands at the end of the toolbar, such as a button that adds a row.", "required": false},
+                {"name": "empty", "description": "The message that is shown when the list has no rows.", "required": false}
+            ],
+            "attributes": {
+                "root": "data-studeo-data-table",
+                "parts": [
+                    {"name": "data-studeo-data-table-toolbar", "description": "The element that holds the search, the filters and the actions."},
+                    {"name": "data-studeo-data-table-search", "description": "The field that takes the text to search for. Its accessible name is Search. It is sent under the name search, and sending it asks the server for the first page."},
+                    {"name": "data-studeo-data-table-empty", "description": "The element that holds the message shown when the list has no rows."},
+                    {"name": "data-studeo-data-table-summary", "description": "The line that says how many rows there are and which page is shown, as: 60 results, page 1 of 3."},
+                    {"name": "data-studeo-data-table-per-page", "description": "The choice of how many rows a page holds. Its accessible name is Rows per page. It is a select. It is sent under the name per_page, and it offers the sizes of the prop per-page-options."},
+                    {"name": "data-studeo-data-table-first", "description": "The control to the first page: a link, or a disabled link while there is no such page. Its accessible name is First page.", "states": ["data-studeo-disabled"]},
+                    {"name": "data-studeo-data-table-previous", "description": "The control to the previous page: a link, or a disabled link while there is no such page. Its accessible name is Previous page.", "states": ["data-studeo-disabled"]},
+                    {"name": "data-studeo-data-table-next", "description": "The control to the next page: a link, or a disabled link while there is no such page. Its accessible name is Next page.", "states": ["data-studeo-disabled"]},
+                    {"name": "data-studeo-data-table-last", "description": "The control to the last page: a link, or a disabled link while there is no such page. Its accessible name is Last page.", "states": ["data-studeo-disabled"]}
+                ],
+                "states": ["data-studeo-loading"]
+            },
+            "attributesTarget": "root",
+            "accessibility": {
+                "role": "region",
+                "label": "aria-label",
+                "keyboard": [
+                    {"key": "Enter", "behavior": "On the search field: sends the search. On a paging control that has an address: follows it."}
+                ],
+                "aria": [
+                    {"attribute": "aria-busy", "when": "On the root, while another page is being loaded."},
+                    {"attribute": "aria-live", "when": "On the summary, with the value polite, so that a change of page is announced."},
+                    {"attribute": "aria-disabled", "when": "On a paging control that has no address: it is not a link and it carries the disabled state."}
+                ]
+            },
+            "script": {"need": "optional", "reason": "The search, the sorting and the paging work without script: the search is a form and the sort and the pages are links. Sending a new page size at once, when it is chosen, takes a small script."},
+            "tokens": ["color-surface", "color-border", "color-text", "color-text-muted", "radius-container", "font-size-sm", "space-2", "space-3", "space-4"],
+            "composes": ["table", "input", "select", "link", "icon"],
+            "fixtures": [
+                {
+                    "name": "default",
+                    "description": "The first of three pages.",
+                    "props": {"label": "Users", "current-page": 1, "last-page": 3, "per-page": 25, "total": 60, "last-url": "/users?page=3", "next-url": "/users?page=2"},
+                    "slots": {"default": {"fixture": "table.default"}, "filters": "Status: all"}
+                },
+                {
+                    "name": "last-page",
+                    "description": "The last of three pages.",
+                    "props": {"label": "Users", "current-page": 3, "last-page": 3, "per-page": 25, "total": 60, "first-url": "/users?page=1", "previous-url": "/users?page=2"},
+                    "slots": {"default": {"fixture": "table.default"}}
+                },
+                {
+                    "name": "sizes",
+                    "description": "A list that offers its own page sizes.",
+                    "props": {"label": "Users", "per-page": 20, "per-page-options": [10, 20, 40], "total": 60, "last-page": 3, "next-url": "/users?page=2"},
+                    "slots": {"default": {"fixture": "table.default"}}
+                },
+                {
+                    "name": "sorted",
+                    "description": "A list sorted from last to first by name.",
+                    "props": {"label": "Users", "sort": "-name", "total": 2},
+                    "slots": {"default": {"fixture": "table.default"}}
+                },
+                {
+                    "name": "searched",
+                    "description": "A list that was searched for a text.",
+                    "props": {"label": "Users", "search": "ada", "total": 1},
+                    "slots": {"default": {"fixture": "table.default"}}
+                },
+                {
+                    "name": "empty",
+                    "description": "A list with no rows.",
+                    "props": {"label": "Users", "search": "zzz", "total": 0},
+                    "slots": {"empty": "No users match your search."}
+                },
+                {
+                    "name": "loading",
+                    "description": "A list while another page is loading.",
+                    "props": {"label": "Users", "current-page": 1, "last-page": 3, "total": 60, "next-url": "/users?page=2", "loading": true},
+                    "slots": {"default": {"fixture": "table.loading"}}
+                }
+            ]
+        },
+        {
+            "name": "dialog",
+            "summary": "A window over the page that asks for the user's attention until it is closed. While it is open, the rest of the page cannot be used.",
+            "status": "draft",
+            "props": [
+                {"name": "open", "type": "boolean", "default": false, "description": "Whether the dialog is open."},
+                {
+                    "name": "size",
+                    "type": "enum",
+                    "values": ["sm", "md", "lg"],
+                    "default": "md",
+                    "description": "How wide the dialog is: the width of the narrow, the medium or the wide container. A theme changes the widths by changing the tokens."
+                }
+            ],
+            "slots": [
+                {"name": "title", "description": "The title. It is the name of the dialog.", "required": true},
+                {"name": "default", "description": "The body.", "required": true},
+                {"name": "footer", "description": "The actions, such as the buttons that confirm and cancel.", "required": false}
+            ],
+            "attributes": {
+                "root": "data-studeo-dialog",
+                "parts": [
+                    {"name": "data-studeo-dialog-title", "description": "The element that holds the title."},
+                    {"name": "data-studeo-dialog-body", "description": "The element that holds the body."},
+                    {"name": "data-studeo-dialog-footer", "description": "The element that holds the actions."},
+                    {"name": "data-studeo-dialog-close", "description": "The button that closes the dialog. Its accessible name is Close."}
+                ],
+                "states": ["data-studeo-open"]
+            },
+            "attributesTarget": "root",
+            "accessibility": {
+                "role": "dialog",
+                "label": "associated-label",
+                "keyboard": [
+                    {"key": "Escape", "behavior": "Closes the dialog."},
+                    {"key": "Tab", "behavior": "Moves the focus among the controls of the dialog and never out of it."},
+                    {"key": "Enter", "behavior": "On the close button: closes the dialog."}
+                ],
+                "aria": [
+                    {"attribute": "aria-modal", "when": "While the dialog is open, with the value true."},
+                    {"attribute": "aria-labelledby", "when": "Naming the title."}
+                ]
+            },
+            "script": {"need": "optional", "reason": "Making the dialog modal takes a small script, whether it is open when the page loads or is opened by a button, unless the stack opens it by what the platform provides for that. Closing it, the focus trap and the Escape key then come from the platform. When the dialog closes, the focus returns to what opened it. Without the script an open dialog is not modal: the page behind it can still be used and Escape does nothing, but its close button still works, because it closes the dialog by the platform."},
+            "tokens": ["color-surface", "color-border", "color-overlay", "color-text", "color-focus-ring", "radius-container", "shadow-lg", "size-container-narrow", "size-container-medium", "size-container-wide", "space-4", "space-6", "font-size-lg", "font-weight-semibold"],
+            "composes": ["button", "icon"],
+            "fixtures": [
+                {"name": "default", "description": "An open dialog with a title and a body.", "props": {"open": true}, "slots": {"title": "Delete account", "default": "This cannot be undone."}},
+                {"name": "with-footer", "description": "An open dialog with actions.", "props": {"open": true}, "slots": {"title": "Delete account", "default": "This cannot be undone.", "footer": "Cancel or delete"}},
+                {"name": "closed", "description": "A dialog that is not open.", "props": {}, "slots": {"title": "Delete account", "default": "This cannot be undone."}},
+                {"name": "small", "description": "An open dialog that is narrow.", "props": {"open": true, "size": "sm"}, "slots": {"title": "Delete account", "default": "This cannot be undone."}}
+            ]
+        },
+        {
+            "name": "toast",
+            "summary": "A short message that appears over the page to confirm something. A message of success or information hides itself after a few seconds.",
+            "status": "draft",
+            "props": [
+                {
+                    "name": "variant",
+                    "type": "enum",
+                    "values": ["info", "success", "warning", "danger"],
+                    "default": "info",
+                    "description": "What the message is about."
+                },
+                {"name": "duration", "type": "integer", "default": 5, "description": "How many seconds a message of success or information stays before it hides itself. Zero keeps it until it is dismissed. It has no effect on warning and danger: they never hide themselves."},
+                {
+                    "name": "icon",
+                    "type": "icon",
+                    "description": "The icon shown before the message. Without it the toast shows the icon of its variant. The slot of the same name replaces it."
+                }
+            ],
+            "slots": [
+                {"name": "default", "description": "The message.", "required": true},
+                {"name": "title", "description": "A short line above the message.", "required": false},
+                {"name": "icon", "description": "Any content in place of the icon before the message.", "required": false}
+            ],
+            "attributes": {
+                "root": "data-studeo-toast",
+                "parts": [
+                    {"name": "data-studeo-toast-icon", "description": "The element that holds the icon."},
+                    {"name": "data-studeo-toast-title", "description": "The element that holds the title."},
+                    {"name": "data-studeo-toast-body", "description": "The element that holds the message."},
+                    {"name": "data-studeo-toast-dismiss", "description": "The button that hides the toast. Its accessible name is Dismiss."}
+                ],
+                "states": []
+            },
+            "attributesTarget": "root",
+            "accessibility": {
+                "role": "status",
+                "label": "content",
+                "keyboard": [
+                    {"key": "Enter", "behavior": "On the dismiss button: hides the toast."},
+                    {"key": "Space", "behavior": "On the dismiss button: hides the toast."}
+                ],
+                "aria": []
+            },
+            "script": {"need": "required", "reason": "The timer that hides the toast, and its pause while the pointer is over the toast or the focus is inside it, cannot be done by style."},
+            "tokens": [
+                "color-info-subtle",
+                "color-info-text",
+                "color-success-subtle",
+                "color-success-text",
+                "color-warning-subtle",
+                "color-warning-text",
+                "color-danger-subtle",
+                "color-danger-text",
+                "color-focus-ring",
+                "radius-container",
+                "shadow-md",
+                "size-icon-md",
+                "space-3",
+                "space-4",
+                "font-size-sm"
+            ],
+            "composes": ["icon", "button"],
+            "fixtures": [
+                {"name": "success", "description": "A confirmation that hides itself.", "props": {"variant": "success"}, "slots": {"default": "Your changes were saved."}},
+                {"name": "info", "description": "A piece of information that hides itself.", "props": {}, "slots": {"default": "A new version is available."}},
+                {"name": "persistent", "description": "A confirmation that stays until it is dismissed.", "props": {"variant": "success", "duration": 0}, "slots": {"default": "Your changes were saved."}},
+                {"name": "danger", "description": "A message of failure, which never hides itself.", "props": {"variant": "danger"}, "slots": {"default": "Your changes could not be saved."}},
+                {"name": "with-title", "description": "A toast with a title.", "props": {"variant": "success"}, "slots": {"default": "Your changes were saved.", "title": "Saved"}}
+            ]
+        },
+        {
+            "name": "toast-region",
+            "summary": "The place at the bottom end of the page where toasts appear, one after another.",
+            "status": "draft",
+            "props": [
+                {"name": "max", "type": "integer", "default": 3, "description": "The most toasts that show at once. The others wait and appear as room is made."}
+            ],
+            "slots": [
+                {"name": "default", "description": "The toasts.", "required": false}
+            ],
+            "attributes": {
+                "root": "data-studeo-toast-region",
+                "parts": [],
+                "states": []
+            },
+            "attributesTarget": "root",
+            "accessibility": {
+                "role": "region",
+                "label": "aria-label",
+                "keyboard": [],
+                "aria": [
+                    {"attribute": "aria-live", "when": "Always, with the value polite, so that a toast that appears is announced without interrupting the user. Its accessible name is Notifications."}
+                ]
+            },
+            "script": {"need": "required", "reason": "Showing at most a number of toasts and queueing the others cannot be done by style. A host raises a toast by dispatching the event studeo:toast on the window with a detail that holds variant, title, message and duration; the region makes the toast, so that no stack needs a call of its own. The scenarios cannot express an event, so each UI package tests it itself."},
+            "tokens": ["space-4", "space-3"],
+            "composes": ["toast"],
+            "fixtures": [
+                {"name": "default", "description": "A region that holds a toast.", "props": {}, "slots": {"default": {"fixture": "toast.success"}}},
+                {"name": "empty", "description": "A region with no toast.", "props": {}, "slots": {}}
+            ]
+        },
+        {
+            "name": "select",
+            "summary": "A control that picks one value from a list of options. The closed control looks the same everywhere; the open list is the platform's.",
+            "status": "draft",
+            "props": [
+                {"name": "variant", "type": "enum", "values": ["outline", "filled"], "default": "outline", "description": "Whether the control is outlined or filled."},
+                {"name": "size", "type": "enum", "values": ["sm", "md", "lg"], "default": "md", "description": "The size of the control."},
+                {"name": "options", "type": "list", "required": true, "description": "The options to choose from. Each item is a text or a whole number, which is its own label, or an object with a value and a label."},
+                {"name": "value", "type": "string", "description": "The value of the option that is chosen. When it is left out, the placeholder shows, or else the first option."},
+                {"name": "placeholder", "type": "string", "description": "The text shown while no option is chosen. It is not an option that can be chosen again."},
+                {"name": "label", "type": "string", "description": "The compact form: a label, which builds the field around the control."},
+                {"name": "hint", "type": "string", "description": "The compact form: a line that helps to choose."},
+                {"name": "error", "type": "string", "description": "The compact form: the message that says why the choice is refused. It also marks the control as invalid."},
+                {"name": "disabled", "type": "boolean", "default": false, "description": "The control cannot be changed or focused."},
+                {"name": "loading", "type": "boolean", "default": false, "description": "The control shows that something is in progress."},
+                {"name": "control-class", "type": "class", "description": "Classes for the element that does the work, merged with its own. The author's classes win over them."}
+            ],
+            "slots": [],
+            "attributes": {
+                "root": "data-studeo-select",
+                "parts": [
+                    {"name": "data-studeo-select-control", "description": "The native element that holds the choice."},
+                    {"name": "data-studeo-select-chevron", "description": "The icon at the end of the control that shows that a list opens."},
+                    {"name": "data-studeo-select-error", "description": "The element that holds the error message of the compact form."}
+                ],
+                "states": ["data-studeo-invalid", "data-studeo-disabled", "data-studeo-loading"]
+            },
+            "attributesTarget": "data-studeo-select-control",
+            "accessibility": {
+                "role": "combobox",
+                "label": "associated-label",
+                "keyboard": [
+                    {"key": "Space", "behavior": "Opens the list of options."},
+                    {"key": "ArrowDown or ArrowUp", "behavior": "Moves to the next or the previous option."}
+                ],
+                "aria": [
+                    {"attribute": "aria-invalid", "when": "On the control, while the error is showing."},
+                    {"attribute": "aria-describedby", "when": "On the control, naming the hint and the error that are showing."},
+                    {"attribute": "aria-busy", "when": "On the control, while it is loading."}
+                ]
+            },
+            "script": {"need": "none", "reason": null},
+            "tokens": ["color-surface", "color-border-strong", "color-text", "color-text-muted", "color-focus-ring", "color-danger-text", "radius-control", "size-control-sm", "size-control-md", "size-control-lg", "size-icon-md", "space-3", "font-size-base"],
+            "composes": ["field", "label", "error", "icon"],
+            "fixtures": [
+                {"name": "default", "description": "A labelled select with options that have labels.", "props": {"label": "Role", "options": [{"value": "admin", "label": "Administrator"}, {"value": "editor", "label": "Editor"}, {"value": "viewer", "label": "Viewer"}]}, "slots": {}},
+                {"name": "chosen", "description": "A select with one option chosen.", "props": {"label": "Role", "value": "editor", "options": [{"value": "admin", "label": "Administrator"}, {"value": "editor", "label": "Editor"}, {"value": "viewer", "label": "Viewer"}]}, "slots": {}},
+                {"name": "plain", "description": "A select whose options are whole numbers.", "props": {"label": "Rows per page", "value": "25", "options": [10, 25, 50, 100]}, "slots": {}},
+                {"name": "placeholder", "description": "A select with a placeholder and no choice.", "props": {"label": "Role", "placeholder": "Choose a role", "options": ["Administrator", "Editor", "Viewer"]}, "slots": {}},
+                {"name": "hint", "description": "A select with a hint.", "props": {"label": "Role", "hint": "What the person may do.", "options": ["Administrator", "Editor", "Viewer"]}, "slots": {}},
+                {"name": "invalid", "description": "A select whose choice is refused.", "props": {"label": "Role", "error": "Choose a role.", "options": ["Administrator", "Editor", "Viewer"]}, "slots": {}},
+                {"name": "disabled", "description": "A select that is switched off.", "props": {"label": "Role", "disabled": true, "options": ["Administrator", "Editor", "Viewer"]}, "slots": {}},
+                {"name": "loading", "description": "A select while something is in progress.", "props": {"label": "Role", "loading": true, "options": ["Administrator", "Editor", "Viewer"]}, "slots": {}},
+                {"name": "bare", "description": "A control with no label of its own, to be placed in a field.", "props": {"options": ["Administrator", "Editor", "Viewer"]}, "slots": {}}
+            ]
+        }
+    ]
+}

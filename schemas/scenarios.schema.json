@@ -1,0 +1,130 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "The browser scenarios of the specification (scenarios.json)",
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["scenarios"],
+    "properties": {
+        "scenarios": {
+            "type": "array",
+            "minItems": 1,
+            "items": {"$ref": "#/$defs/scenario"}
+        }
+    },
+    "$defs": {
+        "name": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$"
+        },
+        "text": {
+            "type": "string",
+            "minLength": 1
+        },
+        "scenario": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "component", "fixture", "summary", "steps"],
+            "properties": {
+                "id": {"$ref": "#/$defs/name"},
+                "component": {"$ref": "#/$defs/name"},
+                "fixture": {
+                    "description": "The page of the gallery that the scenario starts from: the component name, a dot and the name of the case.",
+                    "type": "string",
+                    "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*(\\.[a-z][a-z0-9]*(-[a-z0-9]+)*)+$"
+                },
+                "summary": {"$ref": "#/$defs/text"},
+                "steps": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {"$ref": "#/$defs/step"}
+                }
+            }
+        },
+        "target": {
+            "description": "An element found by its role and accessible name, or by a data-studeo-* attribute. Never by a class, an id or a position.",
+            "oneOf": [
+                {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": ["role", "name"],
+                    "properties": {
+                        "role": {"type": "string", "pattern": "^[a-z]+$"},
+                        "name": {"$ref": "#/$defs/text"}
+                    }
+                },
+                {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": ["attribute"],
+                    "properties": {
+                        "attribute": {"type": "string", "pattern": "^data-studeo-[a-z0-9]+(-[a-z0-9]+)*$"}
+                    }
+                }
+            ]
+        },
+        "step": {
+            "description": "One action from the closed list.",
+            "oneOf": [
+                {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": ["action", "target"],
+                    "properties": {
+                        "action": {"enum": ["click", "focus", "expectVisible", "expectHidden", "expectFocus"]},
+                        "target": {"$ref": "#/$defs/target"}
+                    }
+                },
+                {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": ["action", "target", "value"],
+                    "properties": {
+                        "action": {"const": "fill"},
+                        "target": {"$ref": "#/$defs/target"},
+                        "value": {"type": "string"}
+                    }
+                },
+                {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": ["action", "key"],
+                    "properties": {
+                        "action": {"const": "press"},
+                        "key": {"$ref": "#/$defs/text"}
+                    }
+                },
+                {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": ["action", "target", "text"],
+                    "properties": {
+                        "action": {"const": "expectText"},
+                        "target": {"$ref": "#/$defs/target"},
+                        "text": {"type": "string"}
+                    }
+                },
+                {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": ["action", "target", "attribute"],
+                    "properties": {
+                        "action": {"const": "expectAttribute"},
+                        "target": {"$ref": "#/$defs/target"},
+                        "attribute": {"type": "string", "pattern": "^(aria-[a-z]+|data-studeo-[a-z0-9]+(-[a-z0-9]+)*|disabled)$"},
+                        "value": {"type": "string"}
+                    }
+                },
+                {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": ["action", "target", "attribute"],
+                    "properties": {
+                        "action": {"const": "expectNoAttribute"},
+                        "target": {"$ref": "#/$defs/target"},
+                        "attribute": {"type": "string", "pattern": "^(aria-[a-z]+|data-studeo-[a-z0-9]+(-[a-z0-9]+)*|disabled)$"}
+                    }
+                }
+            ]
+        }
+    }
+}

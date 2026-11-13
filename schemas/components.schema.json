@@ -1,0 +1,275 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "The components of the specification (components.json)",
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["states", "icons", "components"],
+    "properties": {
+        "states": {
+            "description": "The vocabulary of state attributes: the states a component may be in, named once for all components.",
+            "type": "array",
+            "minItems": 1,
+            "items": {"$ref": "#/$defs/attribute"}
+        },
+        "icons": {
+            "description": "The names of the icons that components rely on. An implementation provides these; it may provide more.",
+            "type": "array",
+            "minItems": 1,
+            "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["name", "description"],
+                "properties": {
+                    "name": {"$ref": "#/$defs/name"},
+                    "description": {"$ref": "#/$defs/text"}
+                }
+            }
+        },
+        "components": {
+            "type": "array",
+            "minItems": 1,
+            "items": {"$ref": "#/$defs/component"}
+        }
+    },
+    "$defs": {
+        "name": {
+            "description": "A name in lower case, in words joined by hyphens.",
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$"
+        },
+        "text": {
+            "type": "string",
+            "minLength": 1
+        },
+        "attributeName": {
+            "description": "The name of a data-studeo-* attribute.",
+            "type": "string",
+            "pattern": "^data-studeo-[a-z0-9]+(-[a-z0-9]+)*$"
+        },
+        "attribute": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "description"],
+            "properties": {
+                "name": {"$ref": "#/$defs/attributeName"},
+                "description": {"$ref": "#/$defs/text"}
+            }
+        },
+        "part": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "description"],
+            "properties": {
+                "name": {"$ref": "#/$defs/attributeName"},
+                "description": {"$ref": "#/$defs/text"},
+                "states": {
+                    "description": "The states that this part can be in, by name; each is in the vocabulary at the top of the file. A state that only a part can be in is listed here and not with the states of the component.",
+                    "type": "array",
+                    "uniqueItems": true,
+                    "items": {"$ref": "#/$defs/attributeName"}
+                }
+            }
+        },
+        "component": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "summary", "status", "props", "slots", "attributes", "attributesTarget", "accessibility", "script", "tokens", "composes", "fixtures"],
+            "properties": {
+                "name": {"$ref": "#/$defs/name"},
+                "summary": {"$ref": "#/$defs/text"},
+                "status": {"enum": ["draft", "stable"]},
+                "props": {"type": "array", "items": {"$ref": "#/$defs/prop"}},
+                "slots": {"type": "array", "items": {"$ref": "#/$defs/slot"}},
+                "attributes": {"$ref": "#/$defs/attributes"},
+                "attributesTarget": {
+                    "description": "The element that receives the attributes an author writes on the component: `root`, or the attribute of one of its parts.",
+                    "type": "string",
+                    "pattern": "^(root|data-studeo-[a-z0-9]+(-[a-z0-9]+)*)$"
+                },
+                "accessibility": {"$ref": "#/$defs/accessibility"},
+                "script": {"$ref": "#/$defs/script"},
+                "tokens": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/name"}},
+                "composes": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/name"}},
+                "fixtures": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/fixture"}}
+            }
+        },
+        "listItem": {
+            "description": "An item of a list prop: a text or a whole number, which is its own label, or an option with a value and a label.",
+            "oneOf": [
+                {"type": ["string", "integer"]},
+                {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": ["value", "label"],
+                    "properties": {
+                        "value": {"type": ["string", "integer"]},
+                        "label": {"$ref": "#/$defs/text"}
+                    }
+                }
+            ]
+        },
+        "prop": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "type", "description"],
+            "properties": {
+                "name": {"$ref": "#/$defs/name"},
+                "type": {"enum": ["string", "boolean", "integer", "enum", "url", "class", "icon", "list"]},
+                "description": {"$ref": "#/$defs/text"},
+                "required": {"type": "boolean"},
+                "default": {},
+                "values": {
+                    "type": "array",
+                    "minItems": 1,
+                    "uniqueItems": true,
+                    "items": {"$ref": "#/$defs/name"}
+                }
+            },
+            "allOf": [
+                {
+                    "if": {"properties": {"type": {"const": "enum"}}},
+                    "then": {"required": ["values"]},
+                    "else": {"not": {"required": ["values"]}}
+                },
+                {
+                    "if": {"properties": {"type": {"const": "boolean"}}},
+                    "then": {"properties": {"default": {"type": "boolean"}}}
+                },
+                {
+                    "if": {"properties": {"type": {"const": "integer"}}},
+                    "then": {"properties": {"default": {"type": "integer"}}}
+                },
+                {
+                    "if": {"properties": {"type": {"enum": ["string", "enum", "url", "class", "icon"]}}},
+                    "then": {"properties": {"default": {"type": "string"}}}
+                },
+                {
+                    "if": {"properties": {"type": {"const": "list"}}},
+                    "then": {"properties": {"default": {"type": "array", "items": {"$ref": "#/$defs/listItem"}}}}
+                }
+            ]
+        },
+        "slot": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "description", "required"],
+            "properties": {
+                "name": {"$ref": "#/$defs/name"},
+                "description": {"$ref": "#/$defs/text"},
+                "required": {"type": "boolean"}
+            }
+        },
+        "attributes": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["root", "parts", "states"],
+            "properties": {
+                "root": {"$ref": "#/$defs/attributeName"},
+                "parts": {"type": "array", "items": {"$ref": "#/$defs/part"}},
+                "states": {
+                    "description": "The states the component can be in, by name; each is in the vocabulary at the top of the file.",
+                    "type": "array",
+                    "uniqueItems": true,
+                    "items": {"$ref": "#/$defs/attributeName"}
+                }
+            }
+        },
+        "script": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["need", "reason"],
+            "properties": {
+                "need": {"enum": ["none", "optional", "required"]},
+                "reason": {"type": ["string", "null"]}
+            },
+            "if": {"properties": {"need": {"const": "none"}}},
+            "then": {"properties": {"reason": {"type": "null"}}},
+            "else": {"properties": {"reason": {"$ref": "#/$defs/text"}}}
+        },
+        "fixtureRef": {
+            "description": "The fixture of another component, written <component>.<case>.",
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["fixture"],
+            "properties": {
+                "fixture": {
+                    "type": "string",
+                    "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*(\\.[a-z][a-z0-9]*(-[a-z0-9]+)*)+$"
+                }
+            }
+        },
+        "fixture": {
+            "description": "A case that the gallery of a UI package renders and that scenarios start from.",
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "description", "props", "slots"],
+            "properties": {
+                "name": {"$ref": "#/$defs/name"},
+                "description": {"$ref": "#/$defs/text"},
+                "props": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "oneOf": [
+                            {"type": ["string", "boolean", "integer"]},
+                            {"type": "array", "items": {"$ref": "#/$defs/listItem"}}
+                        ]
+                    }
+                },
+                "slots": {
+                    "description": "The content of each slot: text, the fixture of another component, or a list of such fixtures shown in order.",
+                    "type": "object",
+                    "additionalProperties": {
+                        "oneOf": [
+                            {"type": "string"},
+                            {"$ref": "#/$defs/fixtureRef"},
+                            {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/fixtureRef"}}
+                        ]
+                    }
+                },
+                "in": {
+                    "description": "For a component that cannot stand alone, such as a column, a row or a cell: the fixture that holds this one and the slot of that fixture in which this one is shown.",
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": ["fixture", "slot"],
+                    "properties": {
+                        "fixture": {"$ref": "#/$defs/fixtureRef/properties/fixture"},
+                        "slot": {"$ref": "#/$defs/name"}
+                    }
+                }
+            }
+        },
+        "accessibility": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["role", "label", "keyboard", "aria"],
+            "properties": {
+                "role": {"type": ["string", "null"], "pattern": "^[a-z]+$"},
+                "label": {"enum": ["content", "aria-label", "associated-label", "none"]},
+                "keyboard": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": ["key", "behavior"],
+                        "properties": {
+                            "key": {"$ref": "#/$defs/text"},
+                            "behavior": {"$ref": "#/$defs/text"}
+                        }
+                    }
+                },
+                "aria": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": ["attribute", "when"],
+                        "properties": {
+                            "attribute": {"type": "string", "pattern": "^aria-[a-z]+$"},
+                            "when": {"$ref": "#/$defs/text"}
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
