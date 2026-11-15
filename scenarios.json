@@ -595,6 +595,15 @@
             ]
         },
         {
+            "id": "data-table-says-that-there-are-no-results-in-its-own-words",
+            "component": "data-table",
+            "fixture": "data-table.no-results",
+            "summary": "A data table with no rows and no message of its own shows the words that the component writes itself.",
+            "steps": [
+                {"action": "expectText", "target": {"attribute": "data-studeo-data-table-empty"}, "text": "No results."}
+            ]
+        },
+        {
             "id": "data-table-is-busy-while-loading",
             "component": "data-table",
             "fixture": "data-table.loading",

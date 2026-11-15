@@ -1188,6 +1188,12 @@
                     "slots": {"empty": "No users match your search."}
                 },
                 {
+                    "name": "no-results",
+                    "description": "A list with no rows and no words of its own: the component writes its default message.",
+                    "props": {"label": "Users", "total": 0},
+                    "slots": {}
+                },
+                {
                     "name": "loading",
                     "description": "A list while another page is loading.",
                     "props": {"label": "Users", "current-page": 1, "last-page": 3, "total": 60, "next-url": "/users?page=2", "loading": true},

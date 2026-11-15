@@ -220,3 +220,17 @@ it('says how a toast is raised, by an event that every stack can send', function
         expect($reason)->toContain($word);
     }
 });
+
+it('has a fixture of a data table with no rows and no words of its own, and a scenario that expects the words of the message', function () {
+    $components = Spec::data('components');
+    $table = array_column($components['components'], null, 'name')['data-table'];
+    $fixture = array_column($table['fixtures'], null, 'name')['no-results'] ?? [];
+    $scenario = array_column(Spec::data('scenarios')['scenarios'], null, 'id')['data-table-says-that-there-are-no-results-in-its-own-words'] ?? [];
+    $message = array_column($components['messages'], null, 'key')['data-table.empty'];
+
+    expect($fixture['props']['total'] ?? null)->toBe(0);
+    expect($fixture['slots'] ?? [])->not->toHaveKey('empty');
+    expect($scenario['fixture'] ?? null)->toBe('data-table.no-results');
+    expect($scenario['steps'][0]['target'] ?? null)->toBe(['attribute' => 'data-studeo-data-table-empty']);
+    expect($scenario['steps'][0]['text'] ?? null)->toBe($message['text']);
+});

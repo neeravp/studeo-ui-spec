@@ -1064,6 +1064,7 @@ Role: `region`. Name from: aria-label.
 | `data-table.sorted` | A list sorted from last to first by name. |
 | `data-table.searched` | A list that was searched for a text. |
 | `data-table.empty` | A list with no rows. |
+| `data-table.no-results` | A list with no rows and no words of its own: the component writes its default message. |
 | `data-table.loading` | A list while another page is loading. |
 
 ## dialog
