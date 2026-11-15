@@ -22,6 +22,27 @@
         {"name": "search", "description": "A magnifying glass, for searching."},
         {"name": "warning", "description": "A triangle with an exclamation mark, for a warning or an error."}
     ],
+    "messages": [
+        {"key": "alert.dismiss", "text": "Dismiss", "description": "The accessible name of the button that dismisses an alert."},
+        {"key": "data-table.search", "text": "Search", "description": "The accessible name of the search field of a data table."},
+        {"key": "data-table.per-page", "text": "Rows per page", "description": "The accessible name of the control that chooses how many rows a page holds."},
+        {"key": "data-table.pagination", "text": "Pages", "description": "The accessible name of the group of paging controls."},
+        {"key": "data-table.empty", "text": "No results.", "description": "The message that stands in the place of the table when the list has no rows and the author gives none."},
+        {"key": "data-table.summary", "text": ":total results, page :page of :last", "placeholders": ["total", "page", "last"], "plural": {"by": "total", "one": ":total result, page :page of :last"}, "description": "The line that says how many rows the list has and which page is shown."},
+        {"key": "data-table.first", "text": "First page", "description": "The accessible name of the control that goes to the first page."},
+        {"key": "data-table.previous", "text": "Previous page", "description": "The accessible name of the control that goes to the previous page."},
+        {"key": "data-table.next", "text": "Next page", "description": "The accessible name of the control that goes to the next page."},
+        {"key": "data-table.last", "text": "Last page", "description": "The accessible name of the control that goes to the last page."},
+        {"key": "data-table.first-short", "text": "First", "description": "The visible word of the control that goes to the first page."},
+        {"key": "data-table.previous-short", "text": "Previous", "description": "The visible word of the control that goes to the previous page."},
+        {"key": "data-table.next-short", "text": "Next", "description": "The visible word of the control that goes to the next page."},
+        {"key": "data-table.last-short", "text": "Last", "description": "The visible word of the control that goes to the last page."},
+        {"key": "dialog.close", "text": "Close", "description": "The accessible name of the button that closes a dialog."},
+        {"key": "input.show-password", "text": "Show password", "description": "The accessible name of the button that shows the value of a password field."},
+        {"key": "link.external", "text": "Opens in a new tab", "description": "The note, for assistive technology, that a link opens in a new tab; it takes no room on the page."},
+        {"key": "toast.dismiss", "text": "Dismiss", "description": "The accessible name of the button that hides a toast."},
+        {"key": "toast.notifications", "text": "Notifications", "description": "The accessible name of the region that holds the toasts."}
+    ],
     "components": [
         {
             "name": "button",
@@ -449,6 +470,7 @@
                 "font-size-base"
             ],
             "composes": ["field", "label", "error", "icon", "button"],
+            "messages": ["input.show-password"],
             "fixtures": [
                 {"name": "default", "description": "A labelled input for an address.", "props": {"label": "Email", "type": "email"}, "slots": {}},
                 {"name": "hint", "description": "An input with a hint.", "props": {"label": "Email", "type": "email", "hint": "We never share it."}, "slots": {}},
@@ -646,6 +668,9 @@
                 "space-3"
             ],
             "composes": ["label", "error"],
+            "variables": [
+                {"name": "--studeo-code-length", "description": "The number of characters of the code. The component sets it, and the classes that draw the line under each character and the width of the control read it."}
+            ],
             "fixtures": [
                 {"name": "default", "description": "A code input for a numeric code.", "props": {"label": "Authentication code"}, "slots": {}},
                 {"name": "hint", "description": "A code input with a hint.", "props": {"label": "Authentication code", "hint": "Six digits from your authenticator app."}, "slots": {}},
@@ -777,6 +802,7 @@
             "script": {"need": "none", "reason": null},
             "tokens": ["color-accent-text", "color-text", "color-text-muted", "color-surface", "color-border", "color-border-strong", "color-accent-subtle", "color-focus-ring", "radius-control", "size-control-md", "space-3", "font-size-sm", "font-weight-medium"],
             "composes": [],
+            "messages": ["link.external"],
             "fixtures": [
                 {"name": "default", "description": "A link.", "props": {"href": "/settings"}, "slots": {"default": "Settings"}},
                 {"name": "current", "description": "The link of the place the user is in.", "props": {"href": "/settings", "current": true}, "slots": {"default": "Settings"}},
@@ -850,6 +876,7 @@
                 "font-weight-medium"
             ],
             "composes": ["icon", "button"],
+            "messages": ["alert.dismiss"],
             "fixtures": [
                 {"name": "default", "description": "An informing message.", "props": {}, "slots": {"default": "Your session ends in ten minutes."}},
                 {"name": "success", "description": "A message that something worked.", "props": {"variant": "success"}, "slots": {"default": "Your password was changed."}},
@@ -1108,6 +1135,21 @@
             "script": {"need": "optional", "reason": "The search, the sorting and the paging work without script: the search is a form and the sort and the pages are links. Sending a new page size at once, when it is chosen, takes a small script."},
             "tokens": ["color-surface", "color-border", "color-text", "color-text-muted", "radius-container", "font-size-sm", "space-2", "space-3", "space-4"],
             "composes": ["table", "input", "select", "link", "icon"],
+            "messages": [
+                "data-table.search",
+                "data-table.per-page",
+                "data-table.pagination",
+                "data-table.empty",
+                "data-table.summary",
+                "data-table.first",
+                "data-table.previous",
+                "data-table.next",
+                "data-table.last",
+                "data-table.first-short",
+                "data-table.previous-short",
+                "data-table.next-short",
+                "data-table.last-short"
+            ],
             "fixtures": [
                 {
                     "name": "default",
@@ -1199,6 +1241,7 @@
             "script": {"need": "optional", "reason": "Making the dialog modal takes a small script, whether it is open when the page loads or is opened by a button, unless the stack opens it by what the platform provides for that. Closing it, the focus trap and the Escape key then come from the platform. When the dialog closes, the focus returns to what opened it. Without the script an open dialog is not modal: the page behind it can still be used and Escape does nothing, but its close button still works, because it closes the dialog by the platform."},
             "tokens": ["color-surface", "color-border", "color-overlay", "color-text", "color-focus-ring", "radius-container", "shadow-lg", "size-container-narrow", "size-container-medium", "size-container-wide", "space-4", "space-6", "font-size-lg", "font-weight-semibold"],
             "composes": ["button", "icon"],
+            "messages": ["dialog.close"],
             "fixtures": [
                 {"name": "default", "description": "An open dialog with a title and a body.", "props": {"open": true}, "slots": {"title": "Delete account", "default": "This cannot be undone."}},
                 {"name": "with-footer", "description": "An open dialog with actions.", "props": {"open": true}, "slots": {"title": "Delete account", "default": "This cannot be undone.", "footer": "Cancel or delete"}},
@@ -1269,6 +1312,7 @@
                 "font-size-sm"
             ],
             "composes": ["icon", "button"],
+            "messages": ["toast.dismiss"],
             "fixtures": [
                 {"name": "success", "description": "A confirmation that hides itself.", "props": {"variant": "success"}, "slots": {"default": "Your changes were saved."}},
                 {"name": "info", "description": "A piece of information that hides itself.", "props": {}, "slots": {"default": "A new version is available."}},
@@ -1304,6 +1348,7 @@
             "script": {"need": "required", "reason": "Showing at most a number of toasts and queueing the others cannot be done by style. A host raises a toast by dispatching the event studeo:toast on the window with a detail that holds variant, title, message and duration; the region makes the toast, so that no stack needs a call of its own. The scenarios cannot express an event, so each UI package tests it itself."},
             "tokens": ["space-4", "space-3"],
             "composes": ["toast"],
+            "messages": ["toast.notifications"],
             "fixtures": [
                 {"name": "default", "description": "A region that holds a toast.", "props": {}, "slots": {"default": {"fixture": "toast.success"}}},
                 {"name": "empty", "description": "A region with no toast.", "props": {}, "slots": {}}

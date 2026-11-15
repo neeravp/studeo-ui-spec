@@ -3,7 +3,7 @@
     "title": "The components of the specification (components.json)",
     "type": "object",
     "additionalProperties": false,
-    "required": ["states", "icons", "components"],
+    "required": ["states", "icons", "messages", "components"],
     "properties": {
         "states": {
             "description": "The vocabulary of state attributes: the states a component may be in, named once for all components.",
@@ -24,6 +24,12 @@
                     "description": {"$ref": "#/$defs/text"}
                 }
             }
+        },
+        "messages": {
+            "description": "The words that components write themselves, in English: an implementation derives the words of its components from this list and lets a host replace them. Each is written by exactly one component.",
+            "type": "array",
+            "minItems": 1,
+            "items": {"$ref": "#/$defs/message"}
         },
         "components": {
             "type": "array",
@@ -52,6 +58,55 @@
             "required": ["name", "description"],
             "properties": {
                 "name": {"$ref": "#/$defs/attributeName"},
+                "description": {"$ref": "#/$defs/text"}
+            }
+        },
+        "messageKey": {
+            "description": "The key of a message: a group and a name, each in lower case, in words joined by hyphens, with a dot between them.",
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*\\.[a-z][a-z0-9]*(-[a-z0-9]+)*$"
+        },
+        "placeholder": {
+            "description": "The name of a hole in a text, which the text writes as a colon followed by the name.",
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*$"
+        },
+        "message": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["key", "text", "description"],
+            "properties": {
+                "key": {"$ref": "#/$defs/messageKey"},
+                "text": {"$ref": "#/$defs/text"},
+                "description": {"$ref": "#/$defs/text"},
+                "placeholders": {
+                    "description": "The holes of the text, by name; the text writes each as `:name`.",
+                    "type": "array",
+                    "uniqueItems": true,
+                    "items": {"$ref": "#/$defs/placeholder"}
+                },
+                "plural": {
+                    "description": "For a text that depends on a count: the placeholder that holds the count, and the text for exactly one. The text of the message is the text for every other number.",
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": ["by", "one"],
+                    "properties": {
+                        "by": {"$ref": "#/$defs/placeholder"},
+                        "one": {"$ref": "#/$defs/text"}
+                    }
+                }
+            }
+        },
+        "variable": {
+            "description": "A CSS variable that a component sets for its own classes. It is not a token, and a host does not change it.",
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "description"],
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "pattern": "^--studeo-[a-z0-9]+(-[a-z0-9]+)*$"
+                },
                 "description": {"$ref": "#/$defs/text"}
             }
         },
@@ -90,6 +145,16 @@
                 "script": {"$ref": "#/$defs/script"},
                 "tokens": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/name"}},
                 "composes": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/name"}},
+                "messages": {
+                    "description": "The messages that the component writes itself, by key; each is in the vocabulary at the top of the file. The messages of the components that it composes are not listed.",
+                    "type": "array",
+                    "uniqueItems": true,
+                    "items": {"$ref": "#/$defs/messageKey"}
+                },
+                "variables": {
+                    "type": "array",
+                    "items": {"$ref": "#/$defs/variable"}
+                },
                 "fixtures": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/fixture"}}
             }
         },

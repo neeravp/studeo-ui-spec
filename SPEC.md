@@ -21,6 +21,7 @@ A component in `components.json` has:
 - its accessibility: the role, how it is named, the keys it answers and the ARIA attributes it sets;
 - the script it needs and the reason: `none`, `optional` (it works without script and a named part of its behaviour takes a small one) or `required` (it cannot do its job without script);
 - the tokens it reads at least (a UI package may read other tokens of the specification as well) and the components it composes;
+- the messages it writes itself, by key, and the CSS variables it sets for its own classes;
 - its fixtures: named cases that set props and fill slots. A slot may hold the fixture of another component, or a list of them shown in order. A fixture of a component that cannot stand alone, such as a column, a row or a cell, names the fixture that holds it and the slot it is shown in (`in`); a UI package shows it inside that fixture.
 
 [docs/components.md](docs/components.md) holds the contract of each one. The components, in the order of the file:
@@ -53,6 +54,12 @@ A component in `components.json` has:
 | [`toast-region`](docs/components.md#toast-region) | The place at the bottom end of the page where toasts appear, one after another. | required |
 | [`select`](docs/components.md#select) | A control that picks one value from a list of options. The closed control looks the same everywhere; the open list is the platform's. | none |
 <!-- /generated:components -->
+
+### Messages and variables
+
+`components.json` holds the words that components write themselves, in one list at the top of the file. A message has a key (a group and a name with a dot between them, such as `dialog.close`), its text in English, a description of where it is used and, when the text has holes, the placeholders: a hole is written `:name` in the text. A text that depends on a count has the text for every number but one and, in `plural`, the placeholder that holds the count and the text for exactly one. A component lists the keys of the messages that it writes itself, not those of the components it composes, and every message is written by exactly one component. An implementation derives the English words of its components from this list, so that every implementation says the same, and lets a host replace them.
+
+A component may set CSS variables for its own classes. It declares them (`variables`); they are not tokens, they do not follow the token naming and a host does not change them.
 
 ## 3. States
 
