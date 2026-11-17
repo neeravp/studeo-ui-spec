@@ -122,3 +122,9 @@ it('states the pairs of colours that are used on the fill of a field', function 
         expect($spec['contrast'][tokenTestPairIndex($spec, $foreground, 'color-field')]['minimum'])->toEqual($minimum);
     }
 });
+
+it('says that the code input reads the field fill and no longer the surface colour', function () {
+    $tokens = array_column(array_column(Spec::data('components')['components'], null, 'name')['code-input']['tokens'] ?? [], null);
+
+    expect($tokens)->toContain('color-field')->and($tokens)->not->toContain('color-surface');
+});

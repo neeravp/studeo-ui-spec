@@ -656,7 +656,6 @@
             },
             "script": {"need": "none", "reason": null},
             "tokens": [
-                "color-surface",
                 "color-border-strong",
                 "color-field",
                 "color-text",

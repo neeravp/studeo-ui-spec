@@ -538,7 +538,7 @@ Role: `textbox`. Name from: associated-label.
 | `aria-describedby` | On the control, naming the hint and the error that are showing. |
 | `aria-busy` | On the control, while the code is being checked. |
 
-**Tokens:** `color-surface`, `color-border-strong`, `color-field`, `color-text`, `color-focus-ring`, `color-danger-text`, `radius-control`, `size-control-lg`, `font-family-mono`, `font-size-lg`, `font-size-sm`, `space-3`
+**Tokens:** `color-border-strong`, `color-field`, `color-text`, `color-focus-ring`, `color-danger-text`, `radius-control`, `size-control-lg`, `font-family-mono`, `font-size-lg`, `font-size-sm`, `space-3`
 
 **Composes:** `label`, `error`
 
