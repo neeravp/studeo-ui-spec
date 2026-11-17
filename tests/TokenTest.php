@@ -95,3 +95,30 @@ it('finds the mistake that was seeded', function (Closure $seed, string $fragmen
         'contrast pair [color-border-strong on color-background] has a contrast of',
     ],
 ]);
+
+it('gives the text controls a fill of their own, and a border that is clear against the page, the surface and that fill', function () {
+    $tokens = array_column(Spec::data('tokens')['tokens'], null, 'name');
+    $components = array_column(Spec::data('components')['components'], null, 'name');
+
+    expect($tokens)->toHaveKey('color-field');
+
+    foreach (['input', 'select', 'code-input'] as $name) {
+        expect($components[$name]['tokens'])->toContain('color-field');
+    }
+
+    foreach (['light', 'dark'] as $mode) {
+        expect($tokens['color-field'][$mode])->not->toBe($tokens['color-surface'][$mode]);
+
+        foreach (['color-background', 'color-surface', 'color-field'] as $ground) {
+            expect(Contrast::ratio($tokens['color-border-strong'][$mode], $tokens[$ground][$mode]))->toBeGreaterThanOrEqual(3.0);
+        }
+    }
+});
+
+it('states the pairs of colours that are used on the fill of a field', function () {
+    $spec = tokenTestSpec();
+
+    foreach ([['color-text', 4.5], ['color-text-muted', 4.5], ['color-danger-text', 4.5], ['color-border-strong', 3], ['color-focus-ring', 3]] as [$foreground, $minimum]) {
+        expect($spec['contrast'][tokenTestPairIndex($spec, $foreground, 'color-field')]['minimum'])->toEqual($minimum);
+    }
+});

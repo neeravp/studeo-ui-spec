@@ -357,7 +357,7 @@
                     "type": "enum",
                     "values": ["outline", "filled"],
                     "default": "outline",
-                    "description": "Whether the control is outlined or filled."
+                    "description": "Whether the control is outlined (a border and the fill of a field) or filled (the surface colour, with a border that is clear only against the page: not for a control inside a card)."
                 },
                 {
                     "name": "size",
@@ -458,6 +458,7 @@
             "tokens": [
                 "color-surface",
                 "color-border-strong",
+                "color-field",
                 "color-text",
                 "color-text-muted",
                 "color-focus-ring",
@@ -657,6 +658,7 @@
             "tokens": [
                 "color-surface",
                 "color-border-strong",
+                "color-field",
                 "color-text",
                 "color-focus-ring",
                 "color-danger-text",
@@ -1365,7 +1367,7 @@
             "summary": "A control that picks one value from a list of options. The closed control looks the same everywhere; the open list is the platform's.",
             "status": "draft",
             "props": [
-                {"name": "variant", "type": "enum", "values": ["outline", "filled"], "default": "outline", "description": "Whether the control is outlined or filled."},
+                {"name": "variant", "type": "enum", "values": ["outline", "filled"], "default": "outline", "description": "Whether the control is outlined (a border and the fill of a field) or filled (the surface colour, with a border that is clear only against the page: not for a control inside a card)."},
                 {"name": "size", "type": "enum", "values": ["sm", "md", "lg"], "default": "md", "description": "The size of the control."},
                 {"name": "options", "type": "list", "required": true, "description": "The options to choose from. Each item is a text or a whole number, which is its own label, or an object with a value and a label."},
                 {"name": "value", "type": "string", "description": "The value of the option that is chosen. When it is left out, the placeholder shows, or else the first option."},
@@ -1402,7 +1404,7 @@
                 ]
             },
             "script": {"need": "none", "reason": null},
-            "tokens": ["color-surface", "color-border-strong", "color-text", "color-text-muted", "color-focus-ring", "color-danger-text", "radius-control", "size-control-sm", "size-control-md", "size-control-lg", "size-icon-md", "space-3", "font-size-base"],
+            "tokens": ["color-surface", "color-border-strong", "color-field", "color-text", "color-text-muted", "color-focus-ring", "color-danger-text", "radius-control", "size-control-sm", "size-control-md", "size-control-lg", "size-icon-md", "space-3", "font-size-base"],
             "composes": ["field", "label", "error", "icon"],
             "fixtures": [
                 {"name": "default", "description": "A labelled select with options that have labels.", "props": {"label": "Role", "options": [{"value": "admin", "label": "Administrator"}, {"value": "editor", "label": "Editor"}, {"value": "viewer", "label": "Viewer"}]}, "slots": {}},

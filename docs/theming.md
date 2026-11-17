@@ -23,7 +23,8 @@ The tokens name roles, not components. There is a `color-border-strong` for the 
 | `color-background` | `--studeo-color-background` | `#fafafa` | `#09090b` | The background of the page. |
 | `color-surface` | `--studeo-color-surface` | `#ffffff` | `#18181b` | The background of a card, a table, a panel or a dialog, which sits on the page. |
 | `color-border` | `--studeo-color-border` | `#e4e4e7` | `#27272a` | The line between regions and around a card; decorative. |
-| `color-border-strong` | `--studeo-color-border-strong` | `#71717a` | `#a1a1aa` | The border of a control such as an input, a checkbox or a switch; it must be seen against the page and the surface. |
+| `color-border-strong` | `--studeo-color-border-strong` | `#8a8a93` | `#72727c` | The border of a control such as an input, a checkbox or a switch; it must be seen against the page, the surface and the fill of a field. |
+| `color-field` | `--studeo-color-field` | `#f8f8f9` | `#242427` | The fill of a text control, one step above the surface, so that the control is found without relying on its border alone. |
 | `color-text` | `--studeo-color-text` | `#18181b` | `#fafafa` | The colour of body text and headings. |
 | `color-text-muted` | `--studeo-color-text-muted` | `#52525b` | `#a1a1aa` | The colour of secondary text such as hints and captions. |
 | `color-accent` | `--studeo-color-accent` | `#7c3aed` | `#a78bfa` | The colour of the main action and of a selected control. |
@@ -149,6 +150,11 @@ The pairs are:
 | `color-border-strong` | `color-surface` | 3 | border strong on surface is seen as the outline of a control |
 | `color-focus-ring` | `color-background` | 3 | focus ring on background is seen as the outline of a control |
 | `color-focus-ring` | `color-surface` | 3 | focus ring on surface is seen as the outline of a control |
+| `color-text` | `color-field` | 4.5 | text on field is read as text |
+| `color-text-muted` | `color-field` | 4.5 | text muted on field is read as text |
+| `color-danger-text` | `color-field` | 4.5 | danger text on field is read as text |
+| `color-border-strong` | `color-field` | 3 | border strong on field is seen as the outline of a control |
+| `color-focus-ring` | `color-field` | 3 | focus ring on field is seen as the outline of a control |
 | `color-danger-foreground` | `color-danger` | 4.5 | danger foreground on danger is read as text |
 | `color-danger-text` | `color-danger-subtle` | 4.5 | danger text on danger subtle is read as text |
 | `color-danger-text` | `color-surface` | 4.5 | danger text on surface is read as text |

@@ -281,7 +281,7 @@ A control for a line of text.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `variant` | one of `outline`, `filled` | `outline` | Whether the control is outlined or filled. |
+| `variant` | one of `outline`, `filled` | `outline` | Whether the control is outlined (a border and the fill of a field) or filled (the surface colour, with a border that is clear only against the page: not for a control inside a card). |
 | `size` | one of `sm`, `md`, `lg` | `md` | The size of the control. |
 | `type` | one of `text`, `email`, `password`, `search`, `tel`, `url`, `number` | `text` | The kind of value. |
 | `label` | string |  | The compact form: a label, which builds the field around the control. |
@@ -335,7 +335,7 @@ Role: `textbox`. Name from: associated-label.
 | `aria-busy` | On the control, while it is loading. |
 | `aria-pressed` | On the reveal button: true while the password is shown. |
 
-**Tokens:** `color-surface`, `color-border-strong`, `color-text`, `color-text-muted`, `color-focus-ring`, `color-danger-text`, `radius-control`, `size-control-sm`, `size-control-md`, `size-control-lg`, `space-3`, `font-size-base`
+**Tokens:** `color-surface`, `color-border-strong`, `color-field`, `color-text`, `color-text-muted`, `color-focus-ring`, `color-danger-text`, `radius-control`, `size-control-sm`, `size-control-md`, `size-control-lg`, `space-3`, `font-size-base`
 
 **Composes:** `field`, `label`, `error`, `icon`, `button`
 
@@ -538,7 +538,7 @@ Role: `textbox`. Name from: associated-label.
 | `aria-describedby` | On the control, naming the hint and the error that are showing. |
 | `aria-busy` | On the control, while the code is being checked. |
 
-**Tokens:** `color-surface`, `color-border-strong`, `color-text`, `color-focus-ring`, `color-danger-text`, `radius-control`, `size-control-lg`, `font-family-mono`, `font-size-lg`, `font-size-sm`, `space-3`
+**Tokens:** `color-surface`, `color-border-strong`, `color-field`, `color-text`, `color-focus-ring`, `color-danger-text`, `radius-control`, `size-control-lg`, `font-family-mono`, `font-size-lg`, `font-size-sm`, `space-3`
 
 **Composes:** `label`, `error`
 
@@ -1241,7 +1241,7 @@ A control that picks one value from a list of options. The closed control looks 
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `variant` | one of `outline`, `filled` | `outline` | Whether the control is outlined or filled. |
+| `variant` | one of `outline`, `filled` | `outline` | Whether the control is outlined (a border and the fill of a field) or filled (the surface colour, with a border that is clear only against the page: not for a control inside a card). |
 | `size` | one of `sm`, `md`, `lg` | `md` | The size of the control. |
 | `options` | list | required | The options to choose from. Each item is a text or a whole number, which is its own label, or an object with a value and a label. |
 | `value` | string |  | The value of the option that is chosen. When it is left out, the placeholder shows, or else the first option. |
@@ -1282,7 +1282,7 @@ Role: `combobox`. Name from: associated-label.
 | `aria-describedby` | On the control, naming the hint and the error that are showing. |
 | `aria-busy` | On the control, while it is loading. |
 
-**Tokens:** `color-surface`, `color-border-strong`, `color-text`, `color-text-muted`, `color-focus-ring`, `color-danger-text`, `radius-control`, `size-control-sm`, `size-control-md`, `size-control-lg`, `size-icon-md`, `space-3`, `font-size-base`
+**Tokens:** `color-surface`, `color-border-strong`, `color-field`, `color-text`, `color-text-muted`, `color-focus-ring`, `color-danger-text`, `radius-control`, `size-control-sm`, `size-control-md`, `size-control-lg`, `size-icon-md`, `space-3`, `font-size-base`
 
 **Composes:** `field`, `label`, `error`, `icon`
 
