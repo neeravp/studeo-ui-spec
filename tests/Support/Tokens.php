@@ -6,13 +6,27 @@ namespace Studeo\UiSpec\Tests\Support;
 
 /**
  * The rules about the tokens that a schema cannot state: the name of the CSS variable and the
- * prefix of the name follow the category, and every pair of colours that is used together reaches
- * the contrast it must, in both modes.
+ * prefix of the name follow the category, a host sets exactly the seven input colours, every other
+ * colour is derived by a rule that reads only tokens and knobs, holds no literal colour and has no
+ * cycle, every knob is read, and every pair of colours that is used together names colours that
+ * take part in a contrast. That the pairs reach their contrast is not proved here: a rule is CSS,
+ * and the browser tests of each UI package read what the engines compute and prove it.
  */
 final class Tokens
 {
+    /** The colours that a host sets: everything else is derived from them. */
+    public const array INPUTS = [
+        'color-background',
+        'color-text',
+        'color-accent',
+        'color-danger',
+        'color-success',
+        'color-warning',
+        'color-info',
+    ];
+
     /**
-     * @param  array{tokens: list<array<string, mixed>>, contrast: list<array<string, mixed>>}  $spec
+     * @param  array{tokens: list<array<string, mixed>>, knobs: list<array<string, mixed>>, contrast: list<array<string, mixed>>}  $spec
      * @return list<string>
      */
     public static function violations(array $spec): array
@@ -21,6 +35,10 @@ final class Tokens
             ...self::variableNames($spec['tokens']),
             ...self::categoryPrefixes($spec['tokens']),
             ...self::layoutTokens($spec['tokens']),
+            ...self::inputs($spec['tokens']),
+            ...self::rules($spec['tokens'], $spec['knobs']),
+            ...self::cycles($spec['tokens']),
+            ...self::unreadKnobs($spec['tokens'], $spec['knobs']),
             ...self::contrastProblems($spec),
         ];
     }
@@ -80,7 +98,155 @@ final class Tokens
     }
 
     /**
-     * @param  array{tokens: list<array<string, mixed>>, contrast: list<array<string, mixed>>}  $spec
+     * @param  list<array<string, mixed>>  $tokens
+     * @return list<string>
+     */
+    private static function inputs(array $tokens): array
+    {
+        $found = array_column(array_filter($tokens, fn (array $token): bool => ($token['kind'] ?? null) === 'input'), 'name');
+
+        if ($found === self::INPUTS) {
+            return [];
+        }
+
+        return ['the inputs must be ['.implode(', ', self::INPUTS).'] in this order, not ['.implode(', ', $found).']'];
+    }
+
+    /**
+     * @param  list<array<string, mixed>>  $tokens
+     * @param  list<array<string, mixed>>  $knobs
+     * @return list<string>
+     */
+    private static function rules(array $tokens, array $knobs): array
+    {
+        $known = [...array_column($tokens, 'css'), ...array_column($knobs, 'css')];
+        $found = [];
+
+        foreach (self::derived($tokens) as $token) {
+            $found = [...$found, ...self::unknownVariables($token, $known), ...self::literalColours($token)];
+        }
+
+        return $found;
+    }
+
+    /**
+     * @param  list<array<string, mixed>>  $tokens
+     * @return list<array<string, mixed>>
+     */
+    private static function derived(array $tokens): array
+    {
+        return array_values(array_filter($tokens, fn (array $token): bool => ($token['kind'] ?? null) === 'derived'));
+    }
+
+    /**
+     * @return list<string>
+     */
+    private static function variablesRead(string $rule): array
+    {
+        preg_match_all('/var\((--[a-z0-9-]+)\)/', $rule, $matches);
+
+        return $matches[1];
+    }
+
+    /**
+     * @param  array<string, mixed>  $token
+     * @param  list<string>  $known
+     * @return list<string>
+     */
+    private static function unknownVariables(array $token, array $known): array
+    {
+        $found = [];
+
+        foreach (array_diff(self::variablesRead((string) ($token['derive'] ?? '')), $known) as $variable) {
+            $found[] = "the rule of token [{$token['name']}] reads [{$variable}], which is neither a token nor a knob";
+        }
+
+        return $found;
+    }
+
+    /**
+     * A rule holds no colour of its own: a hex value, or a colour function that does not start from another colour.
+     *
+     * @param  array<string, mixed>  $token
+     * @return list<string>
+     */
+    private static function literalColours(array $token): array
+    {
+        $literal = '/#[0-9a-f]{3,8}\b|(?<![a-z-])(?:rgba?|hsla?|hwb|lab|lch|oklab|oklch|color)\((?!\s*from\b)/i';
+
+        if (preg_match($literal, (string) ($token['derive'] ?? '')) !== 1) {
+            return [];
+        }
+
+        return ["the rule of token [{$token['name']}] holds a literal colour: a rule reads tokens and knobs only"];
+    }
+
+    /**
+     * @param  list<array<string, mixed>>  $tokens
+     * @return list<string>
+     */
+    private static function cycles(array $tokens): array
+    {
+        $reads = [];
+
+        foreach (self::derived($tokens) as $token) {
+            $reads[$token['css']] = self::variablesRead((string) ($token['derive'] ?? ''));
+        }
+
+        $found = [];
+
+        foreach (array_keys($reads) as $css) {
+            if (self::reaches($reads, $css, $css, [])) {
+                $found[] = "the rule of [{$css}] reads itself, directly or through other rules";
+            }
+        }
+
+        return $found;
+    }
+
+    /**
+     * @param  array<string, list<string>>  $reads
+     * @param  list<string>  $visited
+     */
+    private static function reaches(array $reads, string $from, string $target, array $visited): bool
+    {
+        foreach ($reads[$from] ?? [] as $next) {
+            if ($next === $target) {
+                return true;
+            }
+
+            if (! in_array($next, $visited, true) && self::reaches($reads, $next, $target, [...$visited, $next])) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param  list<array<string, mixed>>  $tokens
+     * @param  list<array<string, mixed>>  $knobs
+     * @return list<string>
+     */
+    private static function unreadKnobs(array $tokens, array $knobs): array
+    {
+        $read = [];
+
+        foreach (self::derived($tokens) as $token) {
+            $read = [...$read, ...self::variablesRead((string) ($token['derive'] ?? ''))];
+        }
+
+        $found = [];
+
+        foreach (array_diff(array_column($knobs, 'css'), $read) as $css) {
+            $found[] = "knob [{$css}] is read by no rule";
+        }
+
+        return $found;
+    }
+
+    /**
+     * @param  array{tokens: list<array<string, mixed>>, knobs: list<array<string, mixed>>, contrast: list<array<string, mixed>>}  $spec
      * @return list<string>
      */
     private static function contrastProblems(array $spec): array
@@ -89,31 +255,18 @@ final class Tokens
         $found = [];
 
         foreach ($spec['contrast'] as $pair) {
-            $found = [...$found, ...self::pairProblems($pair, $byName)];
-        }
+            $label = "contrast pair [{$pair['foreground']} on {$pair['background']}]";
 
-        return $found;
-    }
+            foreach ([$pair['foreground'], $pair['background']] as $name) {
+                $problem = self::tokenProblem($label, $name, $byName[$name] ?? null);
 
-    /**
-     * @param  array<string, mixed>  $pair
-     * @param  array<string, array<string, mixed>>  $byName
-     * @return list<string>
-     */
-    private static function pairProblems(array $pair, array $byName): array
-    {
-        $label = "contrast pair [{$pair['foreground']} on {$pair['background']}]";
-        $problems = [];
-
-        foreach ([$pair['foreground'], $pair['background']] as $name) {
-            $problem = self::tokenProblem($label, $name, $byName[$name] ?? null);
-
-            if ($problem !== null) {
-                $problems[] = $problem;
+                if ($problem !== null) {
+                    $found[] = $problem;
+                }
             }
         }
 
-        return $problems === [] ? self::ratioProblems($pair, $byName, $label) : $problems;
+        return $found;
     }
 
     /**
@@ -129,30 +282,10 @@ final class Tokens
             return "{$label} uses token [{$name}] that is not a colour";
         }
 
-        if (strlen($token['light']) !== 7 || strlen($token['dark']) !== 7) {
-            return "{$label} uses token [{$name}] that has an alpha channel";
+        if (($token['kind'] ?? null) === 'constant') {
+            return "{$label} uses token [{$name}] that is a constant and takes part in no contrast";
         }
 
         return null;
-    }
-
-    /**
-     * @param  array<string, mixed>  $pair
-     * @param  array<string, array<string, mixed>>  $byName
-     * @return list<string>
-     */
-    private static function ratioProblems(array $pair, array $byName, string $label): array
-    {
-        $found = [];
-
-        foreach (['light', 'dark'] as $mode) {
-            $ratio = Contrast::ratio($byName[$pair['foreground']][$mode], $byName[$pair['background']][$mode]);
-
-            if ($ratio < $pair['minimum']) {
-                $found[] = "{$label} has a contrast of ".number_format($ratio, 2)." in the {$mode} mode, below {$pair['minimum']}";
-            }
-        }
-
-        return $found;
     }
 }

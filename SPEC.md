@@ -100,7 +100,7 @@ A component that shows an icon names it from this vocabulary. An implementation 
 
 ## 5. Tokens
 
-`tokens.json` lists every token with its category, its CSS variable and its reference value or, for a colour, its light and dark values. It also lists the pairs of colours that are used together with the lowest contrast each must reach, in both modes. [docs/theming.md](docs/theming.md) lists them and says how a host changes them.
+`tokens.json` lists every token with its category, its CSS variable and its reference value. A colour is an input (a host sets it, with a light and a dark value), a derived colour (a CSS rule that reads the inputs, the other derived colours and the knobs) or a constant. The file also lists the knobs of the rules, the attribute that scopes a region to its own inputs, and the pairs of colours that are used together with the lowest contrast each must reach, in both modes. [docs/theming.md](docs/theming.md) lists them and says how a host changes them.
 
 ## 6. Scenarios
 

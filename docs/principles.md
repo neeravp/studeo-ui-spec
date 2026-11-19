@@ -74,7 +74,7 @@ A component takes every colour, corner radius and typeface from a token and neve
 
 *Why.* One place changes the look of everything, and dark mode costs the components nothing.
 
-*Checked.* The tokens and their variables follow the rules, and a token is a colour, a radius or a font family, never a length (`TokenTest`). Every size of a component has its measure, and the measures grow with the size (`ReferenceTest`, `ComponentSetTest`). That a component holds no literal value is held by review and tested by each UI package.
+*Checked.* The tokens and their variables follow the rules, a token is a colour, a radius or a font family, never a length, a host sets exactly seven colours, and every other colour has a rule that reads only tokens and knobs (`TokenTest`). Every size of a component has its measure, and the measures grow with the size (`ReferenceTest`, `ComponentSetTest`). That a component holds no literal value is held by review and tested by each UI package.
 
 ## Variants, not copies
 

@@ -2,22 +2,21 @@
 
 declare(strict_types=1);
 
-use Studeo\UiSpec\Tests\Support\Contrast;
 use Studeo\UiSpec\Tests\Support\Spec;
 use Studeo\UiSpec\Tests\Support\Tokens;
 
 /**
- * @return array{tokens: list<array<string, mixed>>, contrast: list<array<string, mixed>>}
+ * @return array{tokens: list<array<string, mixed>>, knobs: list<array<string, mixed>>, contrast: list<array<string, mixed>>}
  */
 function tokenTestSpec(): array
 {
     $data = Spec::data('tokens');
 
-    return ['tokens' => $data['tokens'], 'contrast' => $data['contrast']];
+    return ['tokens' => $data['tokens'], 'knobs' => $data['knobs'], 'contrast' => $data['contrast']];
 }
 
 /**
- * @param  array{tokens: list<array<string, mixed>>, contrast: list<array<string, mixed>>}  $spec
+ * @param  array{tokens: list<array<string, mixed>>, knobs: list<array<string, mixed>>, contrast: list<array<string, mixed>>}  $spec
  */
 function tokenTestIndex(array $spec, string $name): int
 {
@@ -25,7 +24,7 @@ function tokenTestIndex(array $spec, string $name): int
 }
 
 /**
- * @param  array{tokens: list<array<string, mixed>>, contrast: list<array<string, mixed>>}  $spec
+ * @param  array{tokens: list<array<string, mixed>>, knobs: list<array<string, mixed>>, contrast: list<array<string, mixed>>}  $spec
  */
 function tokenTestPairIndex(array $spec, string $foreground, string $background): int
 {
@@ -38,20 +37,18 @@ function tokenTestPairIndex(array $spec, string $foreground, string $background)
     throw new RuntimeException("No pair of [{$foreground}] on [{$background}].");
 }
 
+/**
+ * @param  array{tokens: list<array<string, mixed>>, knobs: list<array<string, mixed>>, contrast: list<array<string, mixed>>}  $spec
+ * @return array{tokens: list<array<string, mixed>>, knobs: list<array<string, mixed>>, contrast: list<array<string, mixed>>}
+ */
+function tokenTestRule(array $spec, string $name, string $rule): array
+{
+    return Spec::set($spec, 'tokens.'.tokenTestIndex($spec, $name).'.derive', $rule);
+}
+
 it('finds no violation in the tokens of the specification', function () {
     expect(Tokens::violations(tokenTestSpec()))->toBe([]);
 });
-
-it('computes the contrast ratio of two colours as WCAG 2 defines it', function (string $first, string $second, float $expected) {
-    expect(Contrast::ratio($first, $second))->toEqualWithDelta($expected, 0.01);
-})->with([
-    'black on white' => ['#000000', '#ffffff', 21.0],
-    'white on white' => ['#ffffff', '#ffffff', 1.0],
-    'a grey that just fails for text' => ['#777777', '#ffffff', 4.48],
-    'a grey that just passes for text' => ['#767676', '#ffffff', 4.54],
-    'the order of the colours does not matter' => ['#ffffff', '#767676', 4.54],
-    'a violet on white' => ['#7c3aed', '#ffffff', 5.70],
-]);
 
 it('finds the mistake that was seeded', function (Closure $seed, string $fragment) {
     $violations = Tokens::violations($seed(tokenTestSpec()));
@@ -86,40 +83,54 @@ it('finds the mistake that was seeded', function (Closure $seed, string $fragmen
         fn (array $s): array => Spec::set($s, 'contrast.0.background', 'radius-control'),
         'uses token [radius-control] that is not a colour',
     ],
-    'a pair that uses a colour with an alpha channel' => [
+    'a pair that uses a constant' => [
         fn (array $s): array => Spec::set($s, 'contrast.0.background', 'color-overlay'),
-        'uses token [color-overlay] that has an alpha channel',
+        'uses token [color-overlay] that is a constant and takes part in no contrast',
     ],
-    'a pair that fails in the light mode' => [
-        fn (array $s): array => Spec::set($s, 'tokens.'.tokenTestIndex($s, 'color-text').'.light', '#e4e4e7'),
-        'in the light mode, below 4.5',
+    'an input that became a derived colour' => [
+        fn (array $s): array => Spec::set($s, 'tokens.'.tokenTestIndex($s, 'color-text').'.kind', 'derived'),
+        'the inputs must be [color-background, color-text, color-accent',
     ],
-    'a pair that fails in the dark mode' => [
-        fn (array $s): array => Spec::set($s, 'tokens.'.tokenTestIndex($s, 'color-text').'.dark', '#27272a'),
-        'in the dark mode, below 4.5',
+    'a derived colour that became an input' => [
+        fn (array $s): array => Spec::set($s, 'tokens.'.tokenTestIndex($s, 'color-surface').'.kind', 'input'),
+        'the inputs must be [color-background, color-text, color-accent',
     ],
-    'a pair that asks for more than its colours give' => [
-        fn (array $s): array => Spec::set($s, 'contrast.'.tokenTestPairIndex($s, 'color-border-strong', 'color-background').'.minimum', 7),
-        'contrast pair [color-border-strong on color-background] has a contrast of',
+    'a rule that reads a variable that is no token' => [
+        fn (array $s): array => tokenTestRule($s, 'color-surface', 'color-mix(in oklab, var(--studeo-color-nothing), white 8%)'),
+        'the rule of token [color-surface] reads [--studeo-color-nothing], which is neither a token nor a knob',
+    ],
+    'a rule that holds a hex colour' => [
+        fn (array $s): array => tokenTestRule($s, 'color-surface', 'color-mix(in oklab, #ffffff, var(--studeo-color-text) 8%)'),
+        'the rule of token [color-surface] holds a literal colour',
+    ],
+    'a rule that holds a colour function with numbers' => [
+        fn (array $s): array => tokenTestRule($s, 'color-field', 'oklch(0.9 0.01 250)'),
+        'the rule of token [color-field] holds a literal colour',
+    ],
+    'a rule that reads itself through another rule' => [
+        fn (array $s): array => tokenTestRule($s, 'color-surface', 'color-mix(in oklab, var(--studeo-color-field), white 8%)'),
+        'the rule of [--studeo-color-surface] reads itself, directly or through other rules',
+    ],
+    'a knob that no rule reads' => [
+        fn (array $s): array => Spec::set($s, 'knobs.'.count($s['knobs']), ['name' => 'derive-unused', 'css' => '--studeo-derive-unused', 'description' => 'x', 'light' => '1', 'dark' => '1']),
+        'knob [--studeo-derive-unused] is read by no rule',
     ],
 ]);
 
-it('gives the text controls a fill of their own, and a border that is clear against the page, the surface and that fill', function () {
+it('gives the text controls a fill of their own, derived from the surface and the text, and a border that is stated against the page, the surface and that fill', function () {
     $tokens = array_column(Spec::data('tokens')['tokens'], null, 'name');
     $components = array_column(Spec::data('components')['components'], null, 'name');
+    $spec = tokenTestSpec();
 
-    expect($tokens)->toHaveKey('color-field');
+    expect($tokens)->toHaveKey('color-field')
+        ->and($tokens['color-field']['derive'])->toContain('var(--studeo-color-surface)')->toContain('var(--studeo-color-text)');
 
     foreach (['input', 'select', 'code-input'] as $name) {
         expect($components[$name]['tokens'])->toContain('color-field');
     }
 
-    foreach (['light', 'dark'] as $mode) {
-        expect($tokens['color-field'][$mode])->not->toBe($tokens['color-surface'][$mode]);
-
-        foreach (['color-background', 'color-surface', 'color-field'] as $ground) {
-            expect(Contrast::ratio($tokens['color-border-strong'][$mode], $tokens[$ground][$mode]))->toBeGreaterThanOrEqual(3.0);
-        }
+    foreach (['color-background', 'color-surface', 'color-field'] as $ground) {
+        expect($spec['contrast'][tokenTestPairIndex($spec, 'color-border-strong', $ground)]['minimum'])->toEqual(3);
     }
 });
 

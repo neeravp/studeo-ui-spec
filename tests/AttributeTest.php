@@ -50,7 +50,7 @@ function attributeTestComponent(string $name, array $parts = [], array $states =
  */
 function attributeTestViolations(array $spec): array
 {
-    return Attributes::violations($spec['components'], $spec['documents'], $spec['vocabulary']);
+    return Attributes::violations($spec['components'], $spec['documents'], $spec['vocabulary'], [Spec::data('tokens')['scope']['attribute']]);
 }
 
 it('finds no violation in the attributes of the components and in the documents', function () {

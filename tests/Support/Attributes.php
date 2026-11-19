@@ -7,7 +7,7 @@ namespace Studeo\UiSpec\Tests\Support;
 /**
  * The rules about the data-studeo-* attributes that look across components and documents: a root or
  * a part is the attribute of one component only and is no state; a state carries no component
- * name; a document names only attributes that a component or the vocabulary of states declares.
+ * name; a document names only attributes that a component, the vocabulary of states or the scope of the tokens declares.
  */
 final class Attributes
 {
@@ -15,14 +15,15 @@ final class Attributes
      * @param  list<array<string, mixed>>  $components
      * @param  array<string, string>  $documents  the text of each document, by its path
      * @param  list<string>  $vocabulary  the names of the states of the vocabulary
+     * @param  list<string>  $declared  the attributes that the data declares outside the components, such as the scope of the tokens
      * @return list<string>
      */
-    public static function violations(array $components, array $documents, array $vocabulary = []): array
+    public static function violations(array $components, array $documents, array $vocabulary = [], array $declared = []): array
     {
         return [
             ...self::collisions($components, $vocabulary),
             ...self::statesNamedAfterComponents($components, $vocabulary),
-            ...self::unknownMentions($components, $documents, $vocabulary),
+            ...self::unknownMentions($components, $documents, $vocabulary, $declared),
         ];
     }
 
@@ -117,11 +118,12 @@ final class Attributes
      * @param  list<array<string, mixed>>  $components
      * @param  array<string, string>  $documents
      * @param  list<string>  $vocabulary
+     * @param  list<string>  $outside
      * @return list<string>
      */
-    private static function unknownMentions(array $components, array $documents, array $vocabulary): array
+    private static function unknownMentions(array $components, array $documents, array $vocabulary, array $outside): array
     {
-        $declared = array_keys(self::uses($components, $vocabulary));
+        $declared = [...array_keys(self::uses($components, $vocabulary)), ...$outside];
         $found = [];
 
         foreach ($documents as $path => $text) {

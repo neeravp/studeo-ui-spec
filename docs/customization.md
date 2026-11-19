@@ -4,7 +4,7 @@ A component can be changed in four ways. They are given here in the order in whi
 
 ## Change the tokens
 
-Change a token and every component that uses it changes with it. This is the way to a brand colour, a typeface, a different rounding or a dark mode. `theming.md` and `dark-mode.md` describe it.
+Change a token and every component that uses it changes with it. For colour, set the inputs and the derived colours follow. This is the way to a brand colour, a typeface, a different rounding or a dark mode. `theming.md` and `dark-mode.md` describe it.
 
 ## Add classes and attributes
 

@@ -3,13 +3,20 @@
     "title": "The design tokens of the specification (tokens.json)",
     "type": "object",
     "additionalProperties": false,
-    "required": ["tokens", "contrast"],
+    "required": ["tokens", "knobs", "scope", "contrast"],
     "properties": {
         "tokens": {
             "type": "array",
             "minItems": 1,
             "items": {"$ref": "#/$defs/token"}
         },
+        "knobs": {
+            "description": "The fixed numbers that the rules of the derived colours read, each with its value in the light mode and in the dark mode. A host does not set them; an implementation writes them as CSS variables.",
+            "type": "array",
+            "minItems": 1,
+            "items": {"$ref": "#/$defs/knob"}
+        },
+        "scope": {"$ref": "#/$defs/scope"},
         "contrast": {
             "description": "The pairs of colours that are used together and the lowest contrast ratio each must reach in both modes.",
             "type": "array",
@@ -33,6 +40,10 @@
             "properties": {
                 "name": {"$ref": "#/$defs/name"},
                 "category": {"enum": ["color", "radius", "font"]},
+                "kind": {
+                    "description": "Of a colour only. An input is a colour that a host sets, with a value for each mode; a derived colour has a rule that makes it from the inputs and the knobs and no value of its own; a constant has a value for each mode that no host is asked to set and no rule makes.",
+                    "enum": ["input", "derived", "constant"]
+                },
                 "css": {
                     "description": "The name of the CSS variable.",
                     "type": "string",
@@ -49,18 +60,55 @@
                     "type": "string",
                     "pattern": "^#[0-9a-f]{6}([0-9a-f]{2})?$"
                 },
+                "derive": {
+                    "description": "The rule of a derived colour: a CSS colour value that reads the variables of the inputs, of other derived colours and of the knobs, and holds no literal colour.",
+                    "type": "string",
+                    "minLength": 1
+                },
                 "value": {"$ref": "#/$defs/text"}
             },
             "if": {"properties": {"category": {"const": "color"}}},
             "then": {
-                "description": "A colour has a light value and a dark value and no single value.",
-                "required": ["light", "dark"],
-                "not": {"required": ["value"]}
+                "description": "A colour has a kind, and no single value.",
+                "required": ["kind"],
+                "not": {"required": ["value"]},
+                "if": {"properties": {"kind": {"const": "derived"}}, "required": ["kind"]},
+                "then": {
+                    "description": "A derived colour has a rule and no value of its own.",
+                    "required": ["derive"],
+                    "not": {"anyOf": [{"required": ["light"]}, {"required": ["dark"]}]}
+                },
+                "else": {
+                    "description": "An input and a constant have a light value and a dark value and no rule.",
+                    "required": ["light", "dark"],
+                    "not": {"required": ["derive"]}
+                }
             },
             "else": {
                 "description": "Every other category has one value for both modes.",
                 "required": ["value"],
-                "not": {"anyOf": [{"required": ["light"]}, {"required": ["dark"]}]}
+                "not": {"anyOf": [{"required": ["light"]}, {"required": ["dark"]}, {"required": ["kind"]}, {"required": ["derive"]}]}
+            }
+        },
+        "knob": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "css", "description", "light", "dark"],
+            "properties": {
+                "name": {"type": "string", "pattern": "^derive-[a-z0-9]+(-[a-z0-9]+)*$"},
+                "css": {"type": "string", "pattern": "^--studeo-derive-[a-z0-9]+(-[a-z0-9]+)*$"},
+                "description": {"$ref": "#/$defs/text"},
+                "light": {"description": "The value in the light mode: a number or a percentage.", "type": "string", "pattern": "^[0-9]+(\\.[0-9]+)?%?$"},
+                "dark": {"description": "The value in the dark mode: a number or a percentage.", "type": "string", "pattern": "^[0-9]+(\\.[0-9]+)?%?$"}
+            }
+        },
+        "scope": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["attribute", "description"],
+            "properties": {
+                "attribute": {"type": "string", "pattern": "^data-studeo-[a-z0-9]+(-[a-z0-9]+)*$"},
+                "description": {"$ref": "#/$defs/text"}
             }
         },
         "pair": {
