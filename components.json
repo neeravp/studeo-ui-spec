@@ -61,7 +61,8 @@
                     "type": "enum",
                     "values": ["sm", "md", "lg"],
                     "default": "md",
-                    "description": "The size of the control."
+                    "description": "The size of the control.",
+                    "measures": [{"value": "sm", "dimension": "height", "length": "1.75rem"}, {"value": "md", "dimension": "height", "length": "2.25rem"}, {"value": "lg", "dimension": "height", "length": "2.75rem"}]
                 },
                 {
                     "name": "type",
@@ -133,15 +134,7 @@
                 "color-border",
                 "color-border-strong",
                 "color-focus-ring",
-                "space-2",
-                "space-3",
-                "space-4",
-                "radius-control",
-                "size-control-sm",
-                "size-control-md",
-                "size-control-lg",
-                "font-size-sm",
-                "font-weight-medium"
+                "radius-control"
             ],
             "composes": ["icon", "spinner"],
             "fixtures": [
@@ -167,7 +160,8 @@
                     "type": "enum",
                     "values": ["sm", "md", "lg"],
                     "default": "md",
-                    "description": "The size of the icon."
+                    "description": "The size of the icon.",
+                    "measures": [{"value": "sm", "dimension": "size", "length": "0.875rem"}, {"value": "md", "dimension": "size", "length": "1rem"}, {"value": "lg", "dimension": "size", "length": "1.25rem"}]
                 },
                 {
                     "name": "label",
@@ -192,7 +186,7 @@
                 ]
             },
             "script": {"need": "none", "reason": null},
-            "tokens": ["size-icon-sm", "size-icon-md", "size-icon-lg"],
+            "tokens": [],
             "composes": [],
             "fixtures": [
                 {"name": "decorative", "description": "An icon that only decorates.", "props": {"name": "eye"}, "slots": {}},
@@ -209,7 +203,8 @@
                     "type": "enum",
                     "values": ["sm", "md", "lg"],
                     "default": "md",
-                    "description": "The size of the spinner."
+                    "description": "The size of the spinner.",
+                    "measures": [{"value": "sm", "dimension": "size", "length": "0.875rem"}, {"value": "md", "dimension": "size", "length": "1rem"}, {"value": "lg", "dimension": "size", "length": "1.25rem"}]
                 },
                 {
                     "name": "label",
@@ -234,7 +229,7 @@
                 ]
             },
             "script": {"need": "none", "reason": null},
-            "tokens": ["size-icon-sm", "size-icon-md", "size-icon-lg"],
+            "tokens": [],
             "composes": [],
             "fixtures": [
                 {"name": "decorative", "description": "A spinner that only decorates.", "props": {}, "slots": {}},
@@ -269,7 +264,7 @@
                 "aria": []
             },
             "script": {"need": "none", "reason": null},
-            "tokens": ["color-text", "font-size-sm", "font-weight-medium"],
+            "tokens": ["color-text"],
             "composes": [],
             "fixtures": [
                 {"name": "default", "description": "A label.", "props": {}, "slots": {"default": "Email"}},
@@ -297,7 +292,7 @@
                 "aria": []
             },
             "script": {"need": "none", "reason": null},
-            "tokens": ["color-danger-text", "font-size-sm"],
+            "tokens": ["color-danger-text"],
             "composes": [],
             "fixtures": [
                 {"name": "default", "description": "An error message.", "props": {}, "slots": {"default": "Enter a valid email address."}}
@@ -330,7 +325,7 @@
                 ]
             },
             "script": {"need": "none", "reason": null},
-            "tokens": ["space-2"],
+            "tokens": [],
             "composes": ["label", "error"],
             "fixtures": [
                 {
@@ -364,7 +359,8 @@
                     "type": "enum",
                     "values": ["sm", "md", "lg"],
                     "default": "md",
-                    "description": "The size of the control."
+                    "description": "The size of the control.",
+                    "measures": [{"value": "sm", "dimension": "height", "length": "1.75rem"}, {"value": "md", "dimension": "height", "length": "2.25rem"}, {"value": "lg", "dimension": "height", "length": "2.75rem"}]
                 },
                 {
                     "name": "type",
@@ -463,12 +459,7 @@
                 "color-text-muted",
                 "color-focus-ring",
                 "color-danger-text",
-                "radius-control",
-                "size-control-sm",
-                "size-control-md",
-                "size-control-lg",
-                "space-3",
-                "font-size-base"
+                "radius-control"
             ],
             "composes": ["field", "label", "error", "icon", "button"],
             "messages": ["input.show-password"],
@@ -532,11 +523,7 @@
                 "color-focus-ring",
                 "color-text",
                 "color-danger-text",
-                "radius-control",
-                "size-icon-md",
-                "space-2",
-                "font-size-base",
-                "font-size-sm"
+                "radius-control"
             ],
             "composes": ["icon", "label", "error"],
             "fixtures": [
@@ -596,11 +583,7 @@
                 "color-focus-ring",
                 "color-text",
                 "color-danger-text",
-                "radius-pill",
-                "size-icon-lg",
-                "space-2",
-                "font-size-base",
-                "font-size-sm"
+                "radius-pill"
             ],
             "composes": ["label", "error"],
             "fixtures": [
@@ -662,11 +645,7 @@
                 "color-focus-ring",
                 "color-danger-text",
                 "radius-control",
-                "size-control-lg",
-                "font-family-mono",
-                "font-size-lg",
-                "font-size-sm",
-                "space-3"
+                "font-family-mono"
             ],
             "composes": ["label", "error"],
             "variables": [
@@ -692,7 +671,8 @@
                     "type": "enum",
                     "values": ["sm", "md", "lg", "xl"],
                     "default": "md",
-                    "description": "How large the title is drawn."
+                    "description": "How large the title is drawn.",
+                    "measures": [{"value": "sm", "dimension": "font-size", "length": "1rem"}, {"value": "md", "dimension": "font-size", "length": "1.125rem"}, {"value": "lg", "dimension": "font-size", "length": "1.25rem"}, {"value": "xl", "dimension": "font-size", "length": "1.5rem"}]
                 }
             ],
             "slots": [
@@ -711,7 +691,7 @@
                 "aria": []
             },
             "script": {"need": "none", "reason": null},
-            "tokens": ["color-text", "font-size-base", "font-size-lg", "font-size-xl", "font-size-2xl", "font-weight-semibold", "font-leading-tight"],
+            "tokens": ["color-text"],
             "composes": [],
             "fixtures": [
                 {"name": "default", "description": "A title at level two.", "props": {}, "slots": {"default": "Account settings"}},
@@ -736,7 +716,8 @@
                     "type": "enum",
                     "values": ["sm", "md", "lg"],
                     "default": "md",
-                    "description": "How large the text is drawn."
+                    "description": "How large the text is drawn.",
+                    "measures": [{"value": "sm", "dimension": "font-size", "length": "0.875rem"}, {"value": "md", "dimension": "font-size", "length": "1rem"}, {"value": "lg", "dimension": "font-size", "length": "1.125rem"}]
                 }
             ],
             "slots": [
@@ -755,7 +736,7 @@
                 "aria": []
             },
             "script": {"need": "none", "reason": null},
-            "tokens": ["color-text", "color-text-muted", "font-size-sm", "font-size-base", "font-size-lg", "font-leading-normal"],
+            "tokens": ["color-text", "color-text-muted"],
             "composes": [],
             "fixtures": [
                 {"name": "default", "description": "A paragraph.", "props": {}, "slots": {"default": "Choose how you sign in."}},
@@ -801,7 +782,7 @@
                 ]
             },
             "script": {"need": "none", "reason": null},
-            "tokens": ["color-accent-text", "color-text", "color-text-muted", "color-surface", "color-border", "color-border-strong", "color-accent-subtle", "color-focus-ring", "radius-control", "size-control-md", "space-3", "font-size-sm", "font-weight-medium"],
+            "tokens": ["color-accent-text", "color-text", "color-text-muted", "color-surface", "color-border", "color-border-strong", "color-accent-subtle", "color-focus-ring", "radius-control"],
             "composes": [],
             "messages": ["link.external"],
             "fixtures": [
@@ -869,12 +850,7 @@
                 "color-danger-subtle",
                 "color-danger-text",
                 "color-focus-ring",
-                "radius-container",
-                "size-icon-md",
-                "space-3",
-                "space-4",
-                "font-size-sm",
-                "font-weight-medium"
+                "radius-container"
             ],
             "composes": ["icon", "button"],
             "messages": ["alert.dismiss"],
@@ -922,7 +898,7 @@
                 "aria": []
             },
             "script": {"need": "none", "reason": null},
-            "tokens": ["color-surface", "color-border", "radius-container", "shadow-sm", "space-4", "space-6"],
+            "tokens": ["color-surface", "color-border", "radius-container"],
             "composes": [],
             "fixtures": [
                 {"name": "default", "description": "A card with a body.", "props": {}, "slots": {"default": {"fixture": "text.default"}}},
@@ -970,7 +946,7 @@
                 ]
             },
             "script": {"need": "none", "reason": null},
-            "tokens": ["color-surface", "color-border", "color-text", "color-text-muted", "color-accent-subtle", "radius-container", "font-size-sm", "space-3", "space-4"],
+            "tokens": ["color-surface", "color-border", "color-text", "color-text-muted", "color-accent-subtle", "radius-container"],
             "composes": ["table-column", "table-row", "table-cell"],
             "fixtures": [
                 {"name": "bare", "description": "A table with nothing in it: the place where a column, a row or a cell is shown by itself.", "props": {}, "slots": {}},
@@ -1015,7 +991,7 @@
                 ]
             },
             "script": {"need": "none", "reason": null},
-            "tokens": ["color-text", "color-text-muted", "color-focus-ring", "font-size-sm", "font-weight-medium", "size-icon-sm"],
+            "tokens": ["color-text", "color-text-muted", "color-focus-ring"],
             "composes": ["icon"],
             "fixtures": [
                 {"name": "default", "description": "A column that cannot be sorted by.", "props": {}, "slots": {"default": "Name"}, "in": {"fixture": "table.bare", "slot": "head"}},
@@ -1073,7 +1049,7 @@
                 "aria": []
             },
             "script": {"need": "none", "reason": null},
-            "tokens": ["color-text", "font-size-sm", "space-3", "space-4"],
+            "tokens": ["color-text"],
             "composes": [],
             "fixtures": [
                 {"name": "default", "description": "A cell with a text.", "props": {}, "slots": {"default": "Ada Lovelace"}, "in": {"fixture": "table-row.bare", "slot": "default"}}
@@ -1134,7 +1110,7 @@
                 ]
             },
             "script": {"need": "optional", "reason": "The search, the sorting and the paging work without script: the search is a form and the sort and the pages are links. Sending a new page size at once, when it is chosen, takes a small script."},
-            "tokens": ["color-surface", "color-border", "color-text", "color-text-muted", "radius-container", "font-size-sm", "space-2", "space-3", "space-4"],
+            "tokens": ["color-surface", "color-border", "color-text", "color-text-muted", "radius-container"],
             "composes": ["table", "input", "select", "link", "icon"],
             "messages": [
                 "data-table.search",
@@ -1213,7 +1189,8 @@
                     "type": "enum",
                     "values": ["sm", "md", "lg"],
                     "default": "md",
-                    "description": "How wide the dialog is: the width of the narrow, the medium or the wide container. A theme changes the widths by changing the tokens."
+                    "description": "How wide the dialog is: narrow, medium or wide.",
+                    "measures": [{"value": "sm", "dimension": "width", "length": "28rem"}, {"value": "md", "dimension": "width", "length": "36rem"}, {"value": "lg", "dimension": "width", "length": "48rem"}]
                 }
             ],
             "slots": [
@@ -1246,7 +1223,7 @@
                 ]
             },
             "script": {"need": "optional", "reason": "Making the dialog modal takes a small script, whether it is open when the page loads or is opened by a button, unless the stack opens it by what the platform provides for that. Closing it, the focus trap and the Escape key then come from the platform. When the dialog closes, the focus returns to what opened it. Without the script an open dialog is not modal: the page behind it can still be used and Escape does nothing, but its close button still works, because it closes the dialog by the platform."},
-            "tokens": ["color-surface", "color-border", "color-overlay", "color-text", "color-focus-ring", "radius-container", "shadow-lg", "size-container-narrow", "size-container-medium", "size-container-wide", "space-4", "space-6", "font-size-lg", "font-weight-semibold"],
+            "tokens": ["color-surface", "color-border", "color-overlay", "color-text", "color-focus-ring", "radius-container"],
             "composes": ["button", "icon"],
             "messages": ["dialog.close"],
             "fixtures": [
@@ -1311,12 +1288,7 @@
                 "color-danger-subtle",
                 "color-danger-text",
                 "color-focus-ring",
-                "radius-container",
-                "shadow-md",
-                "size-icon-md",
-                "space-3",
-                "space-4",
-                "font-size-sm"
+                "radius-container"
             ],
             "composes": ["icon", "button"],
             "messages": ["toast.dismiss"],
@@ -1353,7 +1325,7 @@
                 ]
             },
             "script": {"need": "required", "reason": "Showing at most a number of toasts and queueing the others cannot be done by style. A host raises a toast by dispatching the event studeo:toast on the window with a detail that holds variant, title, message and duration; the region makes the toast, so that no stack needs a call of its own. The scenarios cannot express an event, so each UI package tests it itself."},
-            "tokens": ["space-4", "space-3"],
+            "tokens": [],
             "composes": ["toast"],
             "messages": ["toast.notifications"],
             "fixtures": [
@@ -1367,7 +1339,7 @@
             "status": "draft",
             "props": [
                 {"name": "variant", "type": "enum", "values": ["outline", "filled"], "default": "outline", "description": "Whether the control is outlined (a border and the fill of a field) or filled (the surface colour, with a border that is clear only against the page: not for a control inside a card)."},
-                {"name": "size", "type": "enum", "values": ["sm", "md", "lg"], "default": "md", "description": "The size of the control."},
+                {"name": "size", "type": "enum", "values": ["sm", "md", "lg"], "default": "md", "description": "The size of the control.", "measures": [{"value": "sm", "dimension": "height", "length": "1.75rem"}, {"value": "md", "dimension": "height", "length": "2.25rem"}, {"value": "lg", "dimension": "height", "length": "2.75rem"}]},
                 {"name": "options", "type": "list", "required": true, "description": "The options to choose from. Each item is a text or a whole number, which is its own label, or an object with a value and a label."},
                 {"name": "value", "type": "string", "description": "The value of the option that is chosen. When it is left out, the placeholder shows, or else the first option."},
                 {"name": "placeholder", "type": "string", "description": "The text shown while no option is chosen. It is not an option that can be chosen again."},
@@ -1403,7 +1375,7 @@
                 ]
             },
             "script": {"need": "none", "reason": null},
-            "tokens": ["color-surface", "color-border-strong", "color-field", "color-text", "color-text-muted", "color-focus-ring", "color-danger-text", "radius-control", "size-control-sm", "size-control-md", "size-control-lg", "size-icon-md", "space-3", "font-size-base"],
+            "tokens": ["color-surface", "color-border-strong", "color-field", "color-text", "color-text-muted", "color-focus-ring", "color-danger-text", "radius-control"],
             "composes": ["field", "label", "error", "icon"],
             "fixtures": [
                 {"name": "default", "description": "A labelled select with options that have labels.", "props": {"label": "Role", "options": [{"value": "admin", "label": "Administrator"}, {"value": "editor", "label": "Editor"}, {"value": "viewer", "label": "Viewer"}]}, "slots": {}},

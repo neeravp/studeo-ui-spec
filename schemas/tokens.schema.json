@@ -32,7 +32,7 @@
             "required": ["name", "category", "css", "description"],
             "properties": {
                 "name": {"$ref": "#/$defs/name"},
-                "category": {"enum": ["color", "space", "radius", "size", "font", "shadow"]},
+                "category": {"enum": ["color", "radius", "font"]},
                 "css": {
                     "description": "The name of the CSS variable.",
                     "type": "string",

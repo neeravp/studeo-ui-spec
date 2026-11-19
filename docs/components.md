@@ -56,7 +56,7 @@ Role: `button`. Name from: content.
 | `aria-busy` | The button is loading. |
 | `aria-disabled` | The button is loading, so that it stays focusable while it ignores activation. |
 
-**Tokens:** `color-accent`, `color-accent-foreground`, `color-accent-subtle`, `color-danger`, `color-danger-foreground`, `color-surface`, `color-text`, `color-text-muted`, `color-border`, `color-border-strong`, `color-focus-ring`, `space-2`, `space-3`, `space-4`, `radius-control`, `size-control-sm`, `size-control-md`, `size-control-lg`, `font-size-sm`, `font-weight-medium`
+**Tokens:** `color-accent`, `color-accent-foreground`, `color-accent-subtle`, `color-danger`, `color-danger-foreground`, `color-surface`, `color-text`, `color-text-muted`, `color-border`, `color-border-strong`, `color-focus-ring`, `radius-control`
 
 **Composes:** `icon`, `spinner`
 
@@ -100,7 +100,7 @@ Role: `img`. Name from: aria-label.
 | `aria-hidden` | The icon has no label. |
 | `aria-label` | The icon has a label. |
 
-**Tokens:** `size-icon-sm`, `size-icon-md`, `size-icon-lg`
+**Tokens:** —
 
 **Composes:** —
 
@@ -141,7 +141,7 @@ Role: `status`. Name from: aria-label.
 | `aria-hidden` | The spinner has no label. |
 | `aria-label` | The spinner has a label. |
 
-**Tokens:** `size-icon-sm`, `size-icon-md`, `size-icon-lg`
+**Tokens:** —
 
 **Composes:** —
 
@@ -182,7 +182,7 @@ Attributes that an author writes on the component go to the root element.
 
 Role: none. Name from: content.
 
-**Tokens:** `color-text`, `font-size-sm`, `font-weight-medium`
+**Tokens:** `color-text`
 
 **Composes:** —
 
@@ -217,7 +217,7 @@ Attributes that an author writes on the component go to the root element.
 
 Role: `alert`. Name from: none.
 
-**Tokens:** `color-danger-text`, `font-size-sm`
+**Tokens:** `color-danger-text`
 
 **Composes:** —
 
@@ -260,7 +260,7 @@ Role: none. Name from: none.
 | `aria-describedby` | On the control, naming the hint and the error that are showing. |
 | `aria-invalid` | On the control, while the error is showing. |
 
-**Tokens:** `space-2`
+**Tokens:** —
 
 **Composes:** `label`, `error`
 
@@ -335,7 +335,7 @@ Role: `textbox`. Name from: associated-label.
 | `aria-busy` | On the control, while it is loading. |
 | `aria-pressed` | On the reveal button: true while the password is shown. |
 
-**Tokens:** `color-surface`, `color-border-strong`, `color-field`, `color-text`, `color-text-muted`, `color-focus-ring`, `color-danger-text`, `radius-control`, `size-control-sm`, `size-control-md`, `size-control-lg`, `space-3`, `font-size-base`
+**Tokens:** `color-surface`, `color-border-strong`, `color-field`, `color-text`, `color-text-muted`, `color-focus-ring`, `color-danger-text`, `radius-control`
 
 **Composes:** `field`, `label`, `error`, `icon`, `button`
 
@@ -407,7 +407,7 @@ Role: `checkbox`. Name from: associated-label.
 | `aria-invalid` | On the control, while the error is showing. |
 | `aria-describedby` | On the control, naming the hint and the error that are showing. |
 
-**Tokens:** `color-accent`, `color-accent-foreground`, `color-border-strong`, `color-surface`, `color-focus-ring`, `color-text`, `color-danger-text`, `radius-control`, `size-icon-md`, `space-2`, `font-size-base`, `font-size-sm`
+**Tokens:** `color-accent`, `color-accent-foreground`, `color-border-strong`, `color-surface`, `color-focus-ring`, `color-text`, `color-danger-text`, `radius-control`
 
 **Composes:** `icon`, `label`, `error`
 
@@ -477,7 +477,7 @@ Role: `switch`. Name from: associated-label.
 | `aria-invalid` | On the control, while the error is showing. |
 | `aria-describedby` | On the control, naming the hint and the error that are showing. |
 
-**Tokens:** `color-accent`, `color-border-strong`, `color-surface`, `color-focus-ring`, `color-text`, `color-danger-text`, `radius-pill`, `size-icon-lg`, `space-2`, `font-size-base`, `font-size-sm`
+**Tokens:** `color-accent`, `color-border-strong`, `color-surface`, `color-focus-ring`, `color-text`, `color-danger-text`, `radius-pill`
 
 **Composes:** `label`, `error`
 
@@ -538,7 +538,7 @@ Role: `textbox`. Name from: associated-label.
 | `aria-describedby` | On the control, naming the hint and the error that are showing. |
 | `aria-busy` | On the control, while the code is being checked. |
 
-**Tokens:** `color-border-strong`, `color-field`, `color-text`, `color-focus-ring`, `color-danger-text`, `radius-control`, `size-control-lg`, `font-family-mono`, `font-size-lg`, `font-size-sm`, `space-3`
+**Tokens:** `color-border-strong`, `color-field`, `color-text`, `color-focus-ring`, `color-danger-text`, `radius-control`, `font-family-mono`
 
 **Composes:** `label`, `error`
 
@@ -584,7 +584,7 @@ Attributes that an author writes on the component go to the root element.
 
 Role: `heading`. Name from: content.
 
-**Tokens:** `color-text`, `font-size-base`, `font-size-lg`, `font-size-xl`, `font-size-2xl`, `font-weight-semibold`, `font-leading-tight`
+**Tokens:** `color-text`
 
 **Composes:** —
 
@@ -627,7 +627,7 @@ Attributes that an author writes on the component go to the root element.
 
 Role: none. Name from: content.
 
-**Tokens:** `color-text`, `color-text-muted`, `font-size-sm`, `font-size-base`, `font-size-lg`, `font-leading-normal`
+**Tokens:** `color-text`, `color-text-muted`
 
 **Composes:** —
 
@@ -683,7 +683,7 @@ Role: `link`. Name from: content.
 | `aria-current` | The link is the current place. The value is page. |
 | `aria-disabled` | The link has no address that is used: it is then not a link, it carries the disabled state and the value is true. |
 
-**Tokens:** `color-accent-text`, `color-text`, `color-text-muted`, `color-surface`, `color-border`, `color-border-strong`, `color-accent-subtle`, `color-focus-ring`, `radius-control`, `size-control-md`, `space-3`, `font-size-sm`, `font-weight-medium`
+**Tokens:** `color-accent-text`, `color-text`, `color-text-muted`, `color-surface`, `color-border`, `color-border-strong`, `color-accent-subtle`, `color-focus-ring`, `radius-control`
 
 **Composes:** —
 
@@ -742,7 +742,7 @@ Role: `status`. Name from: content.
 | `Enter` | On the dismiss button: hides the alert. |
 | `Space` | On the dismiss button: hides the alert. |
 
-**Tokens:** `color-info-subtle`, `color-info-text`, `color-success-subtle`, `color-success-text`, `color-warning-subtle`, `color-warning-text`, `color-danger-subtle`, `color-danger-text`, `color-focus-ring`, `radius-container`, `size-icon-md`, `space-3`, `space-4`, `font-size-sm`, `font-weight-medium`
+**Tokens:** `color-info-subtle`, `color-info-text`, `color-success-subtle`, `color-success-text`, `color-warning-subtle`, `color-warning-text`, `color-danger-subtle`, `color-danger-text`, `color-focus-ring`, `radius-container`
 
 **Composes:** `icon`, `button`
 
@@ -792,7 +792,7 @@ Attributes that an author writes on the component go to the root element.
 
 Role: none. Name from: none.
 
-**Tokens:** `color-surface`, `color-border`, `radius-container`, `shadow-sm`, `space-4`, `space-6`
+**Tokens:** `color-surface`, `color-border`, `radius-container`
 
 **Composes:** —
 
@@ -847,7 +847,7 @@ Role: `table`. Name from: associated-label.
 | --- | --- |
 | `aria-busy` | While the rows are being replaced. |
 
-**Tokens:** `color-surface`, `color-border`, `color-text`, `color-text-muted`, `color-accent-subtle`, `radius-container`, `font-size-sm`, `space-3`, `space-4`
+**Tokens:** `color-surface`, `color-border`, `color-text`, `color-text-muted`, `color-accent-subtle`, `radius-container`
 
 **Composes:** `table-column`, `table-row`, `table-cell`
 
@@ -901,7 +901,7 @@ Role: `columnheader`. Name from: content.
 | --- | --- |
 | `aria-sort` | While the list is sorted by this column. The value is ascending or descending. |
 
-**Tokens:** `color-text`, `color-text-muted`, `color-focus-ring`, `font-size-sm`, `font-weight-medium`, `size-icon-sm`
+**Tokens:** `color-text`, `color-text-muted`, `color-focus-ring`
 
 **Composes:** `icon`
 
@@ -973,7 +973,7 @@ Attributes that an author writes on the component go to the root element.
 
 Role: `cell`. Name from: content.
 
-**Tokens:** `color-text`, `font-size-sm`, `space-3`, `space-4`
+**Tokens:** `color-text`
 
 **Composes:** —
 
@@ -1050,7 +1050,7 @@ Role: `region`. Name from: aria-label.
 | `aria-live` | On the summary, with the value polite, so that a change of page is announced. |
 | `aria-disabled` | On a paging control that has no address: it is not a link and it carries the disabled state. |
 
-**Tokens:** `color-surface`, `color-border`, `color-text`, `color-text-muted`, `radius-container`, `font-size-sm`, `space-2`, `space-3`, `space-4`
+**Tokens:** `color-surface`, `color-border`, `color-text`, `color-text-muted`, `radius-container`
 
 **Composes:** `table`, `input`, `select`, `link`, `icon`
 
@@ -1078,7 +1078,7 @@ A window over the page that asks for the user's attention until it is closed. Wh
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `open` | boolean | `false` | Whether the dialog is open. |
-| `size` | one of `sm`, `md`, `lg` | `md` | How wide the dialog is: the width of the narrow, the medium or the wide container. A theme changes the widths by changing the tokens. |
+| `size` | one of `sm`, `md`, `lg` | `md` | How wide the dialog is: narrow, medium or wide. |
 
 **Slots**
 
@@ -1116,7 +1116,7 @@ Role: `dialog`. Name from: associated-label.
 | `aria-modal` | While the dialog is open, with the value true. |
 | `aria-labelledby` | Naming the title. |
 
-**Tokens:** `color-surface`, `color-border`, `color-overlay`, `color-text`, `color-focus-ring`, `radius-container`, `shadow-lg`, `size-container-narrow`, `size-container-medium`, `size-container-wide`, `space-4`, `space-6`, `font-size-lg`, `font-weight-semibold`
+**Tokens:** `color-surface`, `color-border`, `color-overlay`, `color-text`, `color-focus-ring`, `radius-container`
 
 **Composes:** `button`, `icon`
 
@@ -1172,7 +1172,7 @@ Role: `status`. Name from: content.
 | `Enter` | On the dismiss button: hides the toast. |
 | `Space` | On the dismiss button: hides the toast. |
 
-**Tokens:** `color-info-subtle`, `color-info-text`, `color-success-subtle`, `color-success-text`, `color-warning-subtle`, `color-warning-text`, `color-danger-subtle`, `color-danger-text`, `color-focus-ring`, `radius-container`, `shadow-md`, `size-icon-md`, `space-3`, `space-4`, `font-size-sm`
+**Tokens:** `color-info-subtle`, `color-info-text`, `color-success-subtle`, `color-success-text`, `color-warning-subtle`, `color-warning-text`, `color-danger-subtle`, `color-danger-text`, `color-focus-ring`, `radius-container`
 
 **Composes:** `icon`, `button`
 
@@ -1220,7 +1220,7 @@ Role: `region`. Name from: aria-label.
 | --- | --- |
 | `aria-live` | Always, with the value polite, so that a toast that appears is announced without interrupting the user. Its accessible name is Notifications. |
 
-**Tokens:** `space-4`, `space-3`
+**Tokens:** —
 
 **Composes:** `toast`
 
@@ -1282,7 +1282,7 @@ Role: `combobox`. Name from: associated-label.
 | `aria-describedby` | On the control, naming the hint and the error that are showing. |
 | `aria-busy` | On the control, while it is loading. |
 
-**Tokens:** `color-surface`, `color-border-strong`, `color-field`, `color-text`, `color-text-muted`, `color-focus-ring`, `color-danger-text`, `radius-control`, `size-control-sm`, `size-control-md`, `size-control-lg`, `size-icon-md`, `space-3`, `font-size-base`
+**Tokens:** `color-surface`, `color-border-strong`, `color-field`, `color-text`, `color-text-muted`, `color-focus-ring`, `color-danger-text`, `radius-control`
 
 **Composes:** `field`, `label`, `error`, `icon`
 

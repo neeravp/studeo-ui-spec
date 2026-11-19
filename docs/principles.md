@@ -70,11 +70,11 @@ A component styles itself and puts no margin around itself. The page that places
 
 ## Values come from tokens
 
-A component takes every colour, length, shadow and typeface from a token and never carries a value of its own.
+A component takes every colour, corner radius and typeface from a token and never carries a value of its own. Lengths, spacing and shadows are the implementation's utility classes, and the sizes that a prop stands for are its measures.
 
 *Why.* One place changes the look of everything, and dark mode costs the components nothing.
 
-*Checked.* The tokens and their variables follow the rules (`TokenTest`). That a component holds no literal value is held by review and tested by each UI package.
+*Checked.* The tokens and their variables follow the rules, and a token is a colour, a radius or a font family, never a length (`TokenTest`). Every size of a component has its measure, and the measures grow with the size (`ReferenceTest`, `ComponentSetTest`). That a component holds no literal value is held by review and tested by each UI package.
 
 ## Variants, not copies
 

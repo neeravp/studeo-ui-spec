@@ -101,6 +101,10 @@ it('refuses a components file that breaks the format, at the place of the mistak
     'a label source that does not exist' => [fn (array $d): array => Spec::set($d, 'components.0.accessibility.label', 'guess'), '/components/0/accessibility/label:'],
     'an ARIA entry that is not an ARIA attribute' => [fn (array $d): array => Spec::set($d, 'components.0.accessibility.aria.0.attribute', 'role'), '/components/0/accessibility/aria/0/attribute:'],
     'a keyboard entry without behaviour' => [fn (array $d): array => Spec::forget($d, 'components.0.accessibility.keyboard.0.behavior'), '/components/0/accessibility/keyboard/0:'],
+    'a measure of a dimension that the format does not have' => [fn (array $d): array => Spec::set($d, 'components.0.props.1.measures.0.dimension', 'depth'), '/components/0/props/1/measures/0/dimension:'],
+    'a measure whose length is not in rem' => [fn (array $d): array => Spec::set($d, 'components.0.props.1.measures.0.length', '28px'), '/components/0/props/1/measures/0/length:'],
+    'a measure without a length' => [fn (array $d): array => Spec::forget($d, 'components.0.props.1.measures.0.length'), '/components/0/props/1/measures/0:'],
+    'measures on a prop that is not an enum' => [fn (array $d): array => Spec::set($d, 'components.0.props.3.measures', [['value' => 'sm', 'dimension' => 'height', 'length' => '1rem']]), '/components/0/props/3:'],
     'a token name in capitals' => [fn (array $d): array => Spec::set($d, 'components.0.tokens.0', 'Color'), '/components/0/tokens/0:'],
     'a repeated token' => [fn (array $d): array => Spec::set($d, 'components.0.tokens', ['color-accent', 'color-accent']), '/components/0/tokens:'],
     'no components' => [fn (array $d): array => Spec::set($d, 'components', []), '/components:'],
@@ -109,6 +113,7 @@ it('refuses a components file that breaks the format, at the place of the mistak
 it('refuses a tokens file that breaks the format, at the place of the mistake', function (Closure $break, string $place) {
     expect(implode("\n", Spec::errors('tokens', $break(Spec::data('tokens')))))->toContain($place);
 })->with([
+    'a token of a category that a utility class replaces' => [fn (array $d): array => Spec::set($d, 'tokens.0.category', 'space'), '/tokens/0/category:'],
     'a colour without a dark value' => [fn (array $d): array => Spec::forget($d, 'tokens.0.dark'), '/tokens/0:'],
     'a colour with a single value' => [fn (array $d): array => Spec::set($d, 'tokens.0.value', '#ffffff'), '/tokens/0:'],
     'a radius with a light value' => [fn (array $d): array => Spec::set($d, 'tokens.'.schemaTestTokenIndex('radius-control').'.light', '#ffffff'), '/tokens/'.schemaTestTokenIndex('radius-control').':'],

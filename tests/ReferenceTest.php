@@ -63,6 +63,18 @@ it('finds the mistake that was seeded', function (Closure $seed, string $fragmen
         fn (array $s): array => Spec::set($s, 'components.0.attributes.states.2', $s['components'][0]['attributes']['states'][0]),
         'attribute [data-studeo-loading] of component [button] is declared twice',
     ],
+    'a measure of a value that the prop does not have' => [
+        fn (array $s): array => Spec::set($s, 'components.0.props.1.measures', [['value' => 'xl', 'dimension' => 'height', 'length' => '3rem']]),
+        'measure of value [xl] of prop [size] of component [button] is not a value of the prop',
+    ],
+    'a prop with measures that leaves one value without' => [
+        fn (array $s): array => Spec::set($s, 'components.0.props.1.measures', [['value' => 'sm', 'dimension' => 'height', 'length' => '1.75rem']]),
+        'prop [size] of component [button] has no measure for value [md]',
+    ],
+    'a prop with two measures for one value' => [
+        fn (array $s): array => Spec::set($s, 'components.0.props.1.measures', [...$s['components'][0]['props'][1]['measures'], ['value' => 'sm', 'dimension' => 'height', 'length' => '2rem']]),
+        'prop [size] of component [button] has two measures for value [sm]',
+    ],
     'a component that composes one that does not exist' => [
         fn (array $s): array => Spec::set($s, 'components.0.composes', ['ghost']),
         'component [button] composes unknown component [ghost]',

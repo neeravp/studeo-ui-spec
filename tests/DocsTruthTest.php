@@ -128,12 +128,12 @@ it('finds the mistake that was seeded', function (Closure $seed, string $fragmen
         'SPEC.md has no section [Finding the target of a step]',
     ],
     'a token without a row' => [
-        fn (array $d): array => [...$d, 'docs/theming.md' => docsTruthWithout($d['docs/theming.md'], '| `space-3` |')],
-        'docs/theming.md has no row for token [space-3]',
+        fn (array $d): array => [...$d, 'docs/theming.md' => docsTruthWithout($d['docs/theming.md'], '| `radius-control` |')],
+        'docs/theming.md has no row for token [radius-control]',
     ],
     'a token whose variable is written wrong' => [
-        fn (array $d): array => [...$d, 'docs/theming.md' => str_replace('`--studeo-space-3`', '`--studeo-space-three`', $d['docs/theming.md'])],
-        'docs/theming.md has no row for token [space-3]',
+        fn (array $d): array => [...$d, 'docs/theming.md' => str_replace('`--studeo-radius-control`', '`--studeo-radius-controls`', $d['docs/theming.md'])],
+        'docs/theming.md has no row for token [radius-control]',
     ],
     'a pair of colours without a row' => [
         fn (array $d): array => [...$d, 'docs/theming.md' => docsTruthWithout($d['docs/theming.md'], '| `color-text` | `color-background` |')],

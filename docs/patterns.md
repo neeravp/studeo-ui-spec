@@ -58,10 +58,10 @@ A long list is paged, sorted and filtered by the server, and its state is kept i
 
 A page that asks the user to do one thing, such as signing in, is composed from components and has no component of its own.
 
-- It is one narrow column, centred in the page, as wide as the `size-container-narrow` token and no wider.
+- It is one narrow column, centred in the page, no wider than 28rem, the width of the narrow dialog.
 - At the top the application puts its own name or mark. Below it comes a card. Below the card the application may put a line of links, such as one to a page of help.
 - The card holds the title of the page as a heading of level one, an optional line of text that says what is asked, the fields, and the button that sends them. A message about the whole form, such as one that says that the details are wrong, comes above the fields as an alert; a message about one field is the error of that field.
-- The space between these parts is chosen by the page from the space tokens. The components bring no space of their own around them.
+- The space between these parts is chosen by the page. The components bring no space of their own around them.
 - The first field is where the focus starts when the page opens.
 
 ## Confirm an action

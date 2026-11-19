@@ -329,7 +329,36 @@ final class References
             return ["default [{$prop['default']}] of prop [{$prop['name']}] of component [{$component}] is not one of its values"];
         }
 
-        return [];
+        return self::measureProblems($component, $prop);
+    }
+
+    /**
+     * @param  array<string, mixed>  $prop
+     * @return list<string>
+     */
+    private static function measureProblems(string $component, array $prop): array
+    {
+        $measured = array_column($prop['measures'] ?? [], 'value');
+
+        if ($measured === []) {
+            return [];
+        }
+
+        $found = [];
+
+        foreach (array_diff($measured, $prop['values']) as $value) {
+            $found[] = "measure of value [{$value}] of prop [{$prop['name']}] of component [{$component}] is not a value of the prop";
+        }
+
+        foreach (array_diff($prop['values'], $measured) as $value) {
+            $found[] = "prop [{$prop['name']}] of component [{$component}] has no measure for value [{$value}]";
+        }
+
+        foreach (self::repeated($measured) as $value) {
+            $found[] = "prop [{$prop['name']}] of component [{$component}] has two measures for value [{$value}]";
+        }
+
+        return $found;
     }
 
     /**

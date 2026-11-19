@@ -1,12 +1,14 @@
 # Theming
 
-A theme is a set of values for the design tokens of the specification. For colour, type, rounding, shadow and the space inside it, a component reads tokens and nothing else. A host changes how every component looks by changing token values, never by editing a component.
+A theme is a set of values for the design tokens of the specification. For colour, rounding and typeface, a component reads tokens and nothing else. A host changes how every component looks by changing token values, never by editing a component.
+
+The tokens are what a host brands, and only that: the colours, the rounding of the corners and the typeface. Lengths, spacing, the size and weight of text and shadows are not tokens. They are fixed design choices that no host changes, and an implementation writes them as the utility classes of its own stylesheet. A change to a layout is a change of a class, never a new token. The sizes that a prop stands for (the height of a control, the width of a dialog, the size of an icon or of text) are written in the specification as the measures of the prop, in rem, so that every implementation draws the same size.
 
 ## The tokens
 
-`tokens.json` lists every token with its name, its category, the name of its CSS variable and its reference value. The categories are `color`, `space`, `radius`, `size`, `font` and `shadow`.
+`tokens.json` lists every token with its name, its category, the name of its CSS variable and its reference value. The categories are `color`, `radius` and `font`; the only font tokens are the two typefaces.
 
-- The name of a token starts with its category: `color-accent`, `space-4`, `radius-control`.
+- The name of a token starts with its category: `color-accent`, `radius-control`, `font-family-sans`.
 - The CSS variable is the name with the prefix `--studeo-`: `--studeo-color-accent`.
 - A colour token has two values, `light` and `dark`. Every other token has one `value` that holds in both modes.
 - The reference colours are written in hex so that the specification can check them. A theme of a host is not limited to hex (see below).
@@ -50,20 +52,6 @@ The tokens name roles, not components. There is a `color-border-strong` for the 
 | `color-focus-ring` | `--studeo-color-focus-ring` | `#6d28d9` | `#c4b5fd` | The colour of the outline of the focused control. |
 | `color-overlay` | `--studeo-color-overlay` | `#00000080` | `#000000b3` | The veil behind a dialog; it has an alpha channel and takes part in no contrast pair. |
 
-### space
-
-| Token | Variable | Value | Meaning |
-| --- | --- | --- | --- |
-| `space-1` | `--studeo-space-1` | `0.25rem` | Step 1 of the spacing scale, for the padding and the gaps inside a component. |
-| `space-2` | `--studeo-space-2` | `0.5rem` | Step 2 of the spacing scale, for the padding and the gaps inside a component. |
-| `space-3` | `--studeo-space-3` | `0.75rem` | Step 3 of the spacing scale, for the padding and the gaps inside a component. |
-| `space-4` | `--studeo-space-4` | `1rem` | Step 4 of the spacing scale, for the padding and the gaps inside a component. |
-| `space-5` | `--studeo-space-5` | `1.25rem` | Step 5 of the spacing scale, for the padding and the gaps inside a component. |
-| `space-6` | `--studeo-space-6` | `1.5rem` | Step 6 of the spacing scale, for the padding and the gaps inside a component. |
-| `space-8` | `--studeo-space-8` | `2rem` | Step 8 of the spacing scale, for the padding and the gaps inside a component. |
-| `space-10` | `--studeo-space-10` | `2.5rem` | Step 10 of the spacing scale, for the padding and the gaps inside a component. |
-| `space-12` | `--studeo-space-12` | `3rem` | Step 12 of the spacing scale, for the padding and the gaps inside a component. |
-
 ### radius
 
 | Token | Variable | Value | Meaning |
@@ -72,52 +60,19 @@ The tokens name roles, not components. There is a `color-border-strong` for the 
 | `radius-container` | `--studeo-radius-container` | `0.75rem` | The rounding of the corners of a card, a panel or a dialog. |
 | `radius-pill` | `--studeo-radius-pill` | `9999px` | The rounding of a badge or a switch. |
 
-### size
-
-| Token | Variable | Value | Meaning |
-| --- | --- | --- | --- |
-| `size-control-sm` | `--studeo-size-control-sm` | `1.75rem` | The height of a small control. |
-| `size-control-md` | `--studeo-size-control-md` | `2.25rem` | The height of a control of the default size. |
-| `size-control-lg` | `--studeo-size-control-lg` | `2.75rem` | The height of a large control. |
-| `size-container-narrow` | `--studeo-size-container-narrow` | `26rem` | The width of the narrow column of an authentication page. |
-| `size-container-medium` | `--studeo-size-container-medium` | `39rem` | The width of the medium dialog: one and a half times the narrow column. |
-| `size-container-wide` | `--studeo-size-container-wide` | `52rem` | The width of the wide dialog: twice the narrow column. |
-| `size-icon-sm` | `--studeo-size-icon-sm` | `0.875rem` | The size of a small icon. |
-| `size-icon-md` | `--studeo-size-icon-md` | `1rem` | The size of an icon of the default size. |
-| `size-icon-lg` | `--studeo-size-icon-lg` | `1.25rem` | The size of a large icon. |
-
 ### font
 
 | Token | Variable | Value | Meaning |
 | --- | --- | --- | --- |
 | `font-family-sans` | `--studeo-font-family-sans` | `ui-sans-serif, system-ui, sans-serif` | The typeface of the interface. |
 | `font-family-mono` | `--studeo-font-family-mono` | `ui-monospace, monospace` | The typeface of codes such as a recovery code. |
-| `font-size-xs` | `--studeo-font-size-xs` | `0.75rem` | The font size xs of the type scale. |
-| `font-size-sm` | `--studeo-font-size-sm` | `0.875rem` | The font size sm of the type scale. |
-| `font-size-base` | `--studeo-font-size-base` | `1rem` | The font size base of the type scale. |
-| `font-size-lg` | `--studeo-font-size-lg` | `1.125rem` | The font size lg of the type scale. |
-| `font-size-xl` | `--studeo-font-size-xl` | `1.25rem` | The font size xl of the type scale. |
-| `font-size-2xl` | `--studeo-font-size-2xl` | `1.5rem` | The font size 2xl of the type scale. |
-| `font-weight-normal` | `--studeo-font-weight-normal` | `400` | The normal font weight. |
-| `font-weight-medium` | `--studeo-font-weight-medium` | `500` | The medium font weight. |
-| `font-weight-semibold` | `--studeo-font-weight-semibold` | `600` | The semibold font weight. |
-| `font-leading-tight` | `--studeo-font-leading-tight` | `1.25` | The line height of headings. |
-| `font-leading-normal` | `--studeo-font-leading-normal` | `1.5` | The line height of body text. |
-
-### shadow
-
-| Token | Variable | Value | Meaning |
-| --- | --- | --- | --- |
-| `shadow-sm` | `--studeo-shadow-sm` | `0 1px 2px 0 rgb(0 0 0 / 0.06)` | The shadow of a control that is raised a little. |
-| `shadow-md` | `--studeo-shadow-md` | `0 4px 8px -2px rgb(0 0 0 / 0.12)` | The shadow of a card or a menu. |
-| `shadow-lg` | `--studeo-shadow-lg` | `0 12px 24px -6px rgb(0 0 0 / 0.2)` | The shadow of a dialog. |
 <!-- /generated:tokens -->
 
 ## What an implementation does
 
 An implementation defines every variable on the root element with the value of the light mode, and defines the colour variables again for the dark mode as `dark-mode.md` describes.
 
-A component refers to a variable and never repeats its value. No literal colour, length, shadow or typeface appears in a component.
+A component refers to a variable and never repeats its value. No literal colour or typeface appears in a component, and no hard-coded colour of a palette. A length is not a token and is written as a utility class.
 
 States such as hover and pressed have no tokens. An implementation derives them from the token of the component, for example by mixing the colour with the colour of the text on it.
 
@@ -125,7 +80,7 @@ States such as hover and pressed have no tokens. An implementation derives them 
 
 A host sets its own value for any variable. It does this on the root element to theme the whole page, or on a container to theme one region.
 
-A value can be anything that CSS accepts for that kind of value: a colour in any notation, a length in any unit, a list of typefaces. The reference values do not limit a host.
+A value can be anything that CSS accepts for that kind of value: a colour in any notation, a length in any unit for the rounding, a list of typefaces. The reference values do not limit a host.
 
 ## Keeping text readable
 

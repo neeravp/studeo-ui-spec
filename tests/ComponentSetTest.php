@@ -81,17 +81,36 @@ it('says what script a component needs, in the cases that the scenarios exercise
     'an open dialog is not modal without script' => ['dialog', 'is not modal'],
 ]);
 
-it('gives the dialog a token for each of its three widths, and the widths grow', function () {
+it('states the measure of each size of a component in rem, and the measures grow with the size', function (string $component, string $dimension, array $expected) {
     $components = array_column(Spec::data('components')['components'], null, 'name');
-    $tokens = array_column(Spec::data('tokens')['tokens'], null, 'name');
-    $widths = array_map(fn (string $name): float => (float) $tokens[$name]['value'], ['size-container-narrow', 'size-container-medium', 'size-container-wide']);
+    $size = array_column($components[$component]['props'], null, 'name')['size'];
+    $measures = array_column($size['measures'], null, 'value');
 
-    foreach (['size-container-narrow', 'size-container-medium', 'size-container-wide'] as $name) {
-        expect($components['dialog']['tokens'])->toContain($name);
+    expect(array_column($size['measures'], 'dimension'))->each->toBe($dimension);
+    expect(array_map(fn (string $value): string => $measures[$value]['length'], $size['values']))->toBe($expected);
+
+    $lengths = array_map(fn (string $length): float => (float) $length, $expected);
+    $sorted = $lengths;
+    sort($sorted);
+
+    expect($lengths)->toBe($sorted)->and(count(array_unique($lengths)))->toBe(count($lengths));
+})->with([
+    'the button is as high as the control of its size' => ['button', 'height', ['1.75rem', '2.25rem', '2.75rem']],
+    'the input is as high as the control of its size' => ['input', 'height', ['1.75rem', '2.25rem', '2.75rem']],
+    'the select is as high as the control of its size' => ['select', 'height', ['1.75rem', '2.25rem', '2.75rem']],
+    'the icon is as large as its size' => ['icon', 'size', ['0.875rem', '1rem', '1.25rem']],
+    'the spinner is as large as its size' => ['spinner', 'size', ['0.875rem', '1rem', '1.25rem']],
+    'the heading is drawn in the font size of its size' => ['heading', 'font-size', ['1rem', '1.125rem', '1.25rem', '1.5rem']],
+    'the text is drawn in the font size of its size' => ['text', 'font-size', ['0.875rem', '1rem', '1.125rem']],
+    'the dialog is as wide as its size' => ['dialog', 'width', ['28rem', '36rem', '48rem']],
+]);
+
+it('keeps layout values out of the tokens: a component names colours, radii and font families only', function () {
+    foreach (Spec::data('components')['components'] as $component) {
+        foreach ($component['tokens'] as $name) {
+            expect($name)->toMatch('/^(color|radius|font-family)-/');
+        }
     }
-
-    expect($widths[0])->toBeLessThan($widths[1]);
-    expect($widths[1])->toBeLessThan($widths[2]);
 });
 
 it('says which control a field ties, and which controls are not put in a field', function () {
@@ -110,7 +129,7 @@ it('lets a link look like a button and says what a link with no address is', fun
     expect($link['attributes']['states'])->toContain('data-studeo-disabled');
     expect(array_column($link['accessibility']['aria'], 'attribute'))->toContain('aria-disabled');
 
-    foreach (['color-surface', 'color-border-strong', 'color-text-muted', 'size-control-md'] as $token) {
+    foreach (['color-surface', 'color-border-strong', 'color-text-muted'] as $token) {
         expect($link['tokens'])->toContain($token);
     }
 

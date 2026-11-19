@@ -20,6 +20,7 @@ final class Tokens
         return [
             ...self::variableNames($spec['tokens']),
             ...self::categoryPrefixes($spec['tokens']),
+            ...self::layoutTokens($spec['tokens']),
             ...self::contrastProblems($spec),
         ];
     }
@@ -52,6 +53,26 @@ final class Tokens
         foreach ($tokens as $token) {
             if (! str_starts_with($token['name'], $token['category'].'-')) {
                 $found[] = "token [{$token['name']}] of category [{$token['category']}] must start with [{$token['category']}-]";
+            }
+        }
+
+        return $found;
+    }
+
+    /**
+     * A layout value (space, size, font size, weight, leading, shadow) is a utility class of the implementation, never a token: a token is
+     * a colour, a radius or a font family, the things a host brands.
+     *
+     * @param  list<array<string, mixed>>  $tokens
+     * @return list<string>
+     */
+    private static function layoutTokens(array $tokens): array
+    {
+        $found = [];
+
+        foreach ($tokens as $token) {
+            if (preg_match('/^(color|radius|font-family)-/', $token['name']) !== 1) {
+                $found[] = "token [{$token['name']}] is not a colour, a radius or a font family: a layout value is a utility class, never a token";
             }
         }
 

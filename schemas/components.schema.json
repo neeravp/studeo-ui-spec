@@ -173,6 +173,17 @@
                 }
             ]
         },
+        "measure": {
+            "description": "The length that one value of an enum prop stands for: a height, a width, the side of a square or the size of the text.",
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["value", "dimension", "length"],
+            "properties": {
+                "value": {"$ref": "#/$defs/name"},
+                "dimension": {"enum": ["height", "width", "size", "font-size"]},
+                "length": {"type": "string", "pattern": "^[0-9]+(\\.[0-9]+)?rem$"}
+            }
+        },
         "prop": {
             "type": "object",
             "additionalProperties": false,
@@ -188,13 +199,19 @@
                     "minItems": 1,
                     "uniqueItems": true,
                     "items": {"$ref": "#/$defs/name"}
+                },
+                "measures": {
+                    "description": "What each value of an enum prop measures, in rem, so that every implementation draws the same size.",
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {"$ref": "#/$defs/measure"}
                 }
             },
             "allOf": [
                 {
                     "if": {"properties": {"type": {"const": "enum"}}},
                     "then": {"required": ["values"]},
-                    "else": {"not": {"required": ["values"]}}
+                    "else": {"not": {"anyOf": [{"required": ["values"]}, {"required": ["measures"]}]}}
                 },
                 {
                     "if": {"properties": {"type": {"const": "boolean"}}},

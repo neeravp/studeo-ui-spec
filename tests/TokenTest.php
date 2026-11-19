@@ -66,6 +66,14 @@ it('finds the mistake that was seeded', function (Closure $seed, string $fragmen
         fn (array $s): array => Spec::set($s, 'tokens.0.category', 'space'),
         'token [color-background] of category [space] must start with [space-]',
     ],
+    'a layout value written as a token' => [
+        fn (array $s): array => Spec::set(Spec::set($s, 'tokens.0.name', 'space-4'), 'tokens.0.category', 'space'),
+        'token [space-4] is not a colour, a radius or a font family: a layout value is a utility class, never a token',
+    ],
+    'a font size written as a token' => [
+        fn (array $s): array => Spec::set($s, 'tokens.0.name', 'font-size-sm'),
+        'token [font-size-sm] is not a colour, a radius or a font family',
+    ],
     'a pair that names an unknown foreground' => [
         fn (array $s): array => Spec::set($s, 'contrast.0.foreground', 'color-missing'),
         'names unknown token [color-missing]',
@@ -75,8 +83,8 @@ it('finds the mistake that was seeded', function (Closure $seed, string $fragmen
         'names unknown token [color-missing]',
     ],
     'a pair that uses a token that is not a colour' => [
-        fn (array $s): array => Spec::set($s, 'contrast.0.background', 'space-1'),
-        'uses token [space-1] that is not a colour',
+        fn (array $s): array => Spec::set($s, 'contrast.0.background', 'radius-control'),
+        'uses token [radius-control] that is not a colour',
     ],
     'a pair that uses a colour with an alpha channel' => [
         fn (array $s): array => Spec::set($s, 'contrast.0.background', 'color-overlay'),
