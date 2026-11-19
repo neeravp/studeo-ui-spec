@@ -131,6 +131,10 @@ it('finds the mistake that was seeded', function (Closure $seed, string $fragmen
         fn (array $d): array => [...$d, 'docs/theming.md' => docsTruthWithout($d['docs/theming.md'], '| `radius-control` |')],
         'docs/theming.md has no row for token [radius-control]',
     ],
+    'a measure without a row' => [
+        fn (array $d): array => [...$d, 'docs/components.md' => docsTruthWithout($d['docs/components.md'], '| `button.size` | `sm` |')],
+        'docs/components.md has no row for measure [button.size.sm]',
+    ],
     'a token whose variable is written wrong' => [
         fn (array $d): array => [...$d, 'docs/theming.md' => str_replace('`--studeo-radius-control`', '`--studeo-radius-controls`', $d['docs/theming.md'])],
         'docs/theming.md has no row for token [radius-control]',

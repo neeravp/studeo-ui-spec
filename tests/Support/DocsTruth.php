@@ -42,6 +42,7 @@ final class DocsTruth
 
                 return "| `{$name}` | `{$css}` |";
             }),
+            ...self::measures($spec['components'], $documents[self::REFERENCE] ?? ''),
             ...self::contrast($spec['contrast'], $documents[self::THEMING] ?? ''),
             ...self::placeholders($documents),
             ...self::links($documents, $exists),
@@ -103,6 +104,27 @@ final class DocsTruth
         }
 
         return $problems;
+    }
+
+    /**
+     * Every measure of a size has its row in the reference, under the name of the component and the prop.
+     *
+     * @param  list<array<string, mixed>>  $components
+     * @return list<string>
+     */
+    private static function measures(array $components, string $reference): array
+    {
+        $names = [];
+
+        foreach ($components as $component) {
+            foreach ($component['props'] as $prop) {
+                foreach ($prop['measures'] ?? [] as $measure) {
+                    $names["{$component['name']}.{$prop['name']}.{$measure['value']}"] = "| `{$component['name']}.{$prop['name']}` | `{$measure['value']}` |";
+                }
+            }
+        }
+
+        return self::rows(self::REFERENCE, $reference, 'measure', array_keys($names), fn (string $name): string => $names[$name]);
     }
 
     /**

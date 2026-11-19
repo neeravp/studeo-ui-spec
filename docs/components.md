@@ -21,6 +21,14 @@ A control that starts an action.
 | `icon` | icon |  | The icon shown before the label. The slot of the same name replaces it. |
 | `icon-trailing` | icon |  | The icon shown after the label. The slot of the same name replaces it. |
 
+**Measures**
+
+| Prop | Value | Dimension | Length |
+| --- | --- | --- | --- |
+| `button.size` | `sm` | height | `1.75rem` |
+| `button.size` | `md` | height | `2.25rem` |
+| `button.size` | `lg` | height | `2.75rem` |
+
 **Slots**
 
 | Slot | Required | Description |
@@ -83,6 +91,14 @@ A small picture that carries a meaning or decorates.
 | `size` | one of `sm`, `md`, `lg` | `md` | The size of the icon. |
 | `label` | string |  | A name for assistive technology. Without it the icon only decorates and is hidden from assistive technology. |
 
+**Measures**
+
+| Prop | Value | Dimension | Length |
+| --- | --- | --- | --- |
+| `icon.size` | `sm` | size | `0.875rem` |
+| `icon.size` | `md` | size | `1rem` |
+| `icon.size` | `lg` | size | `1.25rem` |
+
 **Attributes**
 
 | Attribute | Kind | Description |
@@ -123,6 +139,14 @@ A turning picture that shows that something is loading; it stands still when the
 | --- | --- | --- | --- |
 | `size` | one of `sm`, `md`, `lg` | `md` | The size of the spinner. |
 | `label` | string |  | A name for assistive technology. Without it the spinner only decorates and is hidden from assistive technology. |
+
+**Measures**
+
+| Prop | Value | Dimension | Length |
+| --- | --- | --- | --- |
+| `spinner.size` | `sm` | size | `0.875rem` |
+| `spinner.size` | `md` | size | `1rem` |
+| `spinner.size` | `lg` | size | `1.25rem` |
 
 **Attributes**
 
@@ -294,6 +318,14 @@ A control for a line of text.
 | `readonly` | boolean | `false` | The value can be read and selected but not changed. |
 | `loading` | boolean | `false` | The control shows that something is in progress. |
 | `control-class` | class |  | Classes for the element that does the work, merged with its own. The author's classes win over them. |
+
+**Measures**
+
+| Prop | Value | Dimension | Length |
+| --- | --- | --- | --- |
+| `input.size` | `sm` | height | `1.75rem` |
+| `input.size` | `md` | height | `2.25rem` |
+| `input.size` | `lg` | height | `2.75rem` |
 
 **Slots**
 
@@ -566,6 +598,15 @@ A title. Its level in the outline of the page is set apart from its size.
 | `level` | integer | `2` | The level in the outline of the page, from 1 to 6. It does not change the size. |
 | `size` | one of `sm`, `md`, `lg`, `xl` | `md` | How large the title is drawn. |
 
+**Measures**
+
+| Prop | Value | Dimension | Length |
+| --- | --- | --- | --- |
+| `heading.size` | `sm` | font-size | `1rem` |
+| `heading.size` | `md` | font-size | `1.125rem` |
+| `heading.size` | `lg` | font-size | `1.25rem` |
+| `heading.size` | `xl` | font-size | `1.5rem` |
+
 **Slots**
 
 | Slot | Required | Description |
@@ -608,6 +649,14 @@ A paragraph of running text.
 | --- | --- | --- | --- |
 | `variant` | one of `default`, `muted` | `default` | Whether the text has the main colour or the muted one. |
 | `size` | one of `sm`, `md`, `lg` | `md` | How large the text is drawn. |
+
+**Measures**
+
+| Prop | Value | Dimension | Length |
+| --- | --- | --- | --- |
+| `text.size` | `sm` | font-size | `0.875rem` |
+| `text.size` | `md` | font-size | `1rem` |
+| `text.size` | `lg` | font-size | `1.125rem` |
 
 **Slots**
 
@@ -1080,6 +1129,14 @@ A window over the page that asks for the user's attention until it is closed. Wh
 | `open` | boolean | `false` | Whether the dialog is open. |
 | `size` | one of `sm`, `md`, `lg` | `md` | How wide the dialog is: narrow, medium or wide. |
 
+**Measures**
+
+| Prop | Value | Dimension | Length |
+| --- | --- | --- | --- |
+| `dialog.size` | `sm` | width | `28rem` |
+| `dialog.size` | `md` | width | `36rem` |
+| `dialog.size` | `lg` | width | `48rem` |
+
 **Slots**
 
 | Slot | Required | Description |
@@ -1252,6 +1309,14 @@ A control that picks one value from a list of options. The closed control looks 
 | `disabled` | boolean | `false` | The control cannot be changed or focused. |
 | `loading` | boolean | `false` | The control shows that something is in progress. |
 | `control-class` | class |  | Classes for the element that does the work, merged with its own. The author's classes win over them. |
+
+**Measures**
+
+| Prop | Value | Dimension | Length |
+| --- | --- | --- | --- |
+| `select.size` | `sm` | height | `1.75rem` |
+| `select.size` | `md` | height | `2.25rem` |
+| `select.size` | `lg` | height | `2.75rem` |
 
 **Attributes**
 
