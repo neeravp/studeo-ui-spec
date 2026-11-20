@@ -25,18 +25,20 @@
     "messages": [
         {"key": "alert.dismiss", "text": "Dismiss", "description": "The accessible name of the button that dismisses an alert."},
         {"key": "data-table.search", "text": "Search", "description": "The accessible name of the search field of a data table."},
-        {"key": "data-table.per-page", "text": "Rows per page", "description": "The accessible name of the control that chooses how many rows a page holds."},
-        {"key": "data-table.pagination", "text": "Pages", "description": "The accessible name of the group of paging controls."},
+        {"key": "pagination.per-page", "text": "Rows per page", "description": "The accessible name of the control that chooses how many rows a page holds."},
+        {"key": "pagination.pagination", "text": "Pages", "description": "The accessible name of the group of paging controls."},
         {"key": "data-table.empty", "text": "No results.", "description": "The message that stands in the place of the table when the list has no rows and the author gives none."},
-        {"key": "data-table.summary", "text": ":total results, page :page of :last", "placeholders": ["total", "page", "last"], "plural": {"by": "total", "one": ":total result, page :page of :last"}, "description": "The line that says how many rows the list has and which page is shown."},
-        {"key": "data-table.first", "text": "First page", "description": "The accessible name of the control that goes to the first page."},
-        {"key": "data-table.previous", "text": "Previous page", "description": "The accessible name of the control that goes to the previous page."},
-        {"key": "data-table.next", "text": "Next page", "description": "The accessible name of the control that goes to the next page."},
-        {"key": "data-table.last", "text": "Last page", "description": "The accessible name of the control that goes to the last page."},
-        {"key": "data-table.first-short", "text": "First", "description": "The visible word of the control that goes to the first page."},
-        {"key": "data-table.previous-short", "text": "Previous", "description": "The visible word of the control that goes to the previous page."},
-        {"key": "data-table.next-short", "text": "Next", "description": "The visible word of the control that goes to the next page."},
-        {"key": "data-table.last-short", "text": "Last", "description": "The visible word of the control that goes to the last page."},
+        {"key": "pagination.summary", "text": ":total results, page :page of :last", "placeholders": ["total", "page", "last"], "plural": {"by": "total", "one": ":total result, page :page of :last"}, "description": "The line that says how many rows the list has and which page is shown."},
+        {"key": "pagination.first", "text": "First page", "description": "The accessible name of the control that goes to the first page."},
+        {"key": "pagination.previous", "text": "Previous page", "description": "The accessible name of the control that goes to the previous page."},
+        {"key": "pagination.next", "text": "Next page", "description": "The accessible name of the control that goes to the next page."},
+        {"key": "pagination.last", "text": "Last page", "description": "The accessible name of the control that goes to the last page."},
+        {"key": "pagination.first-short", "text": "First", "description": "The visible word of the control that goes to the first page."},
+        {"key": "pagination.previous-short", "text": "Previous", "description": "The visible word of the control that goes to the previous page."},
+        {"key": "pagination.next-short", "text": "Next", "description": "The visible word of the control that goes to the next page."},
+        {"key": "pagination.last-short", "text": "Last", "description": "The visible word of the control that goes to the last page."},
+        {"key": "textarea.counter", "text": ":count of :max", "placeholders": ["count", "max"], "description": "The counter of a textarea: how many characters are used out of the limit."},
+        {"key": "textarea.limit", "text": "At most :max characters", "placeholders": ["max"], "description": "What the counter of a textarea says before there is any text, and what assistive technology reads as its limit."},
         {"key": "dialog.close", "text": "Close", "description": "The accessible name of the button that closes a dialog."},
         {"key": "input.show-password", "text": "Show password", "description": "The accessible name of the button that shows the value of a password field."},
         {"key": "link.external", "text": "Opens in a new tab", "description": "The note, for assistive technology, that a link opens in a new tab; it takes no room on the page."},
@@ -1086,13 +1088,7 @@
                 "parts": [
                     {"name": "data-studeo-data-table-toolbar", "description": "The element that holds the search, the filters and the actions."},
                     {"name": "data-studeo-data-table-search", "description": "The field that takes the text to search for. Its accessible name is Search. It is sent under the name search, and sending it asks the server for the first page."},
-                    {"name": "data-studeo-data-table-empty", "description": "The element that holds the message shown when the list has no rows."},
-                    {"name": "data-studeo-data-table-summary", "description": "The line that says how many rows there are and which page is shown, as: 60 results, page 1 of 3."},
-                    {"name": "data-studeo-data-table-per-page", "description": "The choice of how many rows a page holds. Its accessible name is Rows per page. It is a select. It is sent under the name per_page, and it offers the sizes of the prop per-page-options."},
-                    {"name": "data-studeo-data-table-first", "description": "The control to the first page: a link, or a disabled link while there is no such page. Its accessible name is First page.", "states": ["data-studeo-disabled"]},
-                    {"name": "data-studeo-data-table-previous", "description": "The control to the previous page: a link, or a disabled link while there is no such page. Its accessible name is Previous page.", "states": ["data-studeo-disabled"]},
-                    {"name": "data-studeo-data-table-next", "description": "The control to the next page: a link, or a disabled link while there is no such page. Its accessible name is Next page.", "states": ["data-studeo-disabled"]},
-                    {"name": "data-studeo-data-table-last", "description": "The control to the last page: a link, or a disabled link while there is no such page. Its accessible name is Last page.", "states": ["data-studeo-disabled"]}
+                    {"name": "data-studeo-data-table-empty", "description": "The element that holds the message shown when the list has no rows."}
                 ],
                 "states": ["data-studeo-loading"]
             },
@@ -1101,31 +1097,18 @@
                 "role": "region",
                 "label": "aria-label",
                 "keyboard": [
-                    {"key": "Enter", "behavior": "On the search field: sends the search. On a paging control that has an address: follows it."}
+                    {"key": "Enter", "behavior": "On the search field: sends the search."}
                 ],
                 "aria": [
-                    {"attribute": "aria-busy", "when": "On the root, while another page is being loaded."},
-                    {"attribute": "aria-live", "when": "On the summary, with the value polite, so that a change of page is announced."},
-                    {"attribute": "aria-disabled", "when": "On a paging control that has no address: it is not a link and it carries the disabled state."}
+                    {"attribute": "aria-busy", "when": "On the root, while another page is being loaded."}
                 ]
             },
-            "script": {"need": "optional", "reason": "The search, the sorting and the paging work without script: the search is a form and the sort and the pages are links. Sending a new page size at once, when it is chosen, takes a small script."},
+            "script": {"need": "optional", "reason": "The search, the sorting and the paging work without script: the search is a form and the sort and the pages are links. Sending a new page size at once, when it is chosen, takes a small script, which the pagination brings."},
             "tokens": ["color-surface", "color-border", "color-text", "color-text-muted", "radius-container"],
-            "composes": ["table", "input", "select", "link", "icon"],
+            "composes": ["table", "input", "pagination", "icon"],
             "messages": [
                 "data-table.search",
-                "data-table.per-page",
-                "data-table.pagination",
-                "data-table.empty",
-                "data-table.summary",
-                "data-table.first",
-                "data-table.previous",
-                "data-table.next",
-                "data-table.last",
-                "data-table.first-short",
-                "data-table.previous-short",
-                "data-table.next-short",
-                "data-table.last-short"
+                "data-table.empty"
             ],
             "fixtures": [
                 {
@@ -1191,7 +1174,8 @@
                     "default": "md",
                     "description": "How wide the dialog is: narrow, medium or wide.",
                     "measures": [{"value": "sm", "dimension": "width", "length": "28rem"}, {"value": "md", "dimension": "width", "length": "36rem"}, {"value": "lg", "dimension": "width", "length": "48rem"}]
-                }
+                },
+                {"name": "blur", "type": "enum", "values": ["none", "sm", "md"], "default": "none", "description": "How much the page behind the dialog is blurred: not at all, a little or more. Where the user has asked for reduced transparency the blur is left out.", "measures": [{"value": "none", "dimension": "blur", "length": "0rem"}, {"value": "sm", "dimension": "blur", "length": "0.5rem"}, {"value": "md", "dimension": "blur", "length": "0.75rem"}]}
             ],
             "slots": [
                 {"name": "title", "description": "The title. It is the name of the dialog.", "required": true},
@@ -1387,6 +1371,211 @@
                 {"name": "disabled", "description": "A select that is switched off.", "props": {"label": "Role", "disabled": true, "options": ["Administrator", "Editor", "Viewer"]}, "slots": {}},
                 {"name": "loading", "description": "A select while something is in progress.", "props": {"label": "Role", "loading": true, "options": ["Administrator", "Editor", "Viewer"]}, "slots": {}},
                 {"name": "bare", "description": "A control with no label of its own, to be placed in a field.", "props": {"options": ["Administrator", "Editor", "Viewer"]}, "slots": {}}
+            ]
+        },
+        {
+            "name": "pagination",
+            "summary": "The way through the pages of a list that the server pages: a line that says where the user is, a choice of the page size and the controls to the first, the previous, the next and the last page.",
+            "status": "draft",
+            "props": [
+                {"name": "current-page", "type": "integer", "default": 1, "description": "The page shown (current_page of the answer)."},
+                {"name": "last-page", "type": "integer", "default": 1, "description": "The last page (last_page of the answer)."},
+                {"name": "per-page", "type": "integer", "default": 25, "description": "The number of rows on a page (per_page of the answer)."},
+                {"name": "per-page-options", "type": "list", "default": [10, 25, 50, 100], "description": "The page sizes that the server accepts, as whole numbers. They fill the choice of the page size. When it is left out, the sizes are 10, 25, 50 and 100. An empty list hides the choice."},
+                {"name": "total", "type": "integer", "default": 0, "description": "The number of rows in all pages (total of the answer)."},
+                {"name": "first-url", "type": "url", "description": "The address of the first page (first of the links of the answer). Left out when there is none."},
+                {"name": "last-url", "type": "url", "description": "The address of the last page. Left out when there is none."},
+                {"name": "previous-url", "type": "url", "description": "The address of the previous page. Left out when there is none."},
+                {"name": "next-url", "type": "url", "description": "The address of the next page. Left out when there is none."},
+                {"name": "form", "type": "string", "description": "The id of a form that the choice of the page size belongs to, so that it is sent with the other fields of that form. Without it, the pagination makes a form of its own that sends the choice by the method get, with the fields that the slot hidden holds."}
+            ],
+            "slots": [
+                {"name": "hidden", "description": "Hidden fields that the form of the pagination sends with the page size, such as the search and the sort that are in force, so that a change of the page size keeps them. Not used when the prop form is given.", "required": false}
+            ],
+            "attributes": {
+                "root": "data-studeo-pagination",
+                "parts": [
+                    {"name": "data-studeo-pagination-summary", "description": "The line that says how many rows there are and which page is shown, as: 60 results, page 1 of 3."},
+                    {"name": "data-studeo-pagination-per-page", "description": "The choice of how many rows a page holds. Its accessible name is Rows per page. It is a select. It is sent under the name per_page, and it offers the sizes of the prop per-page-options. It is left out when that list is empty."},
+                    {"name": "data-studeo-pagination-first", "description": "The control to the first page: a link, or a disabled link while there is no such page. Its accessible name is First page.", "states": ["data-studeo-disabled"]},
+                    {"name": "data-studeo-pagination-previous", "description": "The control to the previous page: a link, or a disabled link while there is no such page. Its accessible name is Previous page.", "states": ["data-studeo-disabled"]},
+                    {"name": "data-studeo-pagination-next", "description": "The control to the next page: a link, or a disabled link while there is no such page. Its accessible name is Next page.", "states": ["data-studeo-disabled"]},
+                    {"name": "data-studeo-pagination-last", "description": "The control to the last page: a link, or a disabled link while there is no such page. Its accessible name is Last page.", "states": ["data-studeo-disabled"]}
+                ],
+                "states": []
+            },
+            "attributesTarget": "root",
+            "accessibility": {
+                "role": "navigation",
+                "label": "aria-label",
+                "keyboard": [
+                    {"key": "Enter", "behavior": "On a paging control that has an address: follows it."}
+                ],
+                "aria": [
+                    {"attribute": "aria-live", "when": "On the summary, with the value polite, so that a change of page is announced."},
+                    {"attribute": "aria-disabled", "when": "On a paging control that has no address: it is not a link and it carries the disabled state."}
+                ]
+            },
+            "script": {"need": "optional", "reason": "The pages are links and the page size is a form, so the pagination works without script. Sending a new page size at once, when it is chosen, takes a small script."},
+            "tokens": ["color-text-muted"],
+            "composes": ["select", "link"],
+            "messages": ["pagination.pagination", "pagination.per-page", "pagination.summary", "pagination.first", "pagination.previous", "pagination.next", "pagination.last", "pagination.first-short", "pagination.previous-short", "pagination.next-short", "pagination.last-short"],
+            "fixtures": [
+                {"name": "default", "description": "The first of three pages.", "props": {"current-page": 1, "last-page": 3, "per-page": 25, "total": 60, "last-url": "/users?page=3", "next-url": "/users?page=2"}, "slots": {}},
+                {"name": "last-page", "description": "The last of three pages.", "props": {"current-page": 3, "last-page": 3, "per-page": 25, "total": 60, "first-url": "/users?page=1", "previous-url": "/users?page=2"}, "slots": {}},
+                {"name": "sizes", "description": "A list that offers its own page sizes.", "props": {"per-page": 20, "per-page-options": [10, 20, 40], "total": 60, "last-page": 3, "next-url": "/users?page=2", "last-url": "/users?page=3"}, "slots": {}},
+                {"name": "without-sizes", "description": "A list whose page size is fixed: the choice is not shown.", "props": {"per-page-options": [], "total": 60, "last-page": 3, "next-url": "/users?page=2", "last-url": "/users?page=3"}, "slots": {}},
+                {"name": "shared-form", "description": "A pagination whose page size is sent with the fields of a form that stands elsewhere.", "props": {"form": "users-filter", "total": 60, "last-page": 3, "next-url": "/users?page=2", "last-url": "/users?page=3"}, "slots": {}}
+            ]
+        },
+        {
+            "name": "textarea",
+            "summary": "A control for text of several lines.",
+            "status": "draft",
+            "props": [
+                {"name": "variant", "type": "enum", "values": ["outline", "filled"], "default": "outline", "description": "Whether the control is outlined (a border and the fill of a field) or filled (the surface colour, with a border that is clear only against the page: not for a control inside a card)."},
+                {"name": "rows", "type": "integer", "default": 3, "description": "The number of lines that the control shows before it scrolls, or grows."},
+                {"name": "max-rows", "type": "integer", "default": 12, "description": "The number of lines that a growing control reaches before it scrolls. Used only with grow."},
+                {"name": "grow", "type": "boolean", "default": false, "description": "The control grows with the text, up to max-rows, where the platform lets it."},
+                {"name": "maxlength", "type": "integer", "description": "The most characters that the control takes."},
+                {"name": "counter", "type": "boolean", "default": false, "description": "Shows how many characters are used out of maxlength, under the control. Needs maxlength."},
+                {"name": "label", "type": "string", "description": "The compact form: a label, which builds the field around the control."},
+                {"name": "hint", "type": "string", "description": "The compact form: a line that helps to fill the control in."},
+                {"name": "error", "type": "string", "description": "The compact form: the message that says why the value is refused. It also marks the control as invalid."},
+                {"name": "disabled", "type": "boolean", "default": false, "description": "The control cannot be changed or focused."},
+                {"name": "readonly", "type": "boolean", "default": false, "description": "The text can be read and selected but not changed."},
+                {"name": "loading", "type": "boolean", "default": false, "description": "The control shows that something is in progress."},
+                {"name": "control-class", "type": "class", "description": "Classes for the element that does the work, merged with its own. The author's classes win over them."}
+            ],
+            "slots": [
+                {"name": "default", "description": "The text that the control holds at first.", "required": false}
+            ],
+            "attributes": {
+                "root": "data-studeo-textarea",
+                "parts": [
+                    {"name": "data-studeo-textarea-control", "description": "The element that takes the text."},
+                    {"name": "data-studeo-textarea-counter", "description": "The line under the control that says how many characters are used out of the limit, as: 12 of 200."},
+                    {"name": "data-studeo-textarea-error", "description": "The element that holds the error message of the compact form."}
+                ],
+                "states": ["data-studeo-invalid", "data-studeo-disabled", "data-studeo-readonly", "data-studeo-loading"]
+            },
+            "attributesTarget": "data-studeo-textarea-control",
+            "accessibility": {
+                "role": "textbox",
+                "label": "associated-label",
+                "keyboard": [
+                    {"key": "Enter", "behavior": "Starts a new line."}
+                ],
+                "aria": [
+                    {"attribute": "aria-invalid", "when": "On the control, while the error is showing."},
+                    {"attribute": "aria-describedby", "when": "On the control, naming the hint, the counter and the error that are showing."},
+                    {"attribute": "aria-busy", "when": "On the control, while it is loading."},
+                    {"attribute": "aria-multiline", "when": "On the control, with the value true."}
+                ]
+            },
+            "script": {"need": "optional", "reason": "The control and its growth need no script. The counter follows the text by a small script; without it the counter shows the limit only."},
+            "tokens": ["color-surface", "color-border-strong", "color-field", "color-text", "color-text-muted", "color-focus-ring", "color-danger-text", "radius-control"],
+            "composes": ["field", "label", "error"],
+            "messages": ["textarea.counter", "textarea.limit"],
+            "fixtures": [
+                {"name": "default", "description": "A labelled textarea.", "props": {"label": "About you"}, "slots": {}},
+                {"name": "filled", "description": "A textarea of the filled variant.", "props": {"label": "About you", "variant": "filled"}, "slots": {}},
+                {"name": "rows", "description": "A tall textarea.", "props": {"label": "Notes", "rows": 6}, "slots": {}},
+                {"name": "grow", "description": "A textarea that grows with its text.", "props": {"label": "Notes", "grow": true, "max-rows": 8}, "slots": {"default": "One line."}},
+                {"name": "counter", "description": "A textarea that counts its characters.", "props": {"label": "About you", "maxlength": 200, "counter": true}, "slots": {"default": "Writes about trains."}},
+                {"name": "hint", "description": "A textarea with a hint.", "props": {"label": "About you", "hint": "A few words that others see."}, "slots": {}},
+                {"name": "invalid", "description": "A textarea whose value is refused.", "props": {"label": "About you", "error": "This is too long."}, "slots": {}},
+                {"name": "disabled", "description": "A textarea that is switched off.", "props": {"label": "About you", "disabled": true}, "slots": {}},
+                {"name": "readonly", "description": "A textarea that can be read but not changed.", "props": {"label": "About you", "readonly": true}, "slots": {"default": "Writes about trains."}},
+                {"name": "loading", "description": "A textarea while something is in progress.", "props": {"label": "About you", "loading": true}, "slots": {}},
+                {"name": "bare", "description": "A control with no label of its own, to be placed in a field.", "props": {}, "slots": {}}
+            ]
+        },
+        {
+            "name": "avatar",
+            "summary": "The picture of a person, or the initials of the name when there is no picture or it does not load.",
+            "status": "draft",
+            "props": [
+                {"name": "src", "type": "url", "description": "The address of the picture. Left out, the initials are shown."},
+                {"name": "srcset", "type": "string", "description": "The pictures of other widths, as the platform names them, for the sharper screens."},
+                {"name": "name", "type": "string", "required": true, "description": "The name of the person. The initials come from its first and its last word, and it is the accessible name of the avatar."},
+                {"name": "size", "type": "enum", "values": ["xs", "sm", "md", "lg", "xl"], "default": "md", "description": "The width and the height of the avatar.", "measures": [{"value": "xs", "dimension": "width", "length": "1.5rem"}, {"value": "sm", "dimension": "width", "length": "2rem"}, {"value": "md", "dimension": "width", "length": "2.5rem"}, {"value": "lg", "dimension": "width", "length": "4rem"}, {"value": "xl", "dimension": "width", "length": "6rem"}]},
+                {"name": "shape", "type": "enum", "values": ["circle", "square"], "default": "circle", "description": "Whether the avatar is a circle or a square with the corners of a control."},
+                {"name": "decorative", "type": "boolean", "default": false, "description": "The avatar adds nothing to the name that stands beside it, so assistive technology skips it."}
+            ],
+            "slots": [],
+            "attributes": {
+                "root": "data-studeo-avatar",
+                "parts": [
+                    {"name": "data-studeo-avatar-image", "description": "The picture. It lies over the initials, so that the initials show when there is no picture or it does not load."},
+                    {"name": "data-studeo-avatar-initials", "description": "The initials of the name, up to two letters, in capitals."}
+                ],
+                "states": []
+            },
+            "attributesTarget": "root",
+            "accessibility": {
+                "role": "img",
+                "label": "aria-label",
+                "keyboard": [],
+                "aria": [
+                    {"attribute": "aria-hidden", "when": "On the root, with the value true, while the avatar is decorative."}
+                ]
+            },
+            "script": {"need": "none", "reason": null},
+            "tokens": ["color-accent", "color-accent-foreground", "radius-control"],
+            "composes": [],
+            "fixtures": [
+                {"name": "default", "description": "An avatar with a picture.", "props": {"name": "Ada Lovelace", "src": "/avatars/ada.png"}, "slots": {}},
+                {"name": "initials", "description": "An avatar with no picture: the initials of the name.", "props": {"name": "Ada Lovelace"}, "slots": {}},
+                {"name": "one-word", "description": "A name of one word has one letter.", "props": {"name": "Ada"}, "slots": {}},
+                {"name": "square", "description": "An avatar with the corners of a control.", "props": {"name": "Ada Lovelace", "shape": "square"}, "slots": {}},
+                {"name": "large", "description": "An avatar of the largest size.", "props": {"name": "Ada Lovelace", "size": "xl"}, "slots": {}},
+                {"name": "small", "description": "An avatar of the smallest size.", "props": {"name": "Ada Lovelace", "size": "xs"}, "slots": {}},
+                {"name": "decorative", "description": "An avatar beside a name, which assistive technology skips.", "props": {"name": "Ada Lovelace", "decorative": true}, "slots": {}}
+            ]
+        },
+        {
+            "name": "badge",
+            "summary": "A small label that says what state or kind something is in, such as the status of an account.",
+            "status": "draft",
+            "props": [
+                {"name": "variant", "type": "enum", "values": ["neutral", "accent", "info", "success", "warning", "danger"], "default": "neutral", "description": "What the label is about: nothing in particular, the brand or one of the four kinds of message."},
+                {"name": "size", "type": "enum", "values": ["sm", "md"], "default": "md", "description": "The height of the label.", "measures": [{"value": "sm", "dimension": "height", "length": "1.25rem"}, {"value": "md", "dimension": "height", "length": "1.5rem"}]},
+                {"name": "icon", "type": "icon", "description": "The icon shown before the text. The slot of the same name replaces it."},
+                {"name": "dot", "type": "boolean", "default": false, "description": "Shows a small filled circle before the text, in the colour of the text."}
+            ],
+            "slots": [
+                {"name": "default", "description": "The words of the label. They carry the meaning, so the colour never stands alone.", "required": true},
+                {"name": "icon", "description": "Any content in place of the icon before the text.", "required": false}
+            ],
+            "attributes": {
+                "root": "data-studeo-badge",
+                "parts": [
+                    {"name": "data-studeo-badge-icon", "description": "The element that holds the icon."},
+                    {"name": "data-studeo-badge-dot", "description": "The small circle before the text."}
+                ],
+                "states": []
+            },
+            "attributesTarget": "root",
+            "accessibility": {
+                "role": "none",
+                "label": "content",
+                "keyboard": [],
+                "aria": []
+            },
+            "script": {"need": "none", "reason": null},
+            "tokens": ["color-field", "color-text-muted", "color-accent-subtle", "color-accent-text", "color-info-subtle", "color-info-text", "color-success-subtle", "color-success-text", "color-warning-subtle", "color-warning-text", "color-danger-subtle", "color-danger-text", "radius-pill"],
+            "composes": ["icon"],
+            "fixtures": [
+                {"name": "default", "description": "A neutral label.", "props": {}, "slots": {"default": "Member"}},
+                {"name": "accent", "description": "A label in the colour of the brand.", "props": {"variant": "accent"}, "slots": {"default": "Administrator"}},
+                {"name": "info", "description": "A label about something to know.", "props": {"variant": "info"}, "slots": {"default": "Invited"}},
+                {"name": "success", "description": "A label about something that is well.", "props": {"variant": "success"}, "slots": {"default": "Active"}},
+                {"name": "warning", "description": "A label about something that asks for care.", "props": {"variant": "warning"}, "slots": {"default": "Unverified"}},
+                {"name": "danger", "description": "A label about something that is wrong.", "props": {"variant": "danger"}, "slots": {"default": "Suspended"}},
+                {"name": "dot", "description": "A label with a dot before the text.", "props": {"variant": "success", "dot": true}, "slots": {"default": "Active"}},
+                {"name": "with-icon", "description": "A label with an icon before the text.", "props": {"variant": "warning", "icon": "warning"}, "slots": {"default": "Unverified"}},
+                {"name": "small", "description": "A label of the smaller height.", "props": {"size": "sm"}, "slots": {"default": "Member"}}
             ]
         }
     ]

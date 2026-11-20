@@ -65,12 +65,12 @@ it('finds the mistake that was seeded', function (Closure $seed, string $fragmen
         'message [alert.dismiss] declares the placeholder [what] that its text does not use',
     ],
     'a form for one with other placeholders than the text' => [
-        fn (array $s): array => Spec::set($s, 'messages.'.messageTestMessage($s, 'data-table.summary').'.plural.one', ':total result'),
-        'message [data-table.summary] has a form for one with other placeholders than its text',
+        fn (array $s): array => Spec::set($s, 'messages.'.messageTestMessage($s, 'pagination.summary').'.plural.one', ':total result'),
+        'message [pagination.summary] has a form for one with other placeholders than its text',
     ],
     'a count by a placeholder that is not declared' => [
-        fn (array $s): array => Spec::set($s, 'messages.'.messageTestMessage($s, 'data-table.summary').'.plural.by', 'amount'),
-        'message [data-table.summary] counts by [amount], which it does not declare',
+        fn (array $s): array => Spec::set($s, 'messages.'.messageTestMessage($s, 'pagination.summary').'.plural.by', 'amount'),
+        'message [pagination.summary] counts by [amount], which it does not declare',
     ],
     'a variable that two components declare' => [
         fn (array $s): array => Spec::set($s, 'components.'.messageTestComponent($s, 'table').'.variables', $s['components'][messageTestComponent($s, 'code-input')]['variables']),

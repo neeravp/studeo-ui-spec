@@ -53,6 +53,10 @@ A component in `components.json` has:
 | [`toast`](docs/components.md#toast) | A short message that appears over the page to confirm something. A message of success or information hides itself after a few seconds. | required |
 | [`toast-region`](docs/components.md#toast-region) | The place at the bottom end of the page where toasts appear, one after another. | required |
 | [`select`](docs/components.md#select) | A control that picks one value from a list of options. The closed control looks the same everywhere; the open list is the platform's. | none |
+| [`pagination`](docs/components.md#pagination) | The way through the pages of a list that the server pages: a line that says where the user is, a choice of the page size and the controls to the first, the previous, the next and the last page. | optional |
+| [`textarea`](docs/components.md#textarea) | A control for text of several lines. | optional |
+| [`avatar`](docs/components.md#avatar) | The picture of a person, or the initials of the name when there is no picture or it does not load. | none |
+| [`badge`](docs/components.md#badge) | A small label that says what state or kind something is in, such as the status of an account. | none |
 <!-- /generated:components -->
 
 ### Messages and variables

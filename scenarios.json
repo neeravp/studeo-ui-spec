@@ -545,37 +545,6 @@
             ]
         },
         {
-            "id": "data-table-says-which-page-it-shows",
-            "component": "data-table",
-            "fixture": "data-table.default",
-            "summary": "A data table says how many rows there are and which page is shown, and the line is announced when it changes.",
-            "steps": [
-                {"action": "expectText", "target": {"attribute": "data-studeo-data-table-summary"}, "text": "60 results, page 1 of 3"},
-                {"action": "expectAttribute", "target": {"attribute": "data-studeo-data-table-summary"}, "attribute": "aria-live", "value": "polite"}
-            ]
-        },
-        {
-            "id": "data-table-has-no-previous-page-on-the-first-page",
-            "component": "data-table",
-            "fixture": "data-table.default",
-            "summary": "On the first page the controls to go back are not links and carry the disabled state; the controls to go on are links.",
-            "steps": [
-                {"action": "expectAttribute", "target": {"attribute": "data-studeo-data-table-previous"}, "attribute": "aria-disabled", "value": "true"},
-                {"action": "expectAttribute", "target": {"attribute": "data-studeo-data-table-previous"}, "attribute": "data-studeo-disabled"},
-                {"action": "expectVisible", "target": {"role": "link", "name": "Next page"}}
-            ]
-        },
-        {
-            "id": "data-table-has-no-next-page-on-the-last-page",
-            "component": "data-table",
-            "fixture": "data-table.last-page",
-            "summary": "On the last page the controls to go on are not links; the controls to go back are links.",
-            "steps": [
-                {"action": "expectAttribute", "target": {"attribute": "data-studeo-data-table-next"}, "attribute": "aria-disabled", "value": "true"},
-                {"action": "expectVisible", "target": {"role": "link", "name": "Previous page"}}
-            ]
-        },
-        {
             "id": "data-table-can-be-searched-and-resized",
             "component": "data-table",
             "fixture": "data-table.default",
@@ -815,6 +784,194 @@
             "steps": [
                 {"action": "expectAttribute", "target": {"role": "textbox", "name": "Authentication code"}, "attribute": "aria-busy", "value": "true"},
                 {"action": "expectAttribute", "target": {"attribute": "data-studeo-code-input"}, "attribute": "data-studeo-loading"}
+            ]
+        },
+        {
+            "id": "pagination-says-which-page-it-shows",
+            "component": "pagination",
+            "fixture": "pagination.default",
+            "summary": "A pagination says how many rows there are and which page is shown, and the line is announced when it changes.",
+            "steps": [
+                {"action": "expectText", "target": {"attribute": "data-studeo-pagination-summary"}, "text": "60 results, page 1 of 3"},
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-pagination-summary"}, "attribute": "aria-live", "value": "polite"}
+            ]
+        },
+        {
+            "id": "pagination-has-no-previous-page-on-the-first-page",
+            "component": "pagination",
+            "fixture": "pagination.default",
+            "summary": "On the first page the controls to go back are not links and carry the disabled state; the controls to go on are links.",
+            "steps": [
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-pagination-first"}, "attribute": "aria-disabled", "value": "true"},
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-pagination-first"}, "attribute": "data-studeo-disabled"},
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-pagination-previous"}, "attribute": "aria-disabled", "value": "true"},
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-pagination-previous"}, "attribute": "data-studeo-disabled"},
+                {"action": "expectVisible", "target": {"role": "link", "name": "Next page"}}
+            ]
+        },
+        {
+            "id": "pagination-has-no-next-page-on-the-last-page",
+            "component": "pagination",
+            "fixture": "pagination.last-page",
+            "summary": "On the last page the controls to go on are not links and carry the disabled state; the controls to go back are links.",
+            "steps": [
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-pagination-next"}, "attribute": "aria-disabled", "value": "true"},
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-pagination-next"}, "attribute": "data-studeo-disabled"},
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-pagination-last"}, "attribute": "aria-disabled", "value": "true"},
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-pagination-last"}, "attribute": "data-studeo-disabled"},
+                {"action": "expectVisible", "target": {"role": "link", "name": "Previous page"}}
+            ]
+        },
+        {
+            "id": "pagination-offers-a-choice-of-the-page-size",
+            "component": "pagination",
+            "fixture": "pagination.sizes",
+            "summary": "A pagination offers a choice of the page size, named by its words.",
+            "steps": [
+                {"action": "expectVisible", "target": {"role": "combobox", "name": "Rows per page"}}
+            ]
+        },
+        {
+            "id": "pagination-hides-the-choice-of-the-page-size-when-there-are-no-sizes",
+            "component": "pagination",
+            "fixture": "pagination.without-sizes",
+            "summary": "A pagination with an empty list of sizes shows the summary and the controls but no choice of the page size.",
+            "steps": [
+                {"action": "expectVisible", "target": {"attribute": "data-studeo-pagination-summary"}},
+                {"action": "expectHidden", "target": {"attribute": "data-studeo-pagination-per-page"}}
+            ]
+        },
+        {
+            "id": "textarea-is-named-by-its-label",
+            "component": "textarea",
+            "fixture": "textarea.default",
+            "summary": "A textarea is found by its label, takes the focus and says that it takes several lines.",
+            "steps": [
+                {"action": "focus", "target": {"role": "textbox", "name": "About you"}},
+                {"action": "expectFocus", "target": {"role": "textbox", "name": "About you"}},
+                {"action": "expectAttribute", "target": {"role": "textbox", "name": "About you"}, "attribute": "aria-multiline", "value": "true"}
+            ]
+        },
+        {
+            "id": "textarea-reports-its-error",
+            "component": "textarea",
+            "fixture": "textarea.invalid",
+            "summary": "A textarea whose value is refused is invalid and shows the error.",
+            "steps": [
+                {"action": "expectAttribute", "target": {"role": "textbox", "name": "About you"}, "attribute": "aria-invalid", "value": "true"},
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-textarea"}, "attribute": "data-studeo-invalid"},
+                {"action": "expectText", "target": {"attribute": "data-studeo-textarea-error"}, "text": "This is too long."}
+            ]
+        },
+        {
+            "id": "textarea-is-described-by-its-hint",
+            "component": "textarea",
+            "fixture": "textarea.hint",
+            "summary": "The control of a textarea with a hint is described by it.",
+            "steps": [
+                {"action": "expectAttribute", "target": {"role": "textbox", "name": "About you"}, "attribute": "aria-describedby"}
+            ]
+        },
+        {
+            "id": "textarea-says-how-much-of-its-limit-is-used",
+            "component": "textarea",
+            "fixture": "textarea.counter",
+            "summary": "A textarea with a limit shows how many characters are used out of it.",
+            "steps": [
+                {"action": "expectText", "target": {"attribute": "data-studeo-textarea-counter"}, "text": "20 of 200"}
+            ]
+        },
+        {
+            "id": "textarea-can-be-switched-off",
+            "component": "textarea",
+            "fixture": "textarea.disabled",
+            "summary": "A disabled textarea carries the disabled state.",
+            "steps": [
+                {"action": "expectAttribute", "target": {"role": "textbox", "name": "About you"}, "attribute": "disabled"},
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-textarea"}, "attribute": "data-studeo-disabled"}
+            ]
+        },
+        {
+            "id": "textarea-can-be-read-only",
+            "component": "textarea",
+            "fixture": "textarea.readonly",
+            "summary": "A read-only textarea carries the read-only state.",
+            "steps": [
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-textarea"}, "attribute": "data-studeo-readonly"}
+            ]
+        },
+        {
+            "id": "textarea-loading-is-announced",
+            "component": "textarea",
+            "fixture": "textarea.loading",
+            "summary": "A loading textarea is busy and carries the loading state.",
+            "steps": [
+                {"action": "expectAttribute", "target": {"role": "textbox", "name": "About you"}, "attribute": "aria-busy", "value": "true"},
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-textarea"}, "attribute": "data-studeo-loading"}
+            ]
+        },
+        {
+            "id": "avatar-is-named-by-the-name",
+            "component": "avatar",
+            "fixture": "avatar.default",
+            "summary": "An avatar with a picture is an image that is named by the name of the person.",
+            "steps": [
+                {"action": "expectVisible", "target": {"role": "img", "name": "Ada Lovelace"}},
+                {"action": "expectVisible", "target": {"attribute": "data-studeo-avatar-image"}}
+            ]
+        },
+        {
+            "id": "avatar-shows-initials-when-it-has-no-picture",
+            "component": "avatar",
+            "fixture": "avatar.initials",
+            "summary": "An avatar with no picture shows the first letters of the first and the last word of the name.",
+            "steps": [
+                {"action": "expectText", "target": {"attribute": "data-studeo-avatar-initials"}, "text": "AL"}
+            ]
+        },
+        {
+            "id": "avatar-with-one-word-shows-one-letter",
+            "component": "avatar",
+            "fixture": "avatar.one-word",
+            "summary": "An avatar whose name is one word shows one letter.",
+            "steps": [
+                {"action": "expectText", "target": {"attribute": "data-studeo-avatar-initials"}, "text": "A"}
+            ]
+        },
+        {
+            "id": "avatar-can-be-skipped-by-assistive-technology",
+            "component": "avatar",
+            "fixture": "avatar.decorative",
+            "summary": "A decorative avatar is hidden from assistive technology.",
+            "steps": [
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-avatar"}, "attribute": "aria-hidden", "value": "true"}
+            ]
+        },
+        {
+            "id": "badge-shows-its-words",
+            "component": "badge",
+            "fixture": "badge.danger",
+            "summary": "A badge shows its words, which carry the meaning.",
+            "steps": [
+                {"action": "expectText", "target": {"attribute": "data-studeo-badge"}, "text": "Suspended"}
+            ]
+        },
+        {
+            "id": "badge-shows-its-dot",
+            "component": "badge",
+            "fixture": "badge.dot",
+            "summary": "A badge with a dot shows the dot before the text.",
+            "steps": [
+                {"action": "expectVisible", "target": {"attribute": "data-studeo-badge-dot"}}
+            ]
+        },
+        {
+            "id": "badge-shows-its-icon",
+            "component": "badge",
+            "fixture": "badge.with-icon",
+            "summary": "A badge with an icon shows the icon before the text.",
+            "steps": [
+                {"action": "expectVisible", "target": {"attribute": "data-studeo-badge-icon"}}
             ]
         }
     ]

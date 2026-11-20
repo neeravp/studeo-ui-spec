@@ -174,13 +174,13 @@
             ]
         },
         "measure": {
-            "description": "The length that one value of an enum prop stands for: a height, a width, the side of a square or the size of the text.",
+            "description": "The length that one value of an enum prop stands for: a height, a width, the side of a square, the size of the text or the radius of a blur.",
             "type": "object",
             "additionalProperties": false,
             "required": ["value", "dimension", "length"],
             "properties": {
                 "value": {"$ref": "#/$defs/name"},
-                "dimension": {"enum": ["height", "width", "size", "font-size"]},
+                "dimension": {"enum": ["height", "width", "size", "font-size", "blur"]},
                 "length": {"type": "string", "pattern": "^[0-9]+(\\.[0-9]+)?rem$"}
             }
         },

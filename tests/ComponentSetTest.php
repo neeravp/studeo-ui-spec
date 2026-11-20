@@ -29,6 +29,10 @@ it('declares a component that the screens need', function (string $name) {
     'dialog',
     'toast',
     'toast-region',
+    'pagination',
+    'textarea',
+    'avatar',
+    'badge',
 ]);
 
 it('gives every component at least one scenario', function () {
@@ -38,18 +42,30 @@ it('gives every component at least one scenario', function () {
     expect(array_values(array_diff($components, $covered)))->toBe([]);
 });
 
-it('puts the disabled state of a data table on its paging controls and not on the table', function () {
-    $table = array_column(Spec::data('components')['components'], null, 'name')['data-table'];
-    $parts = array_column($table['attributes']['parts'], null, 'name');
+it('puts the disabled state of a list on the paging controls of its pagination and not on the table or the pagination', function () {
+    $components = array_column(Spec::data('components')['components'], null, 'name');
+    $table = $components['data-table'];
+    $tableParts = array_column($table['attributes']['parts'], null, 'name');
+    $pagination = $components['pagination'];
+    $parts = array_column($pagination['attributes']['parts'], null, 'name');
 
     expect($table['attributes']['states'])->not->toContain('data-studeo-disabled');
     expect($table['attributes']['states'])->toContain('data-studeo-loading');
+    expect($pagination['attributes']['states'])->not->toContain('data-studeo-disabled');
 
     foreach (['first', 'previous', 'next', 'last'] as $control) {
-        expect($parts["data-studeo-data-table-{$control}"]['states'] ?? [])->toBe(['data-studeo-disabled']);
+        expect($parts["data-studeo-pagination-{$control}"]['states'] ?? [])->toBe(['data-studeo-disabled']);
     }
 
-    expect($parts['data-studeo-data-table-search']['states'] ?? [])->toBe([]);
+    expect($tableParts['data-studeo-data-table-search']['states'] ?? [])->toBe([]);
+});
+
+it('leaves no paging part on the data table, which composes the pagination', function () {
+    $table = array_column(Spec::data('components')['components'], null, 'name')['data-table'];
+    $names = array_column($table['attributes']['parts'], 'name');
+
+    expect($table['composes'])->toContain('pagination')->not->toContain('select')->not->toContain('link');
+    expect($names)->toBe(['data-studeo-data-table-toolbar', 'data-studeo-data-table-search', 'data-studeo-data-table-empty']);
 });
 
 it('says which addresses a link uses, and that the words of an external link can be translated', function () {
@@ -73,7 +89,7 @@ it('says what script a component needs, in the cases that the scenarios exercise
     'a switch keeps its state attribute in step by script' => ['switch', 'state attribute of the root in step'],
     'a checkbox keeps its state attributes in step by script' => ['checkbox', 'state attributes of the root in step'],
     'a dialog is made modal by script' => ['dialog', 'Making the dialog modal'],
-    'a data table sends a page size at once by script' => ['data-table', 'new page size'],
+    'a pagination sends a page size at once by script' => ['pagination', 'new page size'],
     'a loading switch ignores the keyboard by script' => ['switch', 'ignored by script'],
     'a mixed checkbox is drawn empty without script' => ['checkbox', 'drawn empty'],
     'the reveal button does nothing without script' => ['input', 'reveal button does nothing'],
@@ -138,13 +154,13 @@ it('lets a link look like a button and says what a link with no address is', fun
     }
 });
 
-it('builds the paging controls of a data table from links', function () {
-    $table = array_column(Spec::data('components')['components'], null, 'name')['data-table'];
+it('builds the paging controls of a pagination from links', function () {
+    $pagination = array_column(Spec::data('components')['components'], null, 'name')['pagination'];
 
-    expect($table['composes'])->toContain('link')->not->toContain('button');
+    expect($pagination['composes'])->toContain('link')->not->toContain('button');
 
     foreach (['first', 'previous', 'next', 'last'] as $control) {
-        $part = array_column($table['attributes']['parts'], null, 'name')["data-studeo-data-table-{$control}"];
+        $part = array_column($pagination['attributes']['parts'], null, 'name')["data-studeo-pagination-{$control}"];
 
         expect($part['description'])->toContain('a disabled link');
     }
@@ -188,26 +204,113 @@ it('shows the options of a select as options with labels and as plain whole numb
     expect($fixtures['plain']['props']['value'])->toBe('25');
 });
 
-it('offers the page sizes of a data table through its select, from a list of whole numbers', function () {
-    $table = array_column(Spec::data('components')['components'], null, 'name')['data-table'];
-    $props = array_column($table['props'], null, 'name');
-    $parts = array_column($table['attributes']['parts'], null, 'name');
+it('offers the page sizes of a pagination through its select, from a list of whole numbers, and hides the select when there are none', function () {
+    $pagination = array_column(Spec::data('components')['components'], null, 'name')['pagination'];
+    $props = array_column($pagination['props'], null, 'name');
+    $parts = array_column($pagination['attributes']['parts'], null, 'name');
 
     expect($props['per-page-options']['type'])->toBe('list');
     expect($props['per-page-options']['default'])->toBe([10, 25, 50, 100]);
-    expect($props['per-page-options']['description'])->toContain('10, 25, 50 and 100');
-    expect($table['composes'])->toContain('select');
-    expect($parts['data-studeo-data-table-per-page']['description'])->toContain('is a select')->toContain('per-page-options');
+    expect($props['per-page-options']['description'])->toContain('10, 25, 50 and 100')->toContain('empty list hides');
+    expect($pagination['composes'])->toContain('select');
+    expect($parts['data-studeo-pagination-per-page']['description'])->toContain('is a select')->toContain('per-page-options');
 });
 
-it('names the fields that a data table sends', function () {
-    $table = array_column(Spec::data('components')['components'], null, 'name')['data-table'];
+it('names the fields that a list sends', function () {
+    $components = array_column(Spec::data('components')['components'], null, 'name');
+    $table = $components['data-table'];
     $parts = array_column($table['attributes']['parts'], null, 'name');
+    $paging = array_column($components['pagination']['attributes']['parts'], null, 'name');
     $props = array_column($table['props'], null, 'name');
 
     expect($parts['data-studeo-data-table-search']['description'])->toContain('name search');
-    expect($parts['data-studeo-data-table-per-page']['description'])->toContain('name per_page');
+    expect($paging['data-studeo-pagination-per-page']['description'])->toContain('name per_page');
     expect($props['sort']['description'])->toContain('name sort');
+});
+
+it('lets a pagination share the form of the control that holds it, or carry the other values of the query itself', function () {
+    $pagination = array_column(Spec::data('components')['components'], null, 'name')['pagination'];
+    $props = array_column($pagination['props'], null, 'name');
+    $slots = array_column($pagination['slots'], null, 'name');
+
+    expect($props['form']['type'])->toBe('string');
+    expect($props['form']['description'])->toContain('id of a form');
+    expect($slots['hidden']['required'])->toBeFalse();
+    expect($slots['hidden']['description'])->toContain('Hidden fields');
+});
+
+it('hands the paging of a data table to the pagination, with the same props and the id of its own form', function () {
+    $table = array_column(Spec::data('components')['components'], null, 'name')['data-table'];
+    $pagination = array_column(Spec::data('components')['components'], null, 'name')['pagination'];
+
+    foreach (['current-page', 'last-page', 'per-page', 'per-page-options', 'total', 'first-url', 'last-url', 'previous-url', 'next-url'] as $prop) {
+        $own = array_column($table['props'], null, 'name')[$prop];
+        $given = array_column($pagination['props'], null, 'name')[$prop];
+
+        expect([$own['type'], $own['default'] ?? null])->toBe([$given['type'], $given['default'] ?? null]);
+    }
+
+    expect($table['script']['reason'])->toContain('pagination');
+});
+
+it('declares a textarea that is a text control with rows, a limit and a counter', function () {
+    $textarea = array_column(Spec::data('components')['components'], null, 'name')['textarea'];
+    $props = array_column($textarea['props'], null, 'name');
+
+    expect($textarea['composes'])->toBe(['field', 'label', 'error']);
+    expect($textarea['attributesTarget'])->toBe('data-studeo-textarea-control');
+    expect($props['rows']['default'])->toBe(3);
+    expect($props['max-rows']['default'])->toBe(12);
+    expect($props['grow']['default'])->toBeFalse();
+    expect($props['counter']['default'])->toBeFalse();
+    expect($props['maxlength']['type'])->toBe('integer');
+    expect($props)->not->toHaveKey('size');
+    expect(array_column($textarea['attributes']['parts'], 'name'))->toBe(['data-studeo-textarea-control', 'data-studeo-textarea-counter', 'data-studeo-textarea-error']);
+    expect($textarea['attributes']['states'])->toBe(['data-studeo-invalid', 'data-studeo-disabled', 'data-studeo-readonly', 'data-studeo-loading']);
+});
+
+it('declares an avatar with a name, five sizes with measures and the initials under the picture', function () {
+    $avatar = array_column(Spec::data('components')['components'], null, 'name')['avatar'];
+    $props = array_column($avatar['props'], null, 'name');
+    $measures = array_column($props['size']['measures'], 'length', 'value');
+
+    expect($props['name']['required'])->toBeTrue();
+    expect($props['size']['values'])->toBe(['xs', 'sm', 'md', 'lg', 'xl']);
+    expect($measures)->toBe(['xs' => '1.5rem', 'sm' => '2rem', 'md' => '2.5rem', 'lg' => '4rem', 'xl' => '6rem']);
+    expect(array_unique(array_column($props['size']['measures'], 'dimension')))->toBe(['width']);
+    expect($props['shape']['values'])->toBe(['circle', 'square']);
+    expect($props['decorative']['default'])->toBeFalse();
+    expect(array_column($avatar['attributes']['parts'], 'name'))->toBe(['data-studeo-avatar-image', 'data-studeo-avatar-initials']);
+    expect($avatar['script']['need'])->toBe('none');
+    expect($avatar['tokens'])->toContain('color-accent')->toContain('color-accent-foreground');
+    expect(array_column($avatar['attributes']['parts'], 'description')[0])->toContain('over the initials');
+});
+
+it('declares a badge with six variants that read the subtle and text colours of the roles', function () {
+    $badge = array_column(Spec::data('components')['components'], null, 'name')['badge'];
+    $props = array_column($badge['props'], null, 'name');
+
+    expect($props['variant']['values'])->toBe(['neutral', 'accent', 'info', 'success', 'warning', 'danger']);
+    expect($props['size']['values'])->toBe(['sm', 'md']);
+    expect($props['dot']['default'])->toBeFalse();
+    expect(array_column($badge['slots'], 'required', 'name'))->toBe(['default' => true, 'icon' => false]);
+    expect($badge['script']['need'])->toBe('none');
+
+    foreach (['info', 'success', 'warning', 'danger'] as $role) {
+        expect($badge['tokens'])->toContain("color-{$role}-subtle")->toContain("color-{$role}-text");
+    }
+});
+
+it('blurs the page behind a dialog by a value of its own, none by default', function () {
+    $dialog = array_column(Spec::data('components')['components'], null, 'name')['dialog'];
+    $blur = array_column($dialog['props'], null, 'name')['blur'];
+
+    expect($blur['type'])->toBe('enum');
+    expect($blur['values'])->toBe(['none', 'sm', 'md']);
+    expect($blur['default'])->toBe('none');
+    expect(array_column($blur['measures'], 'length', 'value'))->toBe(['none' => '0rem', 'sm' => '0.5rem', 'md' => '0.75rem']);
+    expect(array_unique(array_column($blur['measures'], 'dimension')))->toBe(['blur']);
+    expect($blur['description'])->toContain('reduced transparency');
 });
 
 it('builds a table from a column, a row and a cell, each shown in the fixture that holds it', function () {

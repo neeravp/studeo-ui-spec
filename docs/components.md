@@ -1036,7 +1036,7 @@ Role: `cell`. Name from: content.
 
 A table of a long list that the server pages, sorts and filters, with a search, filters and paging controls.
 
-**Script:** optional. The search, the sorting and the paging work without script: the search is a form and the sort and the pages are links. Sending a new page size at once, when it is chosen, takes a small script.
+**Script:** optional. The search, the sorting and the paging work without script: the search is a form and the sort and the pages are links. Sending a new page size at once, when it is chosen, takes a small script, which the pagination brings.
 
 **Props**
 
@@ -1074,14 +1074,7 @@ A table of a long list that the server pages, sorts and filters, with a search, 
 | `data-studeo-data-table-toolbar` | part | The element that holds the search, the filters and the actions. |
 | `data-studeo-data-table-search` | part | The field that takes the text to search for. Its accessible name is Search. It is sent under the name search, and sending it asks the server for the first page. |
 | `data-studeo-data-table-empty` | part | The element that holds the message shown when the list has no rows. |
-| `data-studeo-data-table-summary` | part | The line that says how many rows there are and which page is shown, as: 60 results, page 1 of 3. |
-| `data-studeo-data-table-per-page` | part | The choice of how many rows a page holds. Its accessible name is Rows per page. It is a select. It is sent under the name per_page, and it offers the sizes of the prop per-page-options. |
-| `data-studeo-data-table-first` | part | The control to the first page: a link, or a disabled link while there is no such page. Its accessible name is First page. |
-| `data-studeo-data-table-previous` | part | The control to the previous page: a link, or a disabled link while there is no such page. Its accessible name is Previous page. |
-| `data-studeo-data-table-next` | part | The control to the next page: a link, or a disabled link while there is no such page. Its accessible name is Next page. |
-| `data-studeo-data-table-last` | part | The control to the last page: a link, or a disabled link while there is no such page. Its accessible name is Last page. |
 | `data-studeo-loading` | state | See the states of the specification. |
-| `data-studeo-disabled` | state | See the states of the specification. Carried by the parts `data-studeo-data-table-first`, `data-studeo-data-table-previous`, `data-studeo-data-table-next`, `data-studeo-data-table-last`. |
 
 Attributes that an author writes on the component go to the root element.
 
@@ -1091,17 +1084,15 @@ Role: `region`. Name from: aria-label.
 
 | Key | Behavior |
 | --- | --- |
-| `Enter` | On the search field: sends the search. On a paging control that has an address: follows it. |
+| `Enter` | On the search field: sends the search. |
 
 | ARIA attribute | When |
 | --- | --- |
 | `aria-busy` | On the root, while another page is being loaded. |
-| `aria-live` | On the summary, with the value polite, so that a change of page is announced. |
-| `aria-disabled` | On a paging control that has no address: it is not a link and it carries the disabled state. |
 
 **Tokens:** `color-surface`, `color-border`, `color-text`, `color-text-muted`, `radius-container`
 
-**Composes:** `table`, `input`, `select`, `link`, `icon`
+**Composes:** `table`, `input`, `pagination`, `icon`
 
 **Fixtures**
 
@@ -1128,6 +1119,7 @@ A window over the page that asks for the user's attention until it is closed. Wh
 | --- | --- | --- | --- |
 | `open` | boolean | `false` | Whether the dialog is open. |
 | `size` | one of `sm`, `md`, `lg` | `md` | How wide the dialog is: narrow, medium or wide. |
+| `blur` | one of `none`, `sm`, `md` | `none` | How much the page behind the dialog is blurred: not at all, a little or more. Where the user has asked for reduced transparency the blur is left out. |
 
 **Measures**
 
@@ -1136,6 +1128,9 @@ A window over the page that asks for the user's attention until it is closed. Wh
 | `dialog.size` | `sm` | width | `28rem` |
 | `dialog.size` | `md` | width | `36rem` |
 | `dialog.size` | `lg` | width | `48rem` |
+| `dialog.blur` | `none` | blur | `0rem` |
+| `dialog.blur` | `sm` | blur | `0.5rem` |
+| `dialog.blur` | `md` | blur | `0.75rem` |
 
 **Slots**
 
@@ -1364,4 +1359,275 @@ Role: `combobox`. Name from: associated-label.
 | `select.disabled` | A select that is switched off. |
 | `select.loading` | A select while something is in progress. |
 | `select.bare` | A control with no label of its own, to be placed in a field. |
+
+## pagination
+
+The way through the pages of a list that the server pages: a line that says where the user is, a choice of the page size and the controls to the first, the previous, the next and the last page.
+
+**Script:** optional. The pages are links and the page size is a form, so the pagination works without script. Sending a new page size at once, when it is chosen, takes a small script.
+
+**Props**
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `current-page` | integer | `1` | The page shown (current_page of the answer). |
+| `last-page` | integer | `1` | The last page (last_page of the answer). |
+| `per-page` | integer | `25` | The number of rows on a page (per_page of the answer). |
+| `per-page-options` | list | `[10,25,50,100]` | The page sizes that the server accepts, as whole numbers. They fill the choice of the page size. When it is left out, the sizes are 10, 25, 50 and 100. An empty list hides the choice. |
+| `total` | integer | `0` | The number of rows in all pages (total of the answer). |
+| `first-url` | url |  | The address of the first page (first of the links of the answer). Left out when there is none. |
+| `last-url` | url |  | The address of the last page. Left out when there is none. |
+| `previous-url` | url |  | The address of the previous page. Left out when there is none. |
+| `next-url` | url |  | The address of the next page. Left out when there is none. |
+| `form` | string |  | The id of a form that the choice of the page size belongs to, so that it is sent with the other fields of that form. Without it, the pagination makes a form of its own that sends the choice by the method get, with the fields that the slot hidden holds. |
+
+**Slots**
+
+| Slot | Required | Description |
+| --- | --- | --- |
+| `hidden` | no | Hidden fields that the form of the pagination sends with the page size, such as the search and the sort that are in force, so that a change of the page size keeps them. Not used when the prop form is given. |
+
+**Attributes**
+
+| Attribute | Kind | Description |
+| --- | --- | --- |
+| `data-studeo-pagination` | root | The root element. |
+| `data-studeo-pagination-summary` | part | The line that says how many rows there are and which page is shown, as: 60 results, page 1 of 3. |
+| `data-studeo-pagination-per-page` | part | The choice of how many rows a page holds. Its accessible name is Rows per page. It is a select. It is sent under the name per_page, and it offers the sizes of the prop per-page-options. It is left out when that list is empty. |
+| `data-studeo-pagination-first` | part | The control to the first page: a link, or a disabled link while there is no such page. Its accessible name is First page. |
+| `data-studeo-pagination-previous` | part | The control to the previous page: a link, or a disabled link while there is no such page. Its accessible name is Previous page. |
+| `data-studeo-pagination-next` | part | The control to the next page: a link, or a disabled link while there is no such page. Its accessible name is Next page. |
+| `data-studeo-pagination-last` | part | The control to the last page: a link, or a disabled link while there is no such page. Its accessible name is Last page. |
+| `data-studeo-disabled` | state | See the states of the specification. Carried by the parts `data-studeo-pagination-first`, `data-studeo-pagination-previous`, `data-studeo-pagination-next`, `data-studeo-pagination-last`. |
+
+Attributes that an author writes on the component go to the root element.
+
+**Accessibility**
+
+Role: `navigation`. Name from: aria-label.
+
+| Key | Behavior |
+| --- | --- |
+| `Enter` | On a paging control that has an address: follows it. |
+
+| ARIA attribute | When |
+| --- | --- |
+| `aria-live` | On the summary, with the value polite, so that a change of page is announced. |
+| `aria-disabled` | On a paging control that has no address: it is not a link and it carries the disabled state. |
+
+**Tokens:** `color-text-muted`
+
+**Composes:** `select`, `link`
+
+**Fixtures**
+
+| Fixture | Description |
+| --- | --- |
+| `pagination.default` | The first of three pages. |
+| `pagination.last-page` | The last of three pages. |
+| `pagination.sizes` | A list that offers its own page sizes. |
+| `pagination.without-sizes` | A list whose page size is fixed: the choice is not shown. |
+| `pagination.shared-form` | A pagination whose page size is sent with the fields of a form that stands elsewhere. |
+
+## textarea
+
+A control for text of several lines.
+
+**Script:** optional. The control and its growth need no script. The counter follows the text by a small script; without it the counter shows the limit only.
+
+**Props**
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `variant` | one of `outline`, `filled` | `outline` | Whether the control is outlined (a border and the fill of a field) or filled (the surface colour, with a border that is clear only against the page: not for a control inside a card). |
+| `rows` | integer | `3` | The number of lines that the control shows before it scrolls, or grows. |
+| `max-rows` | integer | `12` | The number of lines that a growing control reaches before it scrolls. Used only with grow. |
+| `grow` | boolean | `false` | The control grows with the text, up to max-rows, where the platform lets it. |
+| `maxlength` | integer |  | The most characters that the control takes. |
+| `counter` | boolean | `false` | Shows how many characters are used out of maxlength, under the control. Needs maxlength. |
+| `label` | string |  | The compact form: a label, which builds the field around the control. |
+| `hint` | string |  | The compact form: a line that helps to fill the control in. |
+| `error` | string |  | The compact form: the message that says why the value is refused. It also marks the control as invalid. |
+| `disabled` | boolean | `false` | The control cannot be changed or focused. |
+| `readonly` | boolean | `false` | The text can be read and selected but not changed. |
+| `loading` | boolean | `false` | The control shows that something is in progress. |
+| `control-class` | class |  | Classes for the element that does the work, merged with its own. The author's classes win over them. |
+
+**Slots**
+
+| Slot | Required | Description |
+| --- | --- | --- |
+| `default` | no | The text that the control holds at first. |
+
+**Attributes**
+
+| Attribute | Kind | Description |
+| --- | --- | --- |
+| `data-studeo-textarea` | root | The root element. |
+| `data-studeo-textarea-control` | part | The element that takes the text. |
+| `data-studeo-textarea-counter` | part | The line under the control that says how many characters are used out of the limit, as: 12 of 200. |
+| `data-studeo-textarea-error` | part | The element that holds the error message of the compact form. |
+| `data-studeo-invalid` | state | See the states of the specification. |
+| `data-studeo-disabled` | state | See the states of the specification. |
+| `data-studeo-readonly` | state | See the states of the specification. |
+| `data-studeo-loading` | state | See the states of the specification. |
+
+Attributes that an author writes on the component go to `data-studeo-textarea-control`.
+
+**Accessibility**
+
+Role: `textbox`. Name from: associated-label.
+
+| Key | Behavior |
+| --- | --- |
+| `Enter` | Starts a new line. |
+
+| ARIA attribute | When |
+| --- | --- |
+| `aria-invalid` | On the control, while the error is showing. |
+| `aria-describedby` | On the control, naming the hint, the counter and the error that are showing. |
+| `aria-busy` | On the control, while it is loading. |
+| `aria-multiline` | On the control, with the value true. |
+
+**Tokens:** `color-surface`, `color-border-strong`, `color-field`, `color-text`, `color-text-muted`, `color-focus-ring`, `color-danger-text`, `radius-control`
+
+**Composes:** `field`, `label`, `error`
+
+**Fixtures**
+
+| Fixture | Description |
+| --- | --- |
+| `textarea.default` | A labelled textarea. |
+| `textarea.filled` | A textarea of the filled variant. |
+| `textarea.rows` | A tall textarea. |
+| `textarea.grow` | A textarea that grows with its text. |
+| `textarea.counter` | A textarea that counts its characters. |
+| `textarea.hint` | A textarea with a hint. |
+| `textarea.invalid` | A textarea whose value is refused. |
+| `textarea.disabled` | A textarea that is switched off. |
+| `textarea.readonly` | A textarea that can be read but not changed. |
+| `textarea.loading` | A textarea while something is in progress. |
+| `textarea.bare` | A control with no label of its own, to be placed in a field. |
+
+## avatar
+
+The picture of a person, or the initials of the name when there is no picture or it does not load.
+
+**Script:** none.
+
+**Props**
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `src` | url |  | The address of the picture. Left out, the initials are shown. |
+| `srcset` | string |  | The pictures of other widths, as the platform names them, for the sharper screens. |
+| `name` | string | required | The name of the person. The initials come from its first and its last word, and it is the accessible name of the avatar. |
+| `size` | one of `xs`, `sm`, `md`, `lg`, `xl` | `md` | The width and the height of the avatar. |
+| `shape` | one of `circle`, `square` | `circle` | Whether the avatar is a circle or a square with the corners of a control. |
+| `decorative` | boolean | `false` | The avatar adds nothing to the name that stands beside it, so assistive technology skips it. |
+
+**Measures**
+
+| Prop | Value | Dimension | Length |
+| --- | --- | --- | --- |
+| `avatar.size` | `xs` | width | `1.5rem` |
+| `avatar.size` | `sm` | width | `2rem` |
+| `avatar.size` | `md` | width | `2.5rem` |
+| `avatar.size` | `lg` | width | `4rem` |
+| `avatar.size` | `xl` | width | `6rem` |
+
+**Attributes**
+
+| Attribute | Kind | Description |
+| --- | --- | --- |
+| `data-studeo-avatar` | root | The root element. |
+| `data-studeo-avatar-image` | part | The picture. It lies over the initials, so that the initials show when there is no picture or it does not load. |
+| `data-studeo-avatar-initials` | part | The initials of the name, up to two letters, in capitals. |
+
+Attributes that an author writes on the component go to the root element.
+
+**Accessibility**
+
+Role: `img`. Name from: aria-label.
+
+| ARIA attribute | When |
+| --- | --- |
+| `aria-hidden` | On the root, with the value true, while the avatar is decorative. |
+
+**Tokens:** `color-accent`, `color-accent-foreground`, `radius-control`
+
+**Composes:** —
+
+**Fixtures**
+
+| Fixture | Description |
+| --- | --- |
+| `avatar.default` | An avatar with a picture. |
+| `avatar.initials` | An avatar with no picture: the initials of the name. |
+| `avatar.one-word` | A name of one word has one letter. |
+| `avatar.square` | An avatar with the corners of a control. |
+| `avatar.large` | An avatar of the largest size. |
+| `avatar.small` | An avatar of the smallest size. |
+| `avatar.decorative` | An avatar beside a name, which assistive technology skips. |
+
+## badge
+
+A small label that says what state or kind something is in, such as the status of an account.
+
+**Script:** none.
+
+**Props**
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `variant` | one of `neutral`, `accent`, `info`, `success`, `warning`, `danger` | `neutral` | What the label is about: nothing in particular, the brand or one of the four kinds of message. |
+| `size` | one of `sm`, `md` | `md` | The height of the label. |
+| `icon` | icon |  | The icon shown before the text. The slot of the same name replaces it. |
+| `dot` | boolean | `false` | Shows a small filled circle before the text, in the colour of the text. |
+
+**Measures**
+
+| Prop | Value | Dimension | Length |
+| --- | --- | --- | --- |
+| `badge.size` | `sm` | height | `1.25rem` |
+| `badge.size` | `md` | height | `1.5rem` |
+
+**Slots**
+
+| Slot | Required | Description |
+| --- | --- | --- |
+| `default` | yes | The words of the label. They carry the meaning, so the colour never stands alone. |
+| `icon` | no | Any content in place of the icon before the text. |
+
+**Attributes**
+
+| Attribute | Kind | Description |
+| --- | --- | --- |
+| `data-studeo-badge` | root | The root element. |
+| `data-studeo-badge-icon` | part | The element that holds the icon. |
+| `data-studeo-badge-dot` | part | The small circle before the text. |
+
+Attributes that an author writes on the component go to the root element.
+
+**Accessibility**
+
+Role: `none`. Name from: content.
+
+**Tokens:** `color-field`, `color-text-muted`, `color-accent-subtle`, `color-accent-text`, `color-info-subtle`, `color-info-text`, `color-success-subtle`, `color-success-text`, `color-warning-subtle`, `color-warning-text`, `color-danger-subtle`, `color-danger-text`, `radius-pill`
+
+**Composes:** `icon`
+
+**Fixtures**
+
+| Fixture | Description |
+| --- | --- |
+| `badge.default` | A neutral label. |
+| `badge.accent` | A label in the colour of the brand. |
+| `badge.info` | A label about something to know. |
+| `badge.success` | A label about something that is well. |
+| `badge.warning` | A label about something that asks for care. |
+| `badge.danger` | A label about something that is wrong. |
+| `badge.dot` | A label with a dot before the text. |
+| `badge.with-icon` | A label with an icon before the text. |
+| `badge.small` | A label of the smaller height. |
 <!-- /generated:reference -->

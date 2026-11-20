@@ -147,3 +147,9 @@ it('says that the code input reads the field fill and no longer the surface colo
 
     expect($tokens)->toContain('color-field')->and($tokens)->not->toContain('color-surface');
 });
+
+it('proves that the text of a badge in the colour of the brand is read on its fill', function () {
+    $pairs = array_map(fn (array $pair): string => $pair['foreground'].' on '.$pair['background'], Spec::data('tokens')['contrast']);
+
+    expect($pairs)->toContain('color-accent-text on color-accent-subtle');
+});

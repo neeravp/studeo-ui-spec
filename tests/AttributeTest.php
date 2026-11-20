@@ -105,7 +105,7 @@ it('finds the mistake that was seeded', function (Closure $seed, string $fragmen
 
 it('lets two components share the name of a state', function () {
     $spec = attributeTestSpec();
-    $spec = Spec::set($spec, 'components.'.count($spec['components']), attributeTestComponent('textarea', [], ['data-studeo-loading']));
+    $spec = Spec::set($spec, 'components.'.count($spec['components']), attributeTestComponent('meter', [], ['data-studeo-loading']));
 
     expect(attributeTestViolations($spec))->toBe([]);
 });

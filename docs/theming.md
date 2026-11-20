@@ -129,6 +129,7 @@ The pairs are:
 | `color-accent-text` | `color-background` | 4.5 | accent text on background is read as text |
 | `color-accent-text` | `color-surface` | 4.5 | accent text on surface is read as text |
 | `color-text` | `color-accent-subtle` | 4.5 | text on accent subtle is read as text |
+| `color-accent-text` | `color-accent-subtle` | 4.5 | accent text on accent subtle is read as text |
 | `color-border-strong` | `color-background` | 3 | border strong on background is seen as the outline of a control |
 | `color-border-strong` | `color-surface` | 3 | border strong on surface is seen as the outline of a control |
 | `color-focus-ring` | `color-background` | 3 | focus ring on background is seen as the outline of a control |
