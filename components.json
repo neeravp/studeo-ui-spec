@@ -1485,6 +1485,7 @@
                 {"name": "rows", "description": "A tall textarea.", "props": {"label": "Notes", "rows": 6}, "slots": {}},
                 {"name": "grow", "description": "A textarea that grows with its text.", "props": {"label": "Notes", "grow": true, "max-rows": 8}, "slots": {"default": "One line."}},
                 {"name": "counter", "description": "A textarea that counts its characters.", "props": {"label": "About you", "maxlength": 200, "counter": true}, "slots": {"default": "Writes about trains."}},
+                {"name": "counter-empty", "description": "A textarea that counts its characters and holds no text yet: the counter says the limit.", "props": {"label": "About you", "maxlength": 200, "counter": true}, "slots": {}},
                 {"name": "hint", "description": "A textarea with a hint.", "props": {"label": "About you", "hint": "A few words that others see."}, "slots": {}},
                 {"name": "invalid", "description": "A textarea whose value is refused.", "props": {"label": "About you", "error": "This is too long."}, "slots": {}},
                 {"name": "disabled", "description": "A textarea that is switched off.", "props": {"label": "About you", "disabled": true}, "slots": {}},

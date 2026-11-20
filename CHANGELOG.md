@@ -32,3 +32,4 @@ Breaking and notable changes per release.
 - The dialog has a prop `blur` (`none`, `sm`, `md`) with measures in rem, and the measures know the dimension `blur`.
 - A contrast pair is added: the accent text on the accent subtle fill, which the badge in the colour of the brand needs.
 - The blur of the dialog makes no promise about reduced transparency (the engines and the utility classes cannot keep it yet), and the dialog has two fixtures that show it.
+- The textarea has a fixture of a counter that holds no text yet, and a scenario that expects the limit in words, which the counter writes before there is any text.

@@ -269,6 +269,19 @@ it('declares a textarea that is a text control with rows, a limit and a counter'
     expect($textarea['attributes']['states'])->toBe(['data-studeo-invalid', 'data-studeo-disabled', 'data-studeo-readonly', 'data-studeo-loading']);
 });
 
+it('shows a counter that holds no text yet, in a fixture, and has a scenario that expects the limit in words', function () {
+    $textarea = array_column(Spec::data('components')['components'], null, 'name')['textarea'];
+    $fixture = array_column($textarea['fixtures'], null, 'name')['counter-empty'] ?? [];
+    $scenario = array_column(Spec::data('scenarios')['scenarios'], null, 'id')['textarea-says-the-limit-before-there-is-text'] ?? [];
+    $message = array_column(Spec::data('components')['messages'], null, 'key')['textarea.limit'];
+
+    expect($fixture['props'] ?? null)->toBe(['label' => 'About you', 'maxlength' => 200, 'counter' => true]);
+    expect($fixture['slots'] ?? [])->not->toHaveKey('default');
+    expect($scenario['fixture'] ?? null)->toBe('textarea.counter-empty');
+    expect($scenario['steps'][0]['target'] ?? null)->toBe(['attribute' => 'data-studeo-textarea-counter']);
+    expect($scenario['steps'][0]['text'] ?? null)->toBe(str_replace(':max', '200', $message['text']));
+});
+
 it('declares an avatar with a name, five sizes with measures and the initials under the picture', function () {
     $avatar = array_column(Spec::data('components')['components'], null, 'name')['avatar'];
     $props = array_column($avatar['props'], null, 'name');

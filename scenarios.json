@@ -882,6 +882,15 @@
             ]
         },
         {
+            "id": "textarea-says-the-limit-before-there-is-text",
+            "component": "textarea",
+            "fixture": "textarea.counter-empty",
+            "summary": "A textarea with a limit and no text yet says the limit in words.",
+            "steps": [
+                {"action": "expectText", "target": {"attribute": "data-studeo-textarea-counter"}, "text": "At most 200 characters"}
+            ]
+        },
+        {
             "id": "textarea-can-be-switched-off",
             "component": "textarea",
             "fixture": "textarea.disabled",

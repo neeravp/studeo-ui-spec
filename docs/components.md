@@ -1504,6 +1504,7 @@ Role: `textbox`. Name from: associated-label.
 | `textarea.rows` | A tall textarea. |
 | `textarea.grow` | A textarea that grows with its text. |
 | `textarea.counter` | A textarea that counts its characters. |
+| `textarea.counter-empty` | A textarea that counts its characters and holds no text yet: the counter says the limit. |
 | `textarea.hint` | A textarea with a hint. |
 | `textarea.invalid` | A textarea whose value is refused. |
 | `textarea.disabled` | A textarea that is switched off. |
