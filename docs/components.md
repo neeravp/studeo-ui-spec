@@ -1530,11 +1530,11 @@ The picture of a person, or the initials of the name when there is no picture or
 
 | Prop | Value | Dimension | Length |
 | --- | --- | --- | --- |
-| `avatar.size` | `xs` | width | `1.5rem` |
-| `avatar.size` | `sm` | width | `2rem` |
-| `avatar.size` | `md` | width | `2.5rem` |
-| `avatar.size` | `lg` | width | `4rem` |
-| `avatar.size` | `xl` | width | `6rem` |
+| `avatar.size` | `xs` | size | `1.5rem` |
+| `avatar.size` | `sm` | size | `2rem` |
+| `avatar.size` | `md` | size | `2.5rem` |
+| `avatar.size` | `lg` | size | `4rem` |
+| `avatar.size` | `xl` | size | `6rem` |
 
 **Attributes**
 

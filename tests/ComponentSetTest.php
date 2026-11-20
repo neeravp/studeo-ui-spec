@@ -277,7 +277,7 @@ it('declares an avatar with a name, five sizes with measures and the initials un
     expect($props['name']['required'])->toBeTrue();
     expect($props['size']['values'])->toBe(['xs', 'sm', 'md', 'lg', 'xl']);
     expect($measures)->toBe(['xs' => '1.5rem', 'sm' => '2rem', 'md' => '2.5rem', 'lg' => '4rem', 'xl' => '6rem']);
-    expect(array_unique(array_column($props['size']['measures'], 'dimension')))->toBe(['width']);
+    expect(array_unique(array_column($props['size']['measures'], 'dimension')))->toBe(['size']);
     expect($props['shape']['values'])->toBe(['circle', 'square']);
     expect($props['decorative']['default'])->toBeFalse();
     expect(array_column($avatar['attributes']['parts'], 'name'))->toBe(['data-studeo-avatar-image', 'data-studeo-avatar-initials']);
