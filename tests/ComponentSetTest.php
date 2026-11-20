@@ -33,6 +33,9 @@ it('declares a component that the screens need', function (string $name) {
     'textarea',
     'avatar',
     'badge',
+    'menu',
+    'menu-item',
+    'menu-separator',
 ]);
 
 it('gives every component at least one scenario', function () {
@@ -95,6 +98,7 @@ it('says what script a component needs, in the cases that the scenarios exercise
     'the reveal button does nothing without script' => ['input', 'reveal button does nothing'],
     'the dismiss button does nothing without script' => ['alert', 'dismiss button does nothing'],
     'an open dialog is not modal without script' => ['dialog', 'is not modal'],
+    'a menu puts the focus on the first item by script' => ['menu', 'first item'],
 ]);
 
 it('states the measure of each size of a component in rem, and the measures grow with the size', function (string $component, string $dimension, array $expected) {
@@ -373,4 +377,35 @@ it('has a fixture of a data table with no rows and no words of its own, and a sc
     expect($scenario['fixture'] ?? null)->toBe('data-table.no-results');
     expect($scenario['steps'][0]['target'] ?? null)->toBe(['attribute' => 'data-studeo-data-table-empty']);
     expect($scenario['steps'][0]['text'] ?? null)->toBe($message['text']);
+});
+
+it('declares a menu whose looks are classes of the author and not props, built from items and separators', function () {
+    $components = array_column(Spec::data('components')['components'], null, 'name');
+    $menu = $components['menu'];
+    $props = array_column($menu['props'], null, 'name');
+
+    expect(array_keys($props))->toBe(['trigger-label', 'trigger-id', 'panel-id', 'sheet', 'trigger-class', 'panel-class']);
+    expect($props['trigger-label']['required'])->toBeTrue();
+    expect($props['sheet']['values'])->toBe(['none', 'phone']);
+    expect($props['sheet']['default'])->toBe('none');
+    expect($props['sheet'])->not->toHaveKey('measures');
+    expect([$props['trigger-class']['type'], $props['panel-class']['type']])->toBe(['class', 'class']);
+    expect($menu['accessibility']['role'])->toBe('menu');
+    expect(array_column($menu['accessibility']['aria'], 'attribute'))->toBe(['aria-haspopup', 'aria-expanded', 'aria-labelledby']);
+    expect($menu['attributes']['states'])->toBe([]);
+    expect($menu['composes'])->toBe(['menu-item', 'menu-separator']);
+    expect($menu['script']['need'])->toBe('optional');
+
+    foreach (['menu-item', 'menu-separator'] as $name) {
+        foreach ($components[$name]['fixtures'] as $case) {
+            expect($case['in'] ?? null)->toBe(['fixture' => 'menu.bare', 'slot' => 'default']);
+        }
+    }
+
+    $item = array_column($components['menu-item']['props'], null, 'name');
+
+    expect(array_keys($item))->toBe(['href', 'type', 'current', 'disabled']);
+    expect($components['menu-item']['accessibility']['role'])->toBe('menuitem');
+    expect(array_column($components['menu-item']['accessibility']['aria'], 'attribute'))->toBe(['aria-current', 'aria-disabled']);
+    expect($components['menu-separator']['accessibility']['role'])->toBe('separator');
 });

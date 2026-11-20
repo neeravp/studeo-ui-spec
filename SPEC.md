@@ -57,6 +57,9 @@ A component in `components.json` has:
 | [`textarea`](docs/components.md#textarea) | A control for text of several lines. | optional |
 | [`avatar`](docs/components.md#avatar) | The picture of a person, or the initials of the name when there is no picture or it does not load. | none |
 | [`badge`](docs/components.md#badge) | A small label that says what state or kind something is in, such as the status of an account. | none |
+| [`menu`](docs/components.md#menu) | A button that opens a short list of actions and places to go. It closes again when the user picks one, presses Escape or goes elsewhere. | optional |
+| [`menu-item`](docs/components.md#menu-item) | One choice of a menu: a link to another place, or a button that does something. | none |
+| [`menu-separator`](docs/components.md#menu-separator) | A line between two groups of items of a menu. | none |
 <!-- /generated:components -->
 
 ### Messages and variables

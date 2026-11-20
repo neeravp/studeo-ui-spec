@@ -982,6 +982,118 @@
             "steps": [
                 {"action": "expectVisible", "target": {"attribute": "data-studeo-badge-icon"}}
             ]
+        },
+        {
+            "id": "menu-opens-from-its-button",
+            "component": "menu",
+            "fixture": "menu.default",
+            "summary": "A closed menu shows only its button, which says that it opens a menu; pressing it opens the list, names the list by the button and puts the focus on the first item.",
+            "steps": [
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-menu-trigger"}, "attribute": "aria-haspopup", "value": "menu"},
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-menu-trigger"}, "attribute": "aria-expanded", "value": "false"},
+                {"action": "expectHidden", "target": {"role": "menu", "name": "Account"}},
+                {"action": "click", "target": {"attribute": "data-studeo-menu-trigger"}},
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-menu-trigger"}, "attribute": "aria-expanded", "value": "true"},
+                {"action": "expectVisible", "target": {"role": "menu", "name": "Account"}},
+                {"action": "expectAttribute", "target": {"role": "menu", "name": "Account"}, "attribute": "aria-labelledby"},
+                {"action": "expectFocus", "target": {"role": "menuitem", "name": "Profile"}}
+            ]
+        },
+        {
+            "id": "menu-opens-with-the-arrow-key",
+            "component": "menu",
+            "fixture": "menu.default",
+            "summary": "The down arrow on the button opens the list and puts the focus on the first item.",
+            "steps": [
+                {"action": "focus", "target": {"attribute": "data-studeo-menu-trigger"}},
+                {"action": "press", "key": "ArrowDown"},
+                {"action": "expectVisible", "target": {"role": "menu", "name": "Account"}},
+                {"action": "expectFocus", "target": {"role": "menuitem", "name": "Profile"}}
+            ]
+        },
+        {
+            "id": "menu-moves-the-focus-with-the-keys",
+            "component": "menu",
+            "fixture": "menu.default",
+            "summary": "The arrow keys, Home and End move the focus among the items.",
+            "steps": [
+                {"action": "click", "target": {"attribute": "data-studeo-menu-trigger"}},
+                {"action": "press", "key": "ArrowDown"},
+                {"action": "expectFocus", "target": {"role": "menuitem", "name": "Settings"}},
+                {"action": "press", "key": "ArrowDown"},
+                {"action": "expectFocus", "target": {"role": "menuitem", "name": "Security"}},
+                {"action": "press", "key": "ArrowUp"},
+                {"action": "expectFocus", "target": {"role": "menuitem", "name": "Settings"}},
+                {"action": "press", "key": "End"},
+                {"action": "expectFocus", "target": {"role": "menuitem", "name": "Security"}},
+                {"action": "press", "key": "Home"},
+                {"action": "expectFocus", "target": {"role": "menuitem", "name": "Profile"}}
+            ]
+        },
+        {
+            "id": "menu-closes-with-escape-and-returns-the-focus",
+            "component": "menu",
+            "fixture": "menu.default",
+            "summary": "Escape closes the list and the focus goes back to the button.",
+            "steps": [
+                {"action": "click", "target": {"attribute": "data-studeo-menu-trigger"}},
+                {"action": "expectVisible", "target": {"role": "menu", "name": "Account"}},
+                {"action": "press", "key": "Escape"},
+                {"action": "expectHidden", "target": {"role": "menu", "name": "Account"}},
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-menu-trigger"}, "attribute": "aria-expanded", "value": "false"},
+                {"action": "expectFocus", "target": {"attribute": "data-studeo-menu-trigger"}}
+            ]
+        },
+        {
+            "id": "menu-shows-its-heading",
+            "component": "menu",
+            "fixture": "menu.with-heading",
+            "summary": "A heading is shown above the items and is not one of them.",
+            "steps": [
+                {"action": "click", "target": {"attribute": "data-studeo-menu-trigger"}},
+                {"action": "expectText", "target": {"attribute": "data-studeo-menu-heading"}, "text": "Ada Lovelace"}
+            ]
+        },
+        {
+            "id": "menu-holds-links-and-buttons",
+            "component": "menu",
+            "fixture": "menu.with-actions",
+            "summary": "A menu holds a link and an item that is a button.",
+            "steps": [
+                {"action": "click", "target": {"attribute": "data-studeo-menu-trigger"}},
+                {"action": "expectVisible", "target": {"role": "menuitem", "name": "Profile"}},
+                {"action": "expectVisible", "target": {"role": "menuitem", "name": "Sign out"}}
+            ]
+        },
+        {
+            "id": "menu-item-marks-the-current-place",
+            "component": "menu-item",
+            "fixture": "menu-item.current",
+            "summary": "The item of the place the user is in is marked as the current page.",
+            "steps": [
+                {"action": "click", "target": {"role": "button", "name": "Account"}},
+                {"action": "expectAttribute", "target": {"role": "menuitem", "name": "Settings"}, "attribute": "aria-current", "value": "page"}
+            ]
+        },
+        {
+            "id": "menu-item-that-is-disabled-cannot-be-used",
+            "component": "menu-item",
+            "fixture": "menu-item.disabled",
+            "summary": "A disabled item says so to assistive technology.",
+            "steps": [
+                {"action": "click", "target": {"role": "button", "name": "Account"}},
+                {"action": "expectAttribute", "target": {"role": "menuitem", "name": "Billing"}, "attribute": "aria-disabled", "value": "true"}
+            ]
+        },
+        {
+            "id": "menu-separator-is-a-separator",
+            "component": "menu-separator",
+            "fixture": "menu-separator.default",
+            "summary": "A separator is shown between two groups of items.",
+            "steps": [
+                {"action": "click", "target": {"role": "button", "name": "Account"}},
+                {"action": "expectVisible", "target": {"attribute": "data-studeo-menu-separator"}}
+            ]
         }
     ]
 }

@@ -1580,6 +1580,135 @@
                 {"name": "with-icon", "description": "A label with an icon before the text.", "props": {"variant": "warning", "icon": "warning"}, "slots": {"default": "Unverified"}},
                 {"name": "small", "description": "A label of the smaller height.", "props": {"size": "sm"}, "slots": {"default": "Member"}}
             ]
+        },
+        {
+            "name": "menu",
+            "summary": "A button that opens a short list of actions and places to go. It closes again when the user picks one, presses Escape or goes elsewhere.",
+            "status": "draft",
+            "props": [
+                {"name": "trigger-label", "type": "string", "required": true, "description": "The accessible name of the button that opens the menu. It is required because the content of the button is often only a picture."},
+                {"name": "trigger-id", "type": "string", "description": "The id of the button. The implementation makes one when it is left out."},
+                {"name": "panel-id", "type": "string", "description": "The id of the list that opens. The implementation makes one when it is left out."},
+                {"name": "sheet", "type": "enum", "values": ["none", "phone"], "default": "none", "description": "Whether the list is a small list under the button on every width, or, on a window narrower than the medium width of the kit (48rem), a sheet that is as wide as the window and goes down to its bottom. How it is drawn is the business of the implementation."},
+                {"name": "trigger-class", "type": "class", "description": "Classes for the button, merged with its own. The author's classes win over them."},
+                {"name": "panel-class", "type": "class", "description": "Classes for the list that opens, merged with its own. The author's classes win over them."}
+            ],
+            "slots": [
+                {"name": "trigger", "description": "What the button shows, such as a picture or a word.", "required": true},
+                {"name": "default", "description": "The items, and the separators between them. A form that holds an item that submits is allowed among them.", "required": false},
+                {"name": "heading", "description": "Text above the items that is not an item, such as the name of the person.", "required": false}
+            ],
+            "attributes": {
+                "root": "data-studeo-menu",
+                "parts": [
+                    {"name": "data-studeo-menu-trigger", "description": "The button that opens the menu. It is the place the list hangs from, and the focus returns to it when the list closes."},
+                    {"name": "data-studeo-menu-panel", "description": "The list that opens. It is shown above the page, under the button and ending where the button ends, or above the button when there is no room below."},
+                    {"name": "data-studeo-menu-heading", "description": "The element that holds the heading. It is left out when there is none."}
+                ],
+                "states": []
+            },
+            "attributesTarget": "root",
+            "accessibility": {
+                "role": "menu",
+                "label": "aria-label",
+                "keyboard": [
+                    {"key": "Enter, Space or ArrowDown", "behavior": "On the button: opens the list and puts the focus on its first item."},
+                    {"key": "ArrowDown", "behavior": "In the list: moves the focus to the next item."},
+                    {"key": "ArrowUp", "behavior": "In the list: moves the focus to the previous item."},
+                    {"key": "Home", "behavior": "In the list: moves the focus to the first item."},
+                    {"key": "End", "behavior": "In the list: moves the focus to the last item."},
+                    {"key": "Escape", "behavior": "Closes the list and puts the focus back on the button."},
+                    {"key": "Tab", "behavior": "Closes the list and moves the focus on."}
+                ],
+                "aria": [
+                    {"attribute": "aria-haspopup", "when": "On the button, with the value menu."},
+                    {"attribute": "aria-expanded", "when": "On the button: true while the list is open, false while it is closed."},
+                    {"attribute": "aria-labelledby", "when": "On the list, naming the button."}
+                ]
+            },
+            "script": {"need": "optional", "reason": "The platform opens and closes the list and returns the focus to the button when it closes, and the Escape key and a click outside close it, so without script the menu opens, its items are reached with the Tab key and it closes. Putting the focus on the first item when the list opens, and moving it between the items with the arrow keys, Home and End, takes a small script."},
+            "tokens": ["color-surface", "color-border", "color-text", "color-text-muted", "color-accent-subtle", "color-focus-ring", "radius-container", "radius-control"],
+            "composes": ["menu-item", "menu-separator"],
+            "fixtures": [
+                {"name": "bare", "description": "A menu with no item: the place where an item or a separator is shown by itself.", "props": {"trigger-label": "Account"}, "slots": {"trigger": "Ada"}},
+                {"name": "default", "description": "A menu with three links.", "props": {"trigger-label": "Account"}, "slots": {"trigger": "Ada", "default": [{"fixture": "menu-item.link"}, {"fixture": "menu-item.current"}, {"fixture": "menu-item.second"}]}},
+                {"name": "with-heading", "description": "A menu with a heading above its items.", "props": {"trigger-label": "Account"}, "slots": {"trigger": "Ada", "heading": "Ada Lovelace", "default": [{"fixture": "menu-item.link"}, {"fixture": "menu-item.current"}]}},
+                {"name": "with-actions", "description": "A menu with a link, a separator and an item that is a button.", "props": {"trigger-label": "Account"}, "slots": {"trigger": "Ada", "default": [{"fixture": "menu-item.link"}, {"fixture": "menu-separator.default"}, {"fixture": "menu-item.button"}]}},
+                {"name": "sheet-phone", "description": "A menu that is a sheet on a narrow window.", "props": {"trigger-label": "Account", "sheet": "phone"}, "slots": {"trigger": "Ada", "default": [{"fixture": "menu-item.link"}, {"fixture": "menu-item.current"}]}}
+            ]
+        },
+        {
+            "name": "menu-item",
+            "summary": "One choice of a menu: a link to another place, or a button that does something.",
+            "status": "draft",
+            "props": [
+                {"name": "href", "type": "url", "description": "The address. With an address the item is a link; without one it is a button. The addresses that a link uses are those of the link component."},
+                {"name": "type", "type": "enum", "values": ["button", "submit"], "default": "button", "description": "What a button does: nothing but run its action, or submit the form that holds it. Not used by a link."},
+                {"name": "current", "type": "boolean", "default": false, "description": "The item stands for the place the user is in: it is marked as the current page."},
+                {"name": "disabled", "type": "boolean", "default": false, "description": "The item cannot be used. It is shown subdued, it does nothing and the arrow keys skip it."}
+            ],
+            "slots": [
+                {"name": "default", "description": "The text of the item.", "required": true}
+            ],
+            "attributes": {
+                "root": "data-studeo-menu-item",
+                "parts": [
+
+                ],
+                "states": []
+            },
+            "attributesTarget": "root",
+            "accessibility": {
+                "role": "menuitem",
+                "label": "content",
+                "keyboard": [
+                    {"key": "Enter", "behavior": "Follows the link, or runs the action of the button."},
+                    {"key": "Space", "behavior": "On a button: runs its action."}
+                ],
+                "aria": [
+                    {"attribute": "aria-current", "when": "While the item is the current place. The value is page."},
+                    {"attribute": "aria-disabled", "when": "While the item is disabled, with the value true."}
+                ]
+            },
+            "script": {"need": "none", "reason": null},
+            "tokens": ["color-surface", "color-border", "color-text", "color-text-muted", "color-accent-subtle", "color-focus-ring", "radius-container", "radius-control"],
+            "composes": [],
+            "fixtures": [
+                {"name": "link", "description": "An item that goes to another place.", "props": {"href": "/profile"}, "slots": {"default": "Profile"}, "in": {"fixture": "menu.bare", "slot": "default"}},
+                {"name": "current", "description": "The item of the place the user is in.", "props": {"href": "/settings", "current": true}, "slots": {"default": "Settings"}, "in": {"fixture": "menu.bare", "slot": "default"}},
+                {"name": "second", "description": "A second link.", "props": {"href": "/security"}, "slots": {"default": "Security"}, "in": {"fixture": "menu.bare", "slot": "default"}},
+                {"name": "button", "description": "An item that is a button.", "props": {"type": "submit"}, "slots": {"default": "Sign out"}, "in": {"fixture": "menu.bare", "slot": "default"}},
+                {"name": "disabled", "description": "An item that cannot be used.", "props": {"href": "/billing", "disabled": true}, "slots": {"default": "Billing"}, "in": {"fixture": "menu.bare", "slot": "default"}}
+            ]
+        },
+        {
+            "name": "menu-separator",
+            "summary": "A line between two groups of items of a menu.",
+            "status": "draft",
+            "props": [
+
+            ],
+            "slots": [],
+            "attributes": {
+                "root": "data-studeo-menu-separator",
+                "parts": [
+
+                ],
+                "states": []
+            },
+            "attributesTarget": "root",
+            "accessibility": {
+                "role": "separator",
+                "label": "none",
+                "keyboard": [],
+                "aria": []
+            },
+            "script": {"need": "none", "reason": null},
+            "tokens": ["color-border"],
+            "composes": [],
+            "fixtures": [
+                {"name": "default", "description": "A line between two groups.", "props": {}, "slots": {}, "in": {"fixture": "menu.bare", "slot": "default"}}
+            ]
         }
     ]
 }

@@ -1633,4 +1633,159 @@ Role: `none`. Name from: content.
 | `badge.dot` | A label with a dot before the text. |
 | `badge.with-icon` | A label with an icon before the text. |
 | `badge.small` | A label of the smaller height. |
+
+## menu
+
+A button that opens a short list of actions and places to go. It closes again when the user picks one, presses Escape or goes elsewhere.
+
+**Script:** optional. The platform opens and closes the list and returns the focus to the button when it closes, and the Escape key and a click outside close it, so without script the menu opens, its items are reached with the Tab key and it closes. Putting the focus on the first item when the list opens, and moving it between the items with the arrow keys, Home and End, takes a small script.
+
+**Props**
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `trigger-label` | string | required | The accessible name of the button that opens the menu. It is required because the content of the button is often only a picture. |
+| `trigger-id` | string |  | The id of the button. The implementation makes one when it is left out. |
+| `panel-id` | string |  | The id of the list that opens. The implementation makes one when it is left out. |
+| `sheet` | one of `none`, `phone` | `none` | Whether the list is a small list under the button on every width, or, on a window narrower than the medium width of the kit (48rem), a sheet that is as wide as the window and goes down to its bottom. How it is drawn is the business of the implementation. |
+| `trigger-class` | class |  | Classes for the button, merged with its own. The author's classes win over them. |
+| `panel-class` | class |  | Classes for the list that opens, merged with its own. The author's classes win over them. |
+
+**Slots**
+
+| Slot | Required | Description |
+| --- | --- | --- |
+| `trigger` | yes | What the button shows, such as a picture or a word. |
+| `default` | no | The items, and the separators between them. A form that holds an item that submits is allowed among them. |
+| `heading` | no | Text above the items that is not an item, such as the name of the person. |
+
+**Attributes**
+
+| Attribute | Kind | Description |
+| --- | --- | --- |
+| `data-studeo-menu` | root | The root element. |
+| `data-studeo-menu-trigger` | part | The button that opens the menu. It is the place the list hangs from, and the focus returns to it when the list closes. |
+| `data-studeo-menu-panel` | part | The list that opens. It is shown above the page, under the button and ending where the button ends, or above the button when there is no room below. |
+| `data-studeo-menu-heading` | part | The element that holds the heading. It is left out when there is none. |
+
+Attributes that an author writes on the component go to the root element.
+
+**Accessibility**
+
+Role: `menu`. Name from: aria-label.
+
+| Key | Behavior |
+| --- | --- |
+| `Enter, Space or ArrowDown` | On the button: opens the list and puts the focus on its first item. |
+| `ArrowDown` | In the list: moves the focus to the next item. |
+| `ArrowUp` | In the list: moves the focus to the previous item. |
+| `Home` | In the list: moves the focus to the first item. |
+| `End` | In the list: moves the focus to the last item. |
+| `Escape` | Closes the list and puts the focus back on the button. |
+| `Tab` | Closes the list and moves the focus on. |
+
+| ARIA attribute | When |
+| --- | --- |
+| `aria-haspopup` | On the button, with the value menu. |
+| `aria-expanded` | On the button: true while the list is open, false while it is closed. |
+| `aria-labelledby` | On the list, naming the button. |
+
+**Tokens:** `color-surface`, `color-border`, `color-text`, `color-text-muted`, `color-accent-subtle`, `color-focus-ring`, `radius-container`, `radius-control`
+
+**Composes:** `menu-item`, `menu-separator`
+
+**Fixtures**
+
+| Fixture | Description |
+| --- | --- |
+| `menu.bare` | A menu with no item: the place where an item or a separator is shown by itself. |
+| `menu.default` | A menu with three links. |
+| `menu.with-heading` | A menu with a heading above its items. |
+| `menu.with-actions` | A menu with a link, a separator and an item that is a button. |
+| `menu.sheet-phone` | A menu that is a sheet on a narrow window. |
+
+## menu-item
+
+One choice of a menu: a link to another place, or a button that does something.
+
+**Script:** none.
+
+**Props**
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `href` | url |  | The address. With an address the item is a link; without one it is a button. The addresses that a link uses are those of the link component. |
+| `type` | one of `button`, `submit` | `button` | What a button does: nothing but run its action, or submit the form that holds it. Not used by a link. |
+| `current` | boolean | `false` | The item stands for the place the user is in: it is marked as the current page. |
+| `disabled` | boolean | `false` | The item cannot be used. It is shown subdued, it does nothing and the arrow keys skip it. |
+
+**Slots**
+
+| Slot | Required | Description |
+| --- | --- | --- |
+| `default` | yes | The text of the item. |
+
+**Attributes**
+
+| Attribute | Kind | Description |
+| --- | --- | --- |
+| `data-studeo-menu-item` | root | The root element. |
+
+Attributes that an author writes on the component go to the root element.
+
+**Accessibility**
+
+Role: `menuitem`. Name from: content.
+
+| Key | Behavior |
+| --- | --- |
+| `Enter` | Follows the link, or runs the action of the button. |
+| `Space` | On a button: runs its action. |
+
+| ARIA attribute | When |
+| --- | --- |
+| `aria-current` | While the item is the current place. The value is page. |
+| `aria-disabled` | While the item is disabled, with the value true. |
+
+**Tokens:** `color-surface`, `color-border`, `color-text`, `color-text-muted`, `color-accent-subtle`, `color-focus-ring`, `radius-container`, `radius-control`
+
+**Composes:** —
+
+**Fixtures**
+
+| Fixture | Description |
+| --- | --- |
+| `menu-item.link` | An item that goes to another place. |
+| `menu-item.current` | The item of the place the user is in. |
+| `menu-item.second` | A second link. |
+| `menu-item.button` | An item that is a button. |
+| `menu-item.disabled` | An item that cannot be used. |
+
+## menu-separator
+
+A line between two groups of items of a menu.
+
+**Script:** none.
+
+**Attributes**
+
+| Attribute | Kind | Description |
+| --- | --- | --- |
+| `data-studeo-menu-separator` | root | The root element. |
+
+Attributes that an author writes on the component go to the root element.
+
+**Accessibility**
+
+Role: `separator`. Name from: none.
+
+**Tokens:** `color-border`
+
+**Composes:** —
+
+**Fixtures**
+
+| Fixture | Description |
+| --- | --- |
+| `menu-separator.default` | A line between two groups. |
 <!-- /generated:reference -->
