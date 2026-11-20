@@ -1175,7 +1175,7 @@
                     "description": "How wide the dialog is: narrow, medium or wide.",
                     "measures": [{"value": "sm", "dimension": "width", "length": "28rem"}, {"value": "md", "dimension": "width", "length": "36rem"}, {"value": "lg", "dimension": "width", "length": "48rem"}]
                 },
-                {"name": "blur", "type": "enum", "values": ["none", "sm", "md"], "default": "none", "description": "How much the page behind the dialog is blurred: not at all, a little or more. Where the user has asked for reduced transparency the blur is left out.", "measures": [{"value": "none", "dimension": "blur", "length": "0rem"}, {"value": "sm", "dimension": "blur", "length": "0.5rem"}, {"value": "md", "dimension": "blur", "length": "0.75rem"}]}
+                {"name": "blur", "type": "enum", "values": ["none", "sm", "md"], "default": "none", "description": "How much the page behind the dialog is blurred: not at all, a little or more.", "measures": [{"value": "none", "dimension": "blur", "length": "0rem"}, {"value": "sm", "dimension": "blur", "length": "0.5rem"}, {"value": "md", "dimension": "blur", "length": "0.75rem"}]}
             ],
             "slots": [
                 {"name": "title", "description": "The title. It is the name of the dialog.", "required": true},
@@ -1214,7 +1214,9 @@
                 {"name": "default", "description": "An open dialog with a title and a body.", "props": {"open": true}, "slots": {"title": "Delete account", "default": "This cannot be undone."}},
                 {"name": "with-footer", "description": "An open dialog with actions.", "props": {"open": true}, "slots": {"title": "Delete account", "default": "This cannot be undone.", "footer": "Cancel or delete"}},
                 {"name": "closed", "description": "A dialog that is not open.", "props": {}, "slots": {"title": "Delete account", "default": "This cannot be undone."}},
-                {"name": "small", "description": "An open dialog that is narrow.", "props": {"open": true, "size": "sm"}, "slots": {"title": "Delete account", "default": "This cannot be undone."}}
+                {"name": "small", "description": "An open dialog that is narrow.", "props": {"open": true, "size": "sm"}, "slots": {"title": "Delete account", "default": "This cannot be undone."}},
+                {"name": "blur-sm", "description": "An open dialog that blurs the page behind it a little.", "props": {"open": true, "blur": "sm"}, "slots": {"title": "Delete account", "default": "This cannot be undone."}},
+                {"name": "blur-md", "description": "An open dialog that blurs the page behind it more.", "props": {"open": true, "blur": "md"}, "slots": {"title": "Delete account", "default": "This cannot be undone."}}
             ]
         },
         {

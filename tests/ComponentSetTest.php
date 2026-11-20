@@ -310,7 +310,12 @@ it('blurs the page behind a dialog by a value of its own, none by default', func
     expect($blur['default'])->toBe('none');
     expect(array_column($blur['measures'], 'length', 'value'))->toBe(['none' => '0rem', 'sm' => '0.5rem', 'md' => '0.75rem']);
     expect(array_unique(array_column($blur['measures'], 'dimension')))->toBe(['blur']);
-    expect($blur['description'])->toContain('reduced transparency');
+    expect($blur['description'])->toContain('blurred')->not->toContain('reduced transparency');
+
+    $fixtures = array_column($dialog['fixtures'], null, 'name');
+
+    expect($fixtures['blur-sm']['props'])->toBe(['open' => true, 'blur' => 'sm']);
+    expect($fixtures['blur-md']['props'])->toBe(['open' => true, 'blur' => 'md']);
 });
 
 it('builds a table from a column, a row and a cell, each shown in the fixture that holds it', function () {

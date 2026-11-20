@@ -31,3 +31,4 @@ Breaking and notable changes per release.
 - The `textarea`, `avatar` and `badge` components: a control for text of several lines (rows, growth, a limit and a counter), the picture of a person with the initials under it (five sizes, two shapes), and a small label of six variants that reads the subtle and text colours of the roles.
 - The dialog has a prop `blur` (`none`, `sm`, `md`) with measures in rem, and the measures know the dimension `blur`.
 - A contrast pair is added: the accent text on the accent subtle fill, which the badge in the colour of the brand needs.
+- The blur of the dialog makes no promise about reduced transparency (the engines and the utility classes cannot keep it yet), and the dialog has two fixtures that show it.

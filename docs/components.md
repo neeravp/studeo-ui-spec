@@ -1119,7 +1119,7 @@ A window over the page that asks for the user's attention until it is closed. Wh
 | --- | --- | --- | --- |
 | `open` | boolean | `false` | Whether the dialog is open. |
 | `size` | one of `sm`, `md`, `lg` | `md` | How wide the dialog is: narrow, medium or wide. |
-| `blur` | one of `none`, `sm`, `md` | `none` | How much the page behind the dialog is blurred: not at all, a little or more. Where the user has asked for reduced transparency the blur is left out. |
+| `blur` | one of `none`, `sm`, `md` | `none` | How much the page behind the dialog is blurred: not at all, a little or more. |
 
 **Measures**
 
@@ -1180,6 +1180,8 @@ Role: `dialog`. Name from: associated-label.
 | `dialog.with-footer` | An open dialog with actions. |
 | `dialog.closed` | A dialog that is not open. |
 | `dialog.small` | An open dialog that is narrow. |
+| `dialog.blur-sm` | An open dialog that blurs the page behind it a little. |
+| `dialog.blur-md` | An open dialog that blurs the page behind it more. |
 
 ## toast
 
