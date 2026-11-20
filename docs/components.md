@@ -1690,7 +1690,7 @@ Role: `menu`. Name from: aria-label.
 | `aria-expanded` | On the button: true while the list is open, false while it is closed. |
 | `aria-labelledby` | On the list, naming the button. |
 
-**Tokens:** `color-surface`, `color-border`, `color-text`, `color-text-muted`, `color-accent-subtle`, `color-focus-ring`, `radius-container`, `radius-control`
+**Tokens:** `color-surface`, `color-border`, `color-text`, `color-text-muted`, `color-focus-ring`, `radius-container`
 
 **Composes:** `menu-item`, `menu-separator`
 
@@ -1747,7 +1747,7 @@ Role: `menuitem`. Name from: content.
 | `aria-current` | While the item is the current place. The value is page. |
 | `aria-disabled` | While the item is disabled, with the value true. |
 
-**Tokens:** `color-surface`, `color-border`, `color-text`, `color-text-muted`, `color-accent-subtle`, `color-focus-ring`, `radius-container`, `radius-control`
+**Tokens:** `color-text`, `color-accent-subtle`, `color-focus-ring`, `radius-control`
 
 **Composes:** —
 

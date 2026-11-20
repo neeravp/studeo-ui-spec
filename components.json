@@ -1627,7 +1627,7 @@
                 ]
             },
             "script": {"need": "optional", "reason": "The platform opens and closes the list and returns the focus to the button when it closes, and the Escape key and a click outside close it, so without script the menu opens, its items are reached with the Tab key and it closes. Putting the focus on the first item when the list opens, and moving it between the items with the arrow keys, Home and End, takes a small script."},
-            "tokens": ["color-surface", "color-border", "color-text", "color-text-muted", "color-accent-subtle", "color-focus-ring", "radius-container", "radius-control"],
+            "tokens": ["color-surface", "color-border", "color-text", "color-text-muted", "color-focus-ring", "radius-container"],
             "composes": ["menu-item", "menu-separator"],
             "fixtures": [
                 {"name": "bare", "description": "A menu with no item: the place where an item or a separator is shown by itself.", "props": {"trigger-label": "Account"}, "slots": {"trigger": "Ada"}},
@@ -1671,7 +1671,7 @@
                 ]
             },
             "script": {"need": "none", "reason": null},
-            "tokens": ["color-surface", "color-border", "color-text", "color-text-muted", "color-accent-subtle", "color-focus-ring", "radius-container", "radius-control"],
+            "tokens": ["color-text", "color-accent-subtle", "color-focus-ring", "radius-control"],
             "composes": [],
             "fixtures": [
                 {"name": "link", "description": "An item that goes to another place.", "props": {"href": "/profile"}, "slots": {"default": "Profile"}, "in": {"fixture": "menu.bare", "slot": "default"}},
