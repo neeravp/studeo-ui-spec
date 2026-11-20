@@ -28,7 +28,7 @@ function docsTruthDocuments(): array
 }
 
 /**
- * @return array{components: list<array<string, mixed>>, states: list<array<string, mixed>>, icons: list<array<string, mixed>>, tokens: list<array<string, mixed>>, contrast: list<array<string, mixed>>, actions: list<string>, documents: array<string, string>}
+ * @return array{components: list<array<string, mixed>>, states: list<array<string, mixed>>, icons: list<array<string, mixed>>, tokens: list<array<string, mixed>>, contrast: list<array<string, mixed>>, actions: list<string>, samples: list<string>, documents: array<string, string>}
  */
 function docsTruthSpec(): array
 {
@@ -49,12 +49,13 @@ function docsTruthSpec(): array
         'tokens' => Spec::data('tokens')['tokens'],
         'contrast' => Spec::data('tokens')['contrast'],
         'actions' => $actions,
+        'samples' => Spec::decode('schemas/scenarios.schema.json')['$defs']['sample']['enum'],
         'documents' => docsTruthDocuments(),
     ];
 }
 
 /**
- * @param  array{components: list<array<string, mixed>>, states: list<array<string, mixed>>, icons: list<array<string, mixed>>, tokens: list<array<string, mixed>>, contrast: list<array<string, mixed>>, actions: list<string>, documents: array<string, string>}  $spec
+ * @param  array{components: list<array<string, mixed>>, states: list<array<string, mixed>>, icons: list<array<string, mixed>>, tokens: list<array<string, mixed>>, contrast: list<array<string, mixed>>, actions: list<string>, samples: list<string>, documents: array<string, string>}  $spec
  * @return list<string>
  */
 function docsTruthViolations(array $spec): array
@@ -114,6 +115,10 @@ it('finds the mistake that was seeded', function (Closure $seed, string $fragmen
     'a row of the list of actions that is missing while its meaning stays' => [
         fn (array $d): array => [...$d, 'SPEC.md' => docsTruthWithout($d['SPEC.md'], '- `press` (')],
         'SPEC.md has no row for action [press]',
+    ],
+    'a sample file without a row' => [
+        fn (array $d): array => [...$d, 'SPEC.md' => docsTruthWithout($d['SPEC.md'], '| `heavy.png` |')],
+        'SPEC.md has no row for sample file [heavy.png]',
     ],
     'an action without a meaning' => [
         fn (array $d): array => [...$d, 'SPEC.md' => docsTruthWithout($d['SPEC.md'], '- `expectText`:')],

@@ -1788,4 +1788,163 @@ Role: `separator`. Name from: none.
 | Fixture | Description |
 | --- | --- |
 | `menu-separator.default` | A line between two groups. |
+
+## file-input
+
+A control that takes files from the user: a place to click or to drop files on, the list of what was chosen, and the refusal of a file that is not allowed, before anything is sent.
+
+**Script:** optional. The control opens the dialog that chooses files, and the form sends what was chosen, without script. The list of the chosen files, the refusal of a file by its kind, its size or the number of files before anything is sent, the removal of a file, the state while files are dragged over the place, and the progress bar need a small script; a file that is dropped on the place is taken only by the script.
+
+**Props**
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `name` | string |  | The name under which the files are sent with the form. |
+| `accept` | string |  | The kinds of file that are allowed: a list of types and extensions, separated by commas, as the platform writes them (image/png, .pdf, image/*). A file of another kind is refused. Without it every kind is allowed. |
+| `multiple` | boolean | `false` | The control takes more than one file. Files that are chosen again are added to those already chosen. Without it a new file replaces the old one. |
+| `max-size` | integer |  | The most bytes that one file may have. A larger file is refused. In the words of a refusal the size is written in megabytes, with one decimal and no trailing zero (1 MB, 1.5 MB), counted as 1048576 bytes to the megabyte and rounded up, and, below one megabyte, in whole kilobytes of 1024 bytes, rounded up (320 KB). |
+| `max-files` | integer |  | The most files that the control holds. Files beyond it are refused. Used only with multiple. |
+| `label` | string |  | The compact form: a label, which builds the field around the control. |
+| `hint` | string |  | The compact form: a line that helps to choose the files. |
+| `error` | string |  | The compact form: the message that says why what was chosen is refused, when the host is the one that refuses it. It also marks the control as invalid. |
+| `progress` | integer |  | How far the sending of the files has come, from 0 to 100. The host sets it while it sends; without it nothing is shown. While it is below 100 the files cannot be removed. |
+| `disabled` | boolean | `false` | The control cannot be used. |
+| `control-class` | class |  | Classes for the element that does the work, merged with its own. The author's classes win over them. |
+| `zone-class` | class |  | Classes for the place that is clicked or dropped on, merged with its own. The author's classes win over them. |
+
+**Slots**
+
+| Slot | Required | Description |
+| --- | --- | --- |
+| `default` | no | The words in the place that is clicked or dropped on, in place of the words of the component. |
+
+**Attributes**
+
+| Attribute | Kind | Description |
+| --- | --- | --- |
+| `data-studeo-file-input` | root | The root element. |
+| `data-studeo-file-input-zone` | part | The place that is clicked, or that files are dropped on, and that shows the words. It is the label of the control, so that a click on it opens the dialog that chooses files. |
+| `data-studeo-file-input-control` | part | The element that takes the files. |
+| `data-studeo-file-input-list` | part | The list of the files that were chosen. It is left out while there are none. |
+| `data-studeo-file-input-item` | part | One file of the list, with its name and its size, or the file that was refused. |
+| `data-studeo-file-input-remove` | part | The button of a file that takes it out of the list. Its accessible name says which file. |
+| `data-studeo-file-input-item-error` | part | The reason why a file was refused: its kind, its size or the number of files. A file that is refused is listed with its reason and is not sent. The reason is announced as an alert. |
+| `data-studeo-file-input-progress` | part | The bar that shows how far the sending has come. It is left out while there is no progress. |
+| `data-studeo-file-input-error` | part | The element that holds the error message of the compact form. |
+| `data-studeo-invalid` | state | See the states of the specification. |
+| `data-studeo-disabled` | state | See the states of the specification. |
+| `data-studeo-loading` | state | See the states of the specification. |
+| `data-studeo-dragging` | state | See the states of the specification. |
+
+Attributes that an author writes on the component go to `data-studeo-file-input-control`.
+
+**Accessibility**
+
+Role: none. Name from: associated-label.
+
+| Key | Behavior |
+| --- | --- |
+| `Enter or Space` | On the place that is clicked: opens the dialog that chooses files. |
+| `Enter or Space` | On the button that removes a file: takes the file out of the list. |
+
+| ARIA attribute | When |
+| --- | --- |
+| `aria-invalid` | On the control, while a file is refused or the error is showing. |
+| `aria-describedby` | On the control, naming the hint, the reasons of the refused files and the error that are showing. |
+| `aria-valuenow` | On the bar of the progress, with how far the sending has come, from 0 to 100. The bar has the role progressbar and a name from the words of the progress. |
+
+**Tokens:** `color-surface`, `color-field`, `color-border-strong`, `color-accent-subtle`, `color-text`, `color-text-muted`, `color-danger-text`, `color-focus-ring`, `radius-container`, `radius-control`
+
+**Composes:** `field`, `label`, `error`, `button`, `icon`
+
+**Fixtures**
+
+| Fixture | Description |
+| --- | --- |
+| `file-input.default` | A control for one file. |
+| `file-input.multiple` | A control for several files. |
+| `file-input.images-only` | A control that allows images only. |
+| `file-input.limited` | A control for at most two images of no more than one megabyte each. |
+| `file-input.uploading` | A control whose files are being sent. |
+| `file-input.invalid` | A control whose files are refused by the host. |
+| `file-input.disabled` | A control that cannot be used. |
+| `file-input.custom-words` | A control with its own words in the place that is clicked. |
+
+## image-crop
+
+A control that takes a picture from the user, lets the user choose the part of it to keep by moving and scaling it behind a frame of the shape that is asked for, and gives the host that part as a file of the size that is asked for.
+
+**Script:** required. Choosing the part of the picture, scaling it and making the file are done in the browser, so the component cannot do its job without script. Without it only the file input that carries the name is shown, and the server receives the picture as it was chosen.
+
+**Props**
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `output-width` | integer | required | The width in pixels of the file that the control makes. With the height it sets the shape of the frame: the frame has the ratio of the width to the height. It is the most that the file has: a part of the picture that has fewer pixels is not made larger. |
+| `output-height` | integer | required | The height in pixels of the file that the control makes. |
+| `type` | one of `jpeg`, `png` | `jpeg` | The kind of file that the control makes. A jpeg has no transparency: the picture is put on white first. |
+| `quality` | integer | `92` | How much of the detail a jpeg keeps, from 50 to 100. It is not used for a png. |
+| `max-zoom` | integer | `4` | How many times larger than the smallest scale that covers the frame the picture may be made. The picture is also never made so large that the part inside the frame has fewer pixels than the file to make, unless the picture itself has fewer. |
+| `accept` | string | `image/jpeg,image/png,image/webp,image/gif` | The kinds of file that can be chosen, written as the accept of the file input. A file that the browser cannot read as a picture is refused with its own message. |
+| `max-size` | integer |  | The most bytes that the chosen picture may have, written as in the file input. A larger one is refused. |
+| `name` | string |  | The name under which the file that is made is sent with the form. |
+| `label` | string |  | The compact form: a label, which builds the field around the chooser. |
+| `hint` | string |  | The compact form: a line that helps to choose the picture. |
+| `error` | string |  | The compact form: the message that says why the file is refused, when the host is the one that refuses it. It also marks the control as invalid. |
+| `disabled` | boolean | `false` | The control cannot be used. |
+| `control-class` | class |  | Classes for the file input that holds the file that is made, merged with its own. The author's classes win over them. |
+| `stage-class` | class |  | Classes for the area that shows the picture and the frame, merged with its own. The author's classes win over them. |
+
+**Attributes**
+
+| Attribute | Kind | Description |
+| --- | --- | --- |
+| `data-studeo-image-crop` | root | The root element. |
+| `data-studeo-image-crop-file` | part | The element that holds the chooser, a file input. It is shown until a picture is chosen, and again when the user chooses another. Its words are those of choosing a picture. |
+| `data-studeo-image-crop-stage` | part | The area that shows the picture and, over it, the frame; the part of the picture outside the frame is dimmed. It is hidden until a picture is chosen. It has the role group, takes the focus, and is named from the words of the crop area. The picture is moved by dragging it with a pointer, and a wheel over the area scales it, a pinch of two pointers scales and moves it. The picture always covers the frame. |
+| `data-studeo-image-crop-zoom` | part | The slider that scales the picture. At its smallest the picture just covers the frame; at its largest it has the scale that the zoom limit and the quality guard allow. |
+| `data-studeo-image-crop-zoom-in` | part | The button that scales the picture up by a tenth. |
+| `data-studeo-image-crop-zoom-out` | part | The button that scales the picture down by a tenth. |
+| `data-studeo-image-crop-submit` | part | The button that keeps the part of the picture that is inside the frame: it makes the file and puts it in the file input of the control. It does not send a form. The user may move the picture and press it again, and the new file replaces the old one. |
+| `data-studeo-image-crop-change` | part | The button that goes back to the chooser and takes the file that was made away. |
+| `data-studeo-image-crop-status` | part | The line that says that the file was made. It is announced politely. |
+| `data-studeo-image-crop-error` | part | The element that holds the reason why a chosen file could not be used as a picture. It is announced as an alert. |
+| `data-studeo-image-crop-control` | part | The file input that holds the file that was made, and only that file: the picture that the user chose is never in it. It carries the name and the attributes that the author writes on the component. Without script it is shown as an ordinary file input, so that the server receives the picture as it is. |
+| `data-studeo-invalid` | state | See the states of the specification. |
+| `data-studeo-disabled` | state | See the states of the specification. |
+
+Attributes that an author writes on the component go to `data-studeo-image-crop-control`.
+
+**Accessibility**
+
+Role: none. Name from: associated-label.
+
+| Key | Behavior |
+| --- | --- |
+| `ArrowLeft, ArrowRight, ArrowUp, ArrowDown` | On the area: moves the picture one twentieth of the frame in that direction, as a drag that way would. The picture stays covering the frame. |
+| `Shift with an arrow key` | On the area: moves the picture one fifth of the frame. |
+| `Plus or Equal` | On the area: scales the picture up by a tenth. |
+| `Minus` | On the area: scales the picture down by a tenth. |
+| `0 or Home` | On the area: puts the picture back at the smallest scale that covers the frame, in the middle. |
+| `Enter` | On the area: keeps the part of the picture that is inside the frame, as the submit button does. |
+| `Arrow keys, Home and End` | On the zoom slider: scale the picture, as a slider does. |
+
+| ARIA attribute | When |
+| --- | --- |
+| `aria-describedby` | On the area, naming the line that says which keys move and scale the picture. |
+| `aria-valuetext` | On the zoom slider, with the scale as a percentage of the smallest scale that covers the frame, such as 150%. |
+
+**Tokens:** `color-surface`, `color-overlay`, `color-text-muted`, `color-danger-text`, `color-focus-ring`, `radius-container`
+
+**Composes:** `file-input`, `button`, `icon`, `error`
+
+**Fixtures**
+
+| Fixture | Description |
+| --- | --- |
+| `image-crop.square` | A picture to crop to a square of 100 pixels. |
+| `image-crop.banner` | A picture to crop to a wide frame of 300 by 100 pixels. |
+| `image-crop.png` | A square that is made as a png. |
+| `image-crop.limited-zoom` | A square whose picture is scaled at most twice. |
+| `image-crop.disabled` | A control that cannot be used. |
 <!-- /generated:reference -->

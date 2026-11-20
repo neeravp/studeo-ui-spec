@@ -1094,6 +1094,379 @@
                 {"action": "click", "target": {"role": "button", "name": "Account"}},
                 {"action": "expectVisible", "target": {"attribute": "data-studeo-menu-separator"}}
             ]
+        },
+        {
+            "id": "file-input-holds-the-chosen-file",
+            "component": "file-input",
+            "fixture": "file-input.default",
+            "summary": "A file that is chosen is held by the control and shown in the list with a button that removes it.",
+            "steps": [
+                {"action": "expectHidden", "target": {"attribute": "data-studeo-file-input-list"}},
+                {"action": "setFiles", "target": {"attribute": "data-studeo-file-input-control"}, "files": ["small.png"]},
+                {"action": "expectFiles", "target": {"attribute": "data-studeo-file-input-control"}, "files": ["small.png"]},
+                {"action": "expectVisible", "target": {"attribute": "data-studeo-file-input-list"}},
+                {"action": "expectText", "target": {"attribute": "data-studeo-file-input-list"}, "text": "small.png"},
+                {"action": "expectVisible", "target": {"role": "button", "name": "Remove small.png"}}
+            ]
+        },
+        {
+            "id": "file-input-replaces-the-file-when-it-takes-only-one",
+            "component": "file-input",
+            "fixture": "file-input.default",
+            "summary": "A control for one file holds the file that was chosen last.",
+            "steps": [
+                {"action": "setFiles", "target": {"attribute": "data-studeo-file-input-control"}, "files": ["small.png"]},
+                {"action": "setFiles", "target": {"attribute": "data-studeo-file-input-control"}, "files": ["quadrants-landscape.png"]},
+                {"action": "expectFiles", "target": {"attribute": "data-studeo-file-input-control"}, "files": ["quadrants-landscape.png"]}
+            ]
+        },
+        {
+            "id": "file-input-adds-files-when-it-takes-several",
+            "component": "file-input",
+            "fixture": "file-input.multiple",
+            "summary": "A control for several files keeps the files that were chosen before and adds the new ones.",
+            "steps": [
+                {"action": "setFiles", "target": {"attribute": "data-studeo-file-input-control"}, "files": ["small.png"]},
+                {"action": "setFiles", "target": {"attribute": "data-studeo-file-input-control"}, "files": ["quadrants-landscape.png"]},
+                {"action": "expectFiles", "target": {"attribute": "data-studeo-file-input-control"}, "files": ["small.png", "quadrants-landscape.png"]},
+                {"action": "expectText", "target": {"attribute": "data-studeo-file-input-list"}, "text": "small.png"},
+                {"action": "expectText", "target": {"attribute": "data-studeo-file-input-list"}, "text": "quadrants-landscape.png"}
+            ]
+        },
+        {
+            "id": "file-input-removes-a-file",
+            "component": "file-input",
+            "fixture": "file-input.default",
+            "summary": "The button of a file takes it out of the control and out of the list.",
+            "steps": [
+                {"action": "setFiles", "target": {"attribute": "data-studeo-file-input-control"}, "files": ["small.png"]},
+                {"action": "click", "target": {"role": "button", "name": "Remove small.png"}},
+                {"action": "expectFiles", "target": {"attribute": "data-studeo-file-input-control"}, "files": []},
+                {"action": "expectHidden", "target": {"attribute": "data-studeo-file-input-list"}}
+            ]
+        },
+        {
+            "id": "file-input-refuses-a-kind-of-file-that-is-not-allowed",
+            "component": "file-input",
+            "fixture": "file-input.images-only",
+            "summary": "A file of a kind that is not allowed is not held by the control; it is listed with the reason, and the control is invalid.",
+            "steps": [
+                {"action": "setFiles", "target": {"attribute": "data-studeo-file-input-control"}, "files": ["notes.txt"]},
+                {"action": "expectFiles", "target": {"attribute": "data-studeo-file-input-control"}, "files": []},
+                {"action": "expectText", "target": {"attribute": "data-studeo-file-input-item-error"}, "text": "notes.txt is not a kind of file that can be used"},
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-file-input"}, "attribute": "data-studeo-invalid"},
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-file-input-control"}, "attribute": "aria-invalid", "value": "true"},
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-file-input-control"}, "attribute": "aria-describedby"}
+            ]
+        },
+        {
+            "id": "file-input-refuses-a-file-that-is-too-large",
+            "component": "file-input",
+            "fixture": "file-input.limited",
+            "summary": "A file larger than the limit is not held by the control; the reason names the limit in megabytes.",
+            "steps": [
+                {"action": "setFiles", "target": {"attribute": "data-studeo-file-input-control"}, "files": ["heavy.png"]},
+                {"action": "expectFiles", "target": {"attribute": "data-studeo-file-input-control"}, "files": []},
+                {"action": "expectText", "target": {"attribute": "data-studeo-file-input-item-error"}, "text": "heavy.png is larger than 1 MB"}
+            ]
+        },
+        {
+            "id": "file-input-refuses-files-beyond-the-most-it-holds",
+            "component": "file-input",
+            "fixture": "file-input.limited",
+            "summary": "Files beyond the most that the control holds are refused, and the files that were held stay.",
+            "steps": [
+                {"action": "setFiles", "target": {"attribute": "data-studeo-file-input-control"}, "files": ["small.png", "quadrants-landscape.png"]},
+                {"action": "setFiles", "target": {"attribute": "data-studeo-file-input-control"}, "files": ["quadrants-portrait.png"]},
+                {"action": "expectFiles", "target": {"attribute": "data-studeo-file-input-control"}, "files": ["small.png", "quadrants-landscape.png"]},
+                {"action": "expectText", "target": {"attribute": "data-studeo-file-input-item-error"}, "text": "Only 2 files can be added"}
+            ]
+        },
+        {
+            "id": "file-input-shows-the-progress-of-the-sending",
+            "component": "file-input",
+            "fixture": "file-input.uploading",
+            "summary": "While the host sends the files the control shows how far it has come, as a bar with a name, and it is loading.",
+            "steps": [
+                {"action": "expectVisible", "target": {"role": "progressbar", "name": "Uploading"}},
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-file-input-progress"}, "attribute": "aria-valuenow", "value": "40"},
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-file-input"}, "attribute": "data-studeo-loading"}
+            ]
+        },
+        {
+            "id": "file-input-shows-the-error-of-the-host",
+            "component": "file-input",
+            "fixture": "file-input.invalid",
+            "summary": "An error that the host gives marks the control as invalid and is tied to it.",
+            "steps": [
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-file-input"}, "attribute": "data-studeo-invalid"},
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-file-input-control"}, "attribute": "aria-invalid", "value": "true"},
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-file-input-control"}, "attribute": "aria-describedby"}
+            ]
+        },
+        {
+            "id": "file-input-cannot-be-used-when-it-is-disabled",
+            "component": "file-input",
+            "fixture": "file-input.disabled",
+            "summary": "A disabled control carries the disabled state and cannot take a file.",
+            "steps": [
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-file-input"}, "attribute": "data-studeo-disabled"},
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-file-input-control"}, "attribute": "disabled"}
+            ]
+        },
+        {
+            "id": "file-input-shows-that-files-are-over-it-and-takes-them-when-dropped",
+            "component": "file-input",
+            "fixture": "file-input.default",
+            "summary": "While files are dragged over the place the control carries the dragging state; when they are dropped the state goes and the control holds the files.",
+            "steps": [
+                {"action": "dragFiles", "target": {"attribute": "data-studeo-file-input-zone"}, "files": ["small.png"]},
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-file-input"}, "attribute": "data-studeo-dragging"},
+                {"action": "dropFiles", "target": {"attribute": "data-studeo-file-input-zone"}, "files": ["small.png"]},
+                {"action": "expectNoAttribute", "target": {"attribute": "data-studeo-file-input"}, "attribute": "data-studeo-dragging"},
+                {"action": "expectFiles", "target": {"attribute": "data-studeo-file-input-control"}, "files": ["small.png"]}
+            ]
+        },
+        {
+            "id": "file-input-says-its-own-words-in-the-place-that-is-clicked",
+            "component": "file-input",
+            "fixture": "file-input.custom-words",
+            "summary": "The words that the author gives replace the words of the component in the place that is clicked.",
+            "steps": [
+                {"action": "expectText", "target": {"attribute": "data-studeo-file-input-zone"}, "text": "Add your file"}
+            ]
+        },
+        {
+            "id": "file-input-says-in-its-own-words-that-a-file-can-be-dropped",
+            "component": "file-input",
+            "fixture": "file-input.default",
+            "summary": "Without words of the author the place that is clicked says that a file can be dragged there.",
+            "steps": [
+                {"action": "expectText", "target": {"attribute": "data-studeo-file-input-zone"}, "text": "Drag a file here or click to choose"}
+            ]
+        },
+        {
+            "id": "image-crop-shows-the-crop-area-after-a-picture-is-chosen",
+            "component": "image-crop",
+            "fixture": "image-crop.square",
+            "summary": "The crop area is hidden until a picture is chosen; then it is shown, tied to the line that says the keys, with the zoom at its smallest.",
+            "steps": [
+                {"action": "expectHidden", "target": {"role": "group", "name": "Crop area"}},
+                {"action": "setFiles", "target": {"attribute": "data-studeo-image-crop-file"}, "files": ["quadrants-landscape.png"]},
+                {"action": "expectVisible", "target": {"role": "group", "name": "Crop area"}},
+                {"action": "expectAttribute", "target": {"role": "group", "name": "Crop area"}, "attribute": "aria-describedby"},
+                {"action": "expectAttribute", "target": {"role": "slider", "name": "Zoom"}, "attribute": "aria-valuetext", "value": "100%"},
+                {"action": "expectHidden", "target": {"attribute": "data-studeo-image-crop-file"}}
+            ]
+        },
+        {
+            "id": "image-crop-keeps-the-middle-of-the-picture-by-default",
+            "component": "image-crop",
+            "fixture": "image-crop.square",
+            "summary": "Without moving or scaling, the part that is kept is the middle of the picture, in the size that was asked for.",
+            "steps": [
+                {"action": "setFiles", "target": {"attribute": "data-studeo-image-crop-file"}, "files": ["quadrants-landscape.png"]},
+                {"action": "click", "target": {"role": "button", "name": "Crop"}},
+                {"action": "expectFiles", "target": {"attribute": "data-studeo-image-crop-control"}, "files": ["cropped.jpg"]},
+                {"action": "expectImage", "target": {"attribute": "data-studeo-image-crop-control"}, "type": "image/jpeg", "width": 100, "height": 100, "colours": [{"x": 25, "y": 25, "colour": "red"}, {"x": 75, "y": 25, "colour": "green"}, {"x": 25, "y": 75, "colour": "blue"}, {"x": 75, "y": 75, "colour": "yellow"}]}
+            ]
+        },
+        {
+            "id": "image-crop-moves-the-picture-with-the-arrow-keys",
+            "component": "image-crop",
+            "fixture": "image-crop.square",
+            "summary": "The arrow keys move the picture the way a drag in that direction would: moved to the left, the part that is kept is further to the right.",
+            "steps": [
+                {"action": "setFiles", "target": {"attribute": "data-studeo-image-crop-file"}, "files": ["quadrants-landscape.png"]},
+                {"action": "focus", "target": {"role": "group", "name": "Crop area"}},
+                {"action": "press", "key": "ArrowLeft"},
+                {"action": "press", "key": "ArrowLeft"},
+                {"action": "press", "key": "ArrowLeft"},
+                {"action": "press", "key": "ArrowLeft"},
+                {"action": "press", "key": "ArrowLeft"},
+                {"action": "press", "key": "ArrowLeft"},
+                {"action": "press", "key": "ArrowLeft"},
+                {"action": "press", "key": "ArrowLeft"},
+                {"action": "press", "key": "ArrowLeft"},
+                {"action": "press", "key": "ArrowLeft"},
+                {"action": "click", "target": {"role": "button", "name": "Crop"}},
+                {"action": "expectImage", "target": {"attribute": "data-studeo-image-crop-control"}, "type": "image/jpeg", "width": 100, "height": 100, "colours": [{"x": 45, "y": 25, "colour": "green"}, {"x": 45, "y": 75, "colour": "yellow"}]}
+            ]
+        },
+        {
+            "id": "image-crop-moves-the-picture-with-a-drag",
+            "component": "image-crop",
+            "fixture": "image-crop.square",
+            "summary": "Dragging the picture to the left moves it the way the arrow key does.",
+            "steps": [
+                {"action": "setFiles", "target": {"attribute": "data-studeo-image-crop-file"}, "files": ["quadrants-landscape.png"]},
+                {"action": "dragBy", "target": {"role": "group", "name": "Crop area"}, "dx": -400, "dy": 0},
+                {"action": "click", "target": {"role": "button", "name": "Crop"}},
+                {"action": "expectImage", "target": {"attribute": "data-studeo-image-crop-control"}, "type": "image/jpeg", "width": 100, "height": 100, "colours": [{"x": 45, "y": 25, "colour": "green"}, {"x": 45, "y": 75, "colour": "yellow"}]}
+            ]
+        },
+        {
+            "id": "image-crop-scales-the-picture-and-keeps-the-part-inside-the-frame",
+            "component": "image-crop",
+            "fixture": "image-crop.square",
+            "summary": "At the largest scale the part that is kept is a small part of the picture: the zoom stops where the part has no fewer pixels than the file to make, and the picture can be moved to the corner.",
+            "steps": [
+                {"action": "setFiles", "target": {"attribute": "data-studeo-image-crop-file"}, "files": ["quadrants-landscape.png"]},
+                {"action": "focus", "target": {"role": "slider", "name": "Zoom"}},
+                {"action": "press", "key": "End"},
+                {"action": "expectAttribute", "target": {"role": "slider", "name": "Zoom"}, "attribute": "aria-valuetext", "value": "300%"},
+                {"action": "focus", "target": {"role": "group", "name": "Crop area"}},
+                {"action": "press", "key": "Shift+ArrowLeft"},
+                {"action": "press", "key": "Shift+ArrowLeft"},
+                {"action": "press", "key": "Shift+ArrowLeft"},
+                {"action": "press", "key": "Shift+ArrowLeft"},
+                {"action": "press", "key": "Shift+ArrowLeft"},
+                {"action": "press", "key": "Shift+ArrowLeft"},
+                {"action": "press", "key": "Shift+ArrowLeft"},
+                {"action": "press", "key": "Shift+ArrowLeft"},
+                {"action": "click", "target": {"role": "button", "name": "Crop"}},
+                {"action": "expectImage", "target": {"attribute": "data-studeo-image-crop-control"}, "type": "image/jpeg", "width": 100, "height": 100, "colours": [{"x": 10, "y": 10, "colour": "green"}, {"x": 10, "y": 90, "colour": "yellow"}]}
+            ]
+        },
+        {
+            "id": "image-crop-stops-the-zoom-at-the-limit-of-the-author",
+            "component": "image-crop",
+            "fixture": "image-crop.limited-zoom",
+            "summary": "The zoom does not go beyond the limit that the author gives.",
+            "steps": [
+                {"action": "setFiles", "target": {"attribute": "data-studeo-image-crop-file"}, "files": ["quadrants-landscape.png"]},
+                {"action": "focus", "target": {"role": "slider", "name": "Zoom"}},
+                {"action": "press", "key": "End"},
+                {"action": "expectAttribute", "target": {"role": "slider", "name": "Zoom"}, "attribute": "aria-valuetext", "value": "200%"}
+            ]
+        },
+        {
+            "id": "image-crop-keeps-the-part-with-the-enter-key",
+            "component": "image-crop",
+            "fixture": "image-crop.square",
+            "summary": "The Enter key on the crop area keeps the part inside the frame, as the button does.",
+            "steps": [
+                {"action": "setFiles", "target": {"attribute": "data-studeo-image-crop-file"}, "files": ["quadrants-landscape.png"]},
+                {"action": "focus", "target": {"role": "group", "name": "Crop area"}},
+                {"action": "expectFocus", "target": {"role": "group", "name": "Crop area"}},
+                {"action": "press", "key": "Enter"},
+                {"action": "expectFiles", "target": {"attribute": "data-studeo-image-crop-control"}, "files": ["cropped.jpg"]}
+            ]
+        },
+        {
+            "id": "image-crop-makes-the-frame-of-the-shape-that-was-asked-for",
+            "component": "image-crop",
+            "fixture": "image-crop.banner",
+            "summary": "A frame of three to one gives a file of the size that was asked for, from the middle of the picture.",
+            "steps": [
+                {"action": "setFiles", "target": {"attribute": "data-studeo-image-crop-file"}, "files": ["quadrants-landscape.png"]},
+                {"action": "click", "target": {"role": "button", "name": "Crop"}},
+                {"action": "expectImage", "target": {"attribute": "data-studeo-image-crop-control"}, "type": "image/jpeg", "width": 300, "height": 100, "colours": [{"x": 25, "y": 10, "colour": "red"}, {"x": 25, "y": 90, "colour": "blue"}]}
+            ]
+        },
+        {
+            "id": "image-crop-does-not-make-a-picture-larger-than-it-is",
+            "component": "image-crop",
+            "fixture": "image-crop.banner",
+            "summary": "A picture with fewer pixels than the file asked for is kept at its own resolution, in the shape of the frame.",
+            "steps": [
+                {"action": "setFiles", "target": {"attribute": "data-studeo-image-crop-file"}, "files": ["small.png"]},
+                {"action": "click", "target": {"role": "button", "name": "Crop"}},
+                {"action": "expectImage", "target": {"attribute": "data-studeo-image-crop-control"}, "type": "image/jpeg", "width": 100, "height": 33}
+            ]
+        },
+        {
+            "id": "image-crop-turns-a-picture-upright-before-it-is-cropped",
+            "component": "image-crop",
+            "fixture": "image-crop.square",
+            "summary": "A picture that a camera stored on its side is cropped as it is shown, upright.",
+            "steps": [
+                {"action": "setFiles", "target": {"attribute": "data-studeo-image-crop-file"}, "files": ["rotated.jpg"]},
+                {"action": "click", "target": {"role": "button", "name": "Crop"}},
+                {"action": "expectImage", "target": {"attribute": "data-studeo-image-crop-control"}, "type": "image/jpeg", "width": 100, "height": 100, "colours": [{"x": 25, "y": 25, "colour": "red"}, {"x": 25, "y": 75, "colour": "blue"}]}
+            ]
+        },
+        {
+            "id": "image-crop-puts-a-jpeg-on-white",
+            "component": "image-crop",
+            "fixture": "image-crop.square",
+            "summary": "A picture with transparent parts is put on white when the file is a jpeg.",
+            "steps": [
+                {"action": "setFiles", "target": {"attribute": "data-studeo-image-crop-file"}, "files": ["transparent.png"]},
+                {"action": "click", "target": {"role": "button", "name": "Crop"}},
+                {"action": "expectImage", "target": {"attribute": "data-studeo-image-crop-control"}, "type": "image/jpeg", "width": 100, "height": 100, "colours": [{"x": 5, "y": 5, "colour": "white"}]}
+            ]
+        },
+        {
+            "id": "image-crop-keeps-the-transparency-in-a-png",
+            "component": "image-crop",
+            "fixture": "image-crop.png",
+            "summary": "A picture with transparent parts keeps them when the file is a png.",
+            "steps": [
+                {"action": "setFiles", "target": {"attribute": "data-studeo-image-crop-file"}, "files": ["transparent.png"]},
+                {"action": "click", "target": {"role": "button", "name": "Crop"}},
+                {"action": "expectFiles", "target": {"attribute": "data-studeo-image-crop-control"}, "files": ["cropped.png"]},
+                {"action": "expectImage", "target": {"attribute": "data-studeo-image-crop-control"}, "type": "image/png", "width": 100, "height": 100, "colours": [{"x": 5, "y": 5, "colour": "transparent"}]}
+            ]
+        },
+        {
+            "id": "image-crop-says-that-the-picture-was-cropped",
+            "component": "image-crop",
+            "fixture": "image-crop.square",
+            "summary": "After the crop the control says that the file was made, and the stage stays so that the user can crop again.",
+            "steps": [
+                {"action": "setFiles", "target": {"attribute": "data-studeo-image-crop-file"}, "files": ["quadrants-landscape.png"]},
+                {"action": "click", "target": {"role": "button", "name": "Crop"}},
+                {"action": "expectText", "target": {"attribute": "data-studeo-image-crop-status"}, "text": "Picture cropped"},
+                {"action": "expectVisible", "target": {"role": "group", "name": "Crop area"}}
+            ]
+        },
+        {
+            "id": "image-crop-goes-back-to-choosing-another-picture",
+            "component": "image-crop",
+            "fixture": "image-crop.square",
+            "summary": "The button that chooses another picture shows the chooser again and takes the file that was made away.",
+            "steps": [
+                {"action": "setFiles", "target": {"attribute": "data-studeo-image-crop-file"}, "files": ["quadrants-landscape.png"]},
+                {"action": "click", "target": {"role": "button", "name": "Crop"}},
+                {"action": "expectFiles", "target": {"attribute": "data-studeo-image-crop-control"}, "files": ["cropped.jpg"]},
+                {"action": "click", "target": {"role": "button", "name": "Choose another picture"}},
+                {"action": "expectHidden", "target": {"role": "group", "name": "Crop area"}},
+                {"action": "expectVisible", "target": {"attribute": "data-studeo-image-crop-file"}},
+                {"action": "expectFiles", "target": {"attribute": "data-studeo-image-crop-control"}, "files": []}
+            ]
+        },
+        {
+            "id": "image-crop-refuses-a-file-that-is-not-a-picture",
+            "component": "image-crop",
+            "fixture": "image-crop.square",
+            "summary": "A file that is not a picture is refused: the crop area stays hidden, nothing is made, and the control is invalid.",
+            "steps": [
+                {"action": "setFiles", "target": {"attribute": "data-studeo-image-crop-file"}, "files": ["notes.txt"]},
+                {"action": "expectHidden", "target": {"role": "group", "name": "Crop area"}},
+                {"action": "expectFiles", "target": {"attribute": "data-studeo-image-crop-control"}, "files": []},
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-image-crop"}, "attribute": "data-studeo-invalid"}
+            ]
+        },
+        {
+            "id": "image-crop-takes-the-focus-on-its-crop-area",
+            "component": "image-crop",
+            "fixture": "image-crop.square",
+            "summary": "The crop area takes the focus, so that the keys can move the picture.",
+            "steps": [
+                {"action": "setFiles", "target": {"attribute": "data-studeo-image-crop-file"}, "files": ["quadrants-landscape.png"]},
+                {"action": "focus", "target": {"role": "group", "name": "Crop area"}},
+                {"action": "expectFocus", "target": {"role": "group", "name": "Crop area"}}
+            ]
+        },
+        {
+            "id": "image-crop-cannot-be-used-when-it-is-disabled",
+            "component": "image-crop",
+            "fixture": "image-crop.disabled",
+            "summary": "A disabled control carries the disabled state.",
+            "steps": [
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-image-crop"}, "attribute": "data-studeo-disabled"}
+            ]
         }
     ]
 }

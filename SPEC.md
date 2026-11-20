@@ -60,6 +60,8 @@ A component in `components.json` has:
 | [`menu`](docs/components.md#menu) | A button that opens a short list of actions and places to go. It closes again when the user picks one, presses Escape or goes elsewhere. | optional |
 | [`menu-item`](docs/components.md#menu-item) | One choice of a menu: a link to another place, or a button that does something. | none |
 | [`menu-separator`](docs/components.md#menu-separator) | A line between two groups of items of a menu. | none |
+| [`file-input`](docs/components.md#file-input) | A control that takes files from the user: a place to click or to drop files on, the list of what was chosen, and the refusal of a file that is not allowed, before anything is sent. | optional |
+| [`image-crop`](docs/components.md#image-crop) | A control that takes a picture from the user, lets the user choose the part of it to keep by moving and scaling it behind a frame of the shape that is asked for, and gives the host that part as a file of the size that is asked for. | required |
 <!-- /generated:components -->
 
 ### Messages and variables
@@ -84,6 +86,7 @@ A state is a `data-studeo-*` attribute that is present while a component is in t
 | `data-studeo-selected` | Present while an item is picked from a set. |
 | `data-studeo-open` | Present while a component that can unfold is unfolded. |
 | `data-studeo-current` | Present on the item that stands for the place the user is in. |
+| `data-studeo-dragging` | Present while files are being dragged over the component. |
 <!-- /generated:states -->
 
 ## 4. Icons
@@ -101,7 +104,9 @@ A component that shows an icon names it from this vocabulary. An implementation 
 | `eye-off` | A struck-through eye, for hiding a shown value. |
 | `info` | A circled letter i, for information. |
 | `minus` | A dash, for a choice that is neither on nor off. |
+| `plus` | A cross of two bars, for adding and for making larger. |
 | `search` | A magnifying glass, for searching. |
+| `upload` | An arrow that points up from a tray, for sending files. |
 | `warning` | A triangle with an exclamation mark, for a warning or an error. |
 <!-- /generated:icons -->
 
@@ -124,6 +129,12 @@ A scenario starts from a fixture, written `<component>.<case>`: an implementatio
 - `expectText` (target, text)
 - `expectAttribute` (target, attribute)
 - `expectNoAttribute` (target, attribute)
+- `setFiles` (target, files)
+- `dragFiles` (target, files)
+- `dropFiles` (target, files)
+- `dragBy` (target, dx, dy)
+- `expectFiles` (target, files)
+- `expectImage` (target, type, width, height)
 <!-- /generated:actions -->
 
 A target is found by role and accessible name, or by a `data-studeo-*` attribute. A step that checks an attribute names an ARIA attribute or a state that the component of the scenario declares, or `disabled` where the component has a prop of that name. Waiting is not an action: a time limit is stated in the contract of the component.
@@ -142,13 +153,33 @@ A step starts when the one before it has finished and waits for nothing else.
 - `click`: the target is activated the way a user activates it with a pointer.
 - `focus`: the target is given the keyboard focus.
 - `fill`: the value of the target is replaced by the given text.
-- `press`: the key is pressed on the element that has the focus. Keys are named as in the scenarios, for example `Space` and `Escape`.
+- `press`: the key is pressed on the element that has the focus. Keys are named as in the scenarios, for example `Space` and `Escape`; a key held with another is written with a plus, as `Shift+ArrowLeft`.
 - `expectVisible`: the target is shown to the user: it takes up room on the page and is not hidden.
 - `expectHidden`: no element matches the target, or none of the elements that match is shown to the user.
 - `expectFocus`: the target has the keyboard focus.
 - `expectText`: the text of the target, with each run of white space read as one space, contains the given text. It need not equal it.
 - `expectAttribute`: the target carries the attribute. When a `value` is given, the attribute equals it; without a value, the attribute is present, whatever its value, even an empty one.
 - `expectNoAttribute`: the target does not carry the attribute, whatever its value would be.
+- `setFiles`: the files are given to the file input the way a user gives them in the dialog that chooses files: the input holds exactly these files and the events of a choice follow. The target is a file input, or an element that holds exactly one. The files are samples (see below).
+- `dragFiles`: files are dragged over the target and stay there, as a pointer that has not been released does; the target receives the events of entering and moving over it.
+- `dropFiles`: the files are dropped on the target, after being dragged over it if they were not yet; the target receives the event of the drop.
+- `dragBy`: a pointer is pressed in the middle of the target, moved by `dx` pixels to the right and `dy` pixels down (negative to the left and up), and released. The move goes through the points in between.
+- `expectFiles`: the file input that is the target, or that the target holds, holds exactly the files with these names, in this order. An empty list means that it holds none.
+- `expectImage`: the first file that the file input holds is an image of the given type, width and height in pixels, and, at each point that is given, it has the named colour. A point is given as whole percentages of the width and of the height from the top left corner, and it is the pixel that contains the point. A colour is the named one when each of its channels is within 48 of the colour's own, which is red (255, 0, 0), green (0, 255, 0), blue (0, 0, 255), yellow (255, 255, 0) or white (255, 255, 255), and `transparent` is a pixel whose alpha is below 16.
+
+### The sample files
+
+A step that gives files to a control names them from this closed list. The runner makes each one, so that the specification carries no file. An image is drawn in four equal quadrants: red at the top left, green at the top right, blue at the bottom left and yellow at the bottom right.
+
+| Sample | What it is |
+| --- | --- |
+| `quadrants-landscape.png` | A png of 400 by 300 pixels, in four quadrants. |
+| `quadrants-portrait.png` | A png of 300 by 400 pixels, in four quadrants. |
+| `small.png` | A png of 100 by 100 pixels, in four quadrants. |
+| `rotated.jpg` | A jpeg stored as 200 by 100 pixels, red in its left half and blue in its right half, with the orientation mark 6 of the camera, so that it is shown turned a quarter clockwise: 100 by 200 pixels, red above and blue below. |
+| `transparent.png` | A png of 300 by 300 pixels with no opaque pixel. |
+| `heavy.png` | A png of 100 by 100 pixels, in four quadrants, followed by padding up to exactly 2097152 bytes. |
+| `notes.txt` | A text file with the words Notes, of the type text/plain. |
 
 ## 7. What the tests refuse
 

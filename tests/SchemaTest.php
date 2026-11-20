@@ -167,6 +167,16 @@ it('refuses a scenarios file that breaks the format, at the place of the mistake
     'no steps' => [fn (array $d): array => Spec::set($d, 'scenarios.0.steps', []), '/scenarios/0/steps:'],
     'no summary' => [fn (array $d): array => Spec::forget($d, 'scenarios.0.summary'), '/scenarios/0:'],
     'a property the format does not have' => [fn (array $d): array => Spec::set($d, 'scenarios.0.retries', 3), '/scenarios/0:'],
+    'a file that is not a sample' => [fn (array $d): array => Spec::set($d, 'scenarios.0.steps', [['action' => 'setFiles', 'target' => ['attribute' => 'data-studeo-file-input-control'], 'files' => ['holiday.png']]]), '/scenarios/0/steps/0'],
+    'a setFiles without files' => [fn (array $d): array => Spec::set($d, 'scenarios.0.steps', [['action' => 'setFiles', 'target' => ['attribute' => 'data-studeo-file-input-control'], 'files' => []]]), '/scenarios/0/steps/0'],
+    'a dropFiles with the same file twice' => [fn (array $d): array => Spec::set($d, 'scenarios.0.steps', [['action' => 'dropFiles', 'target' => ['attribute' => 'data-studeo-file-input-zone'], 'files' => ['small.png', 'small.png']]]), '/scenarios/0/steps/0'],
+    'a dragBy without a distance' => [fn (array $d): array => Spec::set($d, 'scenarios.0.steps', [['action' => 'dragBy', 'target' => ['attribute' => 'data-studeo-image-crop-stage'], 'dx' => 10]]), '/scenarios/0/steps/0'],
+    'a dragBy by a part of a pixel' => [fn (array $d): array => Spec::set($d, 'scenarios.0.steps', [['action' => 'dragBy', 'target' => ['attribute' => 'data-studeo-image-crop-stage'], 'dx' => 1.5, 'dy' => 0]]), '/scenarios/0/steps/0'],
+    'an expectImage of a type that is not made' => [fn (array $d): array => Spec::set($d, 'scenarios.0.steps', [['action' => 'expectImage', 'target' => ['attribute' => 'data-studeo-image-crop-control'], 'type' => 'image/webp', 'width' => 1, 'height' => 1]]), '/scenarios/0/steps/0'],
+    'an expectImage without a size' => [fn (array $d): array => Spec::set($d, 'scenarios.0.steps', [['action' => 'expectImage', 'target' => ['attribute' => 'data-studeo-image-crop-control'], 'type' => 'image/png']]), '/scenarios/0/steps/0'],
+    'an expectImage with a colour that has no name' => [fn (array $d): array => Spec::set($d, 'scenarios.0.steps', [['action' => 'expectImage', 'target' => ['attribute' => 'data-studeo-image-crop-control'], 'type' => 'image/png', 'width' => 1, 'height' => 1, 'colours' => [['x' => 1, 'y' => 1, 'colour' => 'purple']]]]), '/scenarios/0/steps/0'],
+    'an expectImage with a point outside the image' => [fn (array $d): array => Spec::set($d, 'scenarios.0.steps', [['action' => 'expectImage', 'target' => ['attribute' => 'data-studeo-image-crop-control'], 'type' => 'image/png', 'width' => 1, 'height' => 1, 'colours' => [['x' => 100, 'y' => 1, 'colour' => 'red']]]]), '/scenarios/0/steps/0'],
+    'an expectFiles without files' => [fn (array $d): array => Spec::set($d, 'scenarios.0.steps', [['action' => 'expectFiles', 'target' => ['attribute' => 'data-studeo-file-input-control']]]), '/scenarios/0/steps/0'],
 ]);
 
 it('accepts a list prop, and fixtures that give it plain values or options', function (array $value) {
@@ -198,4 +208,12 @@ it('accepts every action of the closed list', function (array $step) {
     'expectAttribute' => [['action' => 'expectAttribute', 'target' => ['role' => 'button', 'name' => 'Save'], 'attribute' => 'disabled']],
     'expectNoAttribute' => [['action' => 'expectNoAttribute', 'target' => ['attribute' => 'data-studeo-switch'], 'attribute' => 'data-studeo-checked']],
     'expectAttribute with a value' => [['action' => 'expectAttribute', 'target' => ['role' => 'button', 'name' => 'Save'], 'attribute' => 'aria-busy', 'value' => 'true']],
+    'setFiles' => [['action' => 'setFiles', 'target' => ['attribute' => 'data-studeo-file-input-control'], 'files' => ['small.png', 'notes.txt']]],
+    'dragFiles' => [['action' => 'dragFiles', 'target' => ['attribute' => 'data-studeo-file-input-zone'], 'files' => ['small.png']]],
+    'dropFiles' => [['action' => 'dropFiles', 'target' => ['attribute' => 'data-studeo-file-input-zone'], 'files' => ['small.png']]],
+    'dragBy' => [['action' => 'dragBy', 'target' => ['attribute' => 'data-studeo-image-crop-stage'], 'dx' => -40, 'dy' => 12]],
+    'expectFiles' => [['action' => 'expectFiles', 'target' => ['attribute' => 'data-studeo-file-input-control'], 'files' => ['small.png']]],
+    'expectFiles with no files' => [['action' => 'expectFiles', 'target' => ['attribute' => 'data-studeo-file-input-control'], 'files' => []]],
+    'expectImage' => [['action' => 'expectImage', 'target' => ['attribute' => 'data-studeo-image-crop-control'], 'type' => 'image/png', 'width' => 100, 'height' => 100]],
+    'expectImage with colours' => [['action' => 'expectImage', 'target' => ['attribute' => 'data-studeo-image-crop-control'], 'type' => 'image/jpeg', 'width' => 100, 'height' => 33, 'colours' => [['x' => 0, 'y' => 99, 'colour' => 'transparent'], ['x' => 50, 'y' => 50, 'colour' => 'white']]]],
 ]);

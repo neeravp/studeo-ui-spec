@@ -23,7 +23,7 @@ final class DocsTruth
     private const string THEMING = 'docs/theming.md';
 
     /**
-     * @param  array{components: list<array<string, mixed>>, states: list<array<string, mixed>>, icons: list<array<string, mixed>>, tokens: list<array<string, mixed>>, contrast: list<array<string, mixed>>, actions: list<string>}  $spec
+     * @param  array{components: list<array<string, mixed>>, states: list<array<string, mixed>>, icons: list<array<string, mixed>>, tokens: list<array<string, mixed>>, contrast: list<array<string, mixed>>, actions: list<string>, samples: list<string>}  $spec
      * @param  array<string, string>  $documents  the text of each document, by its path
      * @param  Closure(string): bool  $exists  whether a file of the project exists, by its path
      * @return list<string>
@@ -37,6 +37,7 @@ final class DocsTruth
             ...self::rows(self::SPEC, $documents[self::SPEC] ?? '', 'icon', array_column($spec['icons'], 'name'), fn (string $name): string => "| `{$name}` |"),
             ...self::rows(self::SPEC, $documents[self::SPEC] ?? '', 'action', $spec['actions'], fn (string $name): string => "- `{$name}` ("),
             ...self::meanings($spec['actions'], $documents[self::SPEC] ?? ''),
+            ...self::rows(self::SPEC, $documents[self::SPEC] ?? '', 'sample file', $spec['samples'], fn (string $name): string => "| `{$name}` |"),
             ...self::rows(self::THEMING, $documents[self::THEMING] ?? '', 'token', array_column($spec['tokens'], 'name'), function (string $name) use ($spec): string {
                 $css = array_column($spec['tokens'], 'css', 'name')[$name];
 

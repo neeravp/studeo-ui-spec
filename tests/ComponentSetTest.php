@@ -36,6 +36,8 @@ it('declares a component that the screens need', function (string $name) {
     'menu',
     'menu-item',
     'menu-separator',
+    'file-input',
+    'image-crop',
 ]);
 
 it('gives every component at least one scenario', function () {
@@ -408,4 +410,92 @@ it('declares a menu whose looks are classes of the author and not props, built f
     expect($components['menu-item']['accessibility']['role'])->toBe('menuitem');
     expect(array_column($components['menu-item']['accessibility']['aria'], 'attribute'))->toBe(['aria-current', 'aria-disabled']);
     expect($components['menu-separator']['accessibility']['role'])->toBe('separator');
+});
+
+it('declares a file input that is a real control, with the refusals that are made before anything is sent', function () {
+    $input = array_column(Spec::data('components')['components'], null, 'name')['file-input'];
+    $props = array_column($input['props'], null, 'name');
+
+    expect($input['attributesTarget'])->toBe('data-studeo-file-input-control');
+    expect($props['control-class']['type'])->toBe('class');
+    expect($props['multiple']['default'])->toBeFalse();
+    expect(array_column($props, 'type', 'name')['max-size'])->toBe('integer');
+    expect(array_column($props, 'type', 'name')['progress'])->toBe('integer');
+    expect($props['max-size']['description'])->toContain('megabytes')->toContain('1048576')->toContain('kilobytes');
+    expect($input['attributes']['states'])->toBe(['data-studeo-invalid', 'data-studeo-disabled', 'data-studeo-loading', 'data-studeo-dragging']);
+    expect($input['script']['need'])->toBe('optional');
+    expect($input['script']['reason'])->toContain('refusal')->toContain('taken only by the script');
+    expect($input['composes'])->toBe(['field', 'label', 'error', 'button', 'icon']);
+    expect(array_column($input['accessibility']['aria'], 'attribute'))->toBe(['aria-invalid', 'aria-describedby', 'aria-valuenow']);
+});
+
+it('writes the number of files that a file input holds in the plural, and the size and the name in the reasons of a refusal', function () {
+    $messages = array_column(Spec::data('components')['messages'], null, 'key');
+
+    expect($messages['file-input.too-many']['plural'])->toBe(['by' => 'max', 'one' => 'Only :max file can be added']);
+    expect($messages['file-input.too-large']['placeholders'])->toBe(['name', 'size']);
+    expect($messages['file-input.wrong-type']['placeholders'])->toBe(['name']);
+    expect($messages['file-input.remove']['placeholders'])->toBe(['name']);
+});
+
+it('declares an image crop that makes a file of the size that is asked for and keeps the picture that was chosen out of the control that is sent', function () {
+    $crop = array_column(Spec::data('components')['components'], null, 'name')['image-crop'];
+    $props = array_column($crop['props'], null, 'name');
+    $parts = array_column($crop['attributes']['parts'], null, 'name');
+
+    expect($props['output-width']['required'])->toBeTrue();
+    expect($props['output-height']['required'])->toBeTrue();
+    expect($props['type']['values'])->toBe(['jpeg', 'png']);
+    expect($props['type']['default'])->toBe('jpeg');
+    expect($props['quality']['default'])->toBe(92);
+    expect($props['max-zoom']['default'])->toBe(4);
+    expect($props['output-width']['description'])->toContain('not made larger');
+    expect($props['max-zoom']['description'])->toContain('fewer pixels');
+    expect($crop['script']['need'])->toBe('required');
+    expect($crop['attributesTarget'])->toBe('data-studeo-image-crop-control');
+    expect($props['control-class']['type'])->toBe('class');
+    expect($parts['data-studeo-image-crop-control']['description'])->toContain('never in it')->toContain('Without script');
+    expect($parts['data-studeo-image-crop-submit']['description'])->toContain('does not send a form');
+    expect($crop['composes'])->toBe(['file-input', 'button', 'icon', 'error']);
+    expect($crop['attributes']['states'])->toBe(['data-studeo-invalid', 'data-studeo-disabled']);
+});
+
+it('says how the picture of an image crop is moved and scaled by the keys, in a way that does not need a pointer', function () {
+    $keys = array_column(array_column(Spec::data('components')['components'], null, 'name')['image-crop']['accessibility']['keyboard'], 'behavior', 'key');
+
+    expect($keys['ArrowLeft, ArrowRight, ArrowUp, ArrowDown'])->toContain('one twentieth')->toContain('as a drag');
+    expect($keys['Shift with an arrow key'])->toContain('one fifth');
+    expect($keys['Plus or Equal'])->toContain('up');
+    expect($keys['0 or Home'])->toContain('smallest scale');
+    expect($keys['Enter'])->toContain('as the submit button does');
+});
+
+it('keeps the words of the file input and of the image crop to the component that writes them', function () {
+    $components = array_column(Spec::data('components')['components'], null, 'name');
+
+    expect(array_filter($components['image-crop']['messages'], fn (string $key): bool => ! str_starts_with($key, 'image-crop.')))->toBe([]);
+    expect(array_filter($components['file-input']['messages'], fn (string $key): bool => ! str_starts_with($key, 'file-input.')))->toBe([]);
+});
+
+it('adds the state of files that are dragged over a component and the two icons that the file input and the crop need', function () {
+    $data = Spec::data('components');
+
+    expect(array_column($data['states'], 'name'))->toContain('data-studeo-dragging');
+    expect(array_column($data['icons'], 'name'))->toContain('plus')->toContain('upload');
+});
+
+it('checks every claim of the crop by a scenario that looks at the pixels of the file that was made', function () {
+    $scenarios = array_column(Spec::data('scenarios')['scenarios'], null, 'id');
+    $withImage = array_filter($scenarios, fn (array $s): bool => $s['component'] === 'image-crop' && in_array('expectImage', array_column($s['steps'], 'action'), true));
+
+    expect(array_keys($withImage))->toContain(
+        'image-crop-keeps-the-middle-of-the-picture-by-default',
+        'image-crop-moves-the-picture-with-the-arrow-keys',
+        'image-crop-moves-the-picture-with-a-drag',
+        'image-crop-scales-the-picture-and-keeps-the-part-inside-the-frame',
+        'image-crop-does-not-make-a-picture-larger-than-it-is',
+        'image-crop-turns-a-picture-upright-before-it-is-cropped',
+        'image-crop-puts-a-jpeg-on-white',
+        'image-crop-keeps-the-transparency-in-a-png',
+    );
 });

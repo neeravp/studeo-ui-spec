@@ -8,7 +8,8 @@
         {"name": "data-studeo-indeterminate", "description": "Present while a choice is neither on nor off."},
         {"name": "data-studeo-selected", "description": "Present while an item is picked from a set."},
         {"name": "data-studeo-open", "description": "Present while a component that can unfold is unfolded."},
-        {"name": "data-studeo-current", "description": "Present on the item that stands for the place the user is in."}
+        {"name": "data-studeo-current", "description": "Present on the item that stands for the place the user is in."},
+        {"name": "data-studeo-dragging", "description": "Present while files are being dragged over the component."}
     ],
     "icons": [
         {"name": "check", "description": "A tick, for success and for a choice that is on."},
@@ -19,7 +20,9 @@
         {"name": "eye-off", "description": "A struck-through eye, for hiding a shown value."},
         {"name": "info", "description": "A circled letter i, for information."},
         {"name": "minus", "description": "A dash, for a choice that is neither on nor off."},
+        {"name": "plus", "description": "A cross of two bars, for adding and for making larger."},
         {"name": "search", "description": "A magnifying glass, for searching."},
+        {"name": "upload", "description": "An arrow that points up from a tray, for sending files."},
         {"name": "warning", "description": "A triangle with an exclamation mark, for a warning or an error."}
     ],
     "messages": [
@@ -43,7 +46,24 @@
         {"key": "input.show-password", "text": "Show password", "description": "The accessible name of the button that shows the value of a password field."},
         {"key": "link.external", "text": "Opens in a new tab", "description": "The note, for assistive technology, that a link opens in a new tab; it takes no room on the page."},
         {"key": "toast.dismiss", "text": "Dismiss", "description": "The accessible name of the button that hides a toast."},
-        {"key": "toast.notifications", "text": "Notifications", "description": "The accessible name of the region that holds the toasts."}
+        {"key": "toast.notifications", "text": "Notifications", "description": "The accessible name of the region that holds the toasts."},
+        {"key": "file-input.drop", "text": "Drag files here or click to choose", "description": "The words in the place that files are dropped on or clicked, when the control takes more than one file and the author gives none."},
+        {"key": "file-input.drop-single", "text": "Drag a file here or click to choose", "description": "The words in the place that a file is dropped on or clicked, when the control takes one file and the author gives none."},
+        {"key": "file-input.remove", "text": "Remove :name", "placeholders": ["name"], "description": "The accessible name of the button that takes a file out of the list."},
+        {"key": "file-input.too-large", "text": ":name is larger than :size", "placeholders": ["name", "size"], "description": "The reason why a file was refused for its size: the name of the file and the size that is the most."},
+        {"key": "file-input.wrong-type", "text": ":name is not a kind of file that can be used", "placeholders": ["name"], "description": "The reason why a file was refused for its kind."},
+        {"key": "file-input.too-many", "text": "Only :max files can be added", "placeholders": ["max"], "plural": {"by": "max", "one": "Only :max file can be added"}, "description": "The reason why files were refused for their number: the most that the control holds."},
+        {"key": "file-input.progress", "text": "Uploading", "description": "The accessible name of the bar that shows how far the sending of the files has come."},
+        {"key": "image-crop.choose", "text": "Drag a picture here or click to choose", "description": "The words in the place that a picture is dropped on or clicked."},
+        {"key": "image-crop.stage", "text": "Crop area", "description": "The accessible name of the area that shows the picture and the frame."},
+        {"key": "image-crop.keys", "text": "Arrow keys move the picture. Plus and minus scale it. Zero puts it back. Enter keeps the part inside the frame.", "description": "The line, read by assistive technology, that says which keys move and scale the picture."},
+        {"key": "image-crop.zoom", "text": "Zoom", "description": "The accessible name of the slider that scales the picture."},
+        {"key": "image-crop.zoom-in", "text": "Zoom in", "description": "The accessible name of the button that scales the picture up."},
+        {"key": "image-crop.zoom-out", "text": "Zoom out", "description": "The accessible name of the button that scales the picture down."},
+        {"key": "image-crop.submit", "text": "Crop", "description": "The words of the button that keeps the part of the picture that is inside the frame."},
+        {"key": "image-crop.change", "text": "Choose another picture", "description": "The words of the button that goes back to choosing a picture."},
+        {"key": "image-crop.done", "text": "Picture cropped", "description": "The line that says that the file was made."},
+        {"key": "image-crop.unreadable", "text": "This file cannot be read as a picture", "description": "The reason why a chosen file could not be used as a picture, such as a file that is cut short or a kind that the browser cannot show."}
     ],
     "components": [
         {
@@ -1708,6 +1728,137 @@
             "composes": [],
             "fixtures": [
                 {"name": "default", "description": "A line between two groups.", "props": {}, "slots": {}, "in": {"fixture": "menu.bare", "slot": "default"}}
+            ]
+        },
+        {
+            "name": "file-input",
+            "summary": "A control that takes files from the user: a place to click or to drop files on, the list of what was chosen, and the refusal of a file that is not allowed, before anything is sent.",
+            "status": "draft",
+            "props": [
+                {"name": "name", "type": "string", "description": "The name under which the files are sent with the form."},
+                {"name": "accept", "type": "string", "description": "The kinds of file that are allowed: a list of types and extensions, separated by commas, as the platform writes them (image/png, .pdf, image/*). A file of another kind is refused. Without it every kind is allowed."},
+                {"name": "multiple", "type": "boolean", "default": false, "description": "The control takes more than one file. Files that are chosen again are added to those already chosen. Without it a new file replaces the old one."},
+                {"name": "max-size", "type": "integer", "description": "The most bytes that one file may have. A larger file is refused. In the words of a refusal the size is written in megabytes, with one decimal and no trailing zero (1 MB, 1.5 MB), counted as 1048576 bytes to the megabyte and rounded up, and, below one megabyte, in whole kilobytes of 1024 bytes, rounded up (320 KB)."},
+                {"name": "max-files", "type": "integer", "description": "The most files that the control holds. Files beyond it are refused. Used only with multiple."},
+                {"name": "label", "type": "string", "description": "The compact form: a label, which builds the field around the control."},
+                {"name": "hint", "type": "string", "description": "The compact form: a line that helps to choose the files."},
+                {"name": "error", "type": "string", "description": "The compact form: the message that says why what was chosen is refused, when the host is the one that refuses it. It also marks the control as invalid."},
+                {"name": "progress", "type": "integer", "description": "How far the sending of the files has come, from 0 to 100. The host sets it while it sends; without it nothing is shown. While it is below 100 the files cannot be removed."},
+                {"name": "disabled", "type": "boolean", "default": false, "description": "The control cannot be used."},
+                {"name": "control-class", "type": "class", "description": "Classes for the element that does the work, merged with its own. The author's classes win over them."},
+                {"name": "zone-class", "type": "class", "description": "Classes for the place that is clicked or dropped on, merged with its own. The author's classes win over them."}
+            ],
+            "slots": [
+                {"name": "default", "description": "The words in the place that is clicked or dropped on, in place of the words of the component.", "required": false}
+            ],
+            "attributes": {
+                "root": "data-studeo-file-input",
+                "parts": [
+                    {"name": "data-studeo-file-input-zone", "description": "The place that is clicked, or that files are dropped on, and that shows the words. It is the label of the control, so that a click on it opens the dialog that chooses files."},
+                    {"name": "data-studeo-file-input-control", "description": "The element that takes the files."},
+                    {"name": "data-studeo-file-input-list", "description": "The list of the files that were chosen. It is left out while there are none."},
+                    {"name": "data-studeo-file-input-item", "description": "One file of the list, with its name and its size, or the file that was refused."},
+                    {"name": "data-studeo-file-input-remove", "description": "The button of a file that takes it out of the list. Its accessible name says which file."},
+                    {"name": "data-studeo-file-input-item-error", "description": "The reason why a file was refused: its kind, its size or the number of files. A file that is refused is listed with its reason and is not sent. The reason is announced as an alert."},
+                    {"name": "data-studeo-file-input-progress", "description": "The bar that shows how far the sending has come. It is left out while there is no progress."},
+                    {"name": "data-studeo-file-input-error", "description": "The element that holds the error message of the compact form."}
+                ],
+                "states": ["data-studeo-invalid", "data-studeo-disabled", "data-studeo-loading", "data-studeo-dragging"]
+            },
+            "attributesTarget": "data-studeo-file-input-control",
+            "accessibility": {
+                "role": null,
+                "label": "associated-label",
+                "keyboard": [
+                    {"key": "Enter or Space", "behavior": "On the place that is clicked: opens the dialog that chooses files."},
+                    {"key": "Enter or Space", "behavior": "On the button that removes a file: takes the file out of the list."}
+                ],
+                "aria": [
+                    {"attribute": "aria-invalid", "when": "On the control, while a file is refused or the error is showing."},
+                    {"attribute": "aria-describedby", "when": "On the control, naming the hint, the reasons of the refused files and the error that are showing."},
+                    {"attribute": "aria-valuenow", "when": "On the bar of the progress, with how far the sending has come, from 0 to 100. The bar has the role progressbar and a name from the words of the progress."}
+                ]
+            },
+            "script": {"need": "optional", "reason": "The control opens the dialog that chooses files, and the form sends what was chosen, without script. The list of the chosen files, the refusal of a file by its kind, its size or the number of files before anything is sent, the removal of a file, the state while files are dragged over the place, and the progress bar need a small script; a file that is dropped on the place is taken only by the script."},
+            "tokens": ["color-surface", "color-field", "color-border-strong", "color-accent-subtle", "color-text", "color-text-muted", "color-danger-text", "color-focus-ring", "radius-container", "radius-control"],
+            "composes": ["field", "label", "error", "button", "icon"],
+            "messages": ["file-input.drop", "file-input.drop-single", "file-input.remove", "file-input.too-large", "file-input.wrong-type", "file-input.too-many", "file-input.progress"],
+            "fixtures": [
+                {"name": "default", "description": "A control for one file.", "props": {"label": "Attachment"}, "slots": {}},
+                {"name": "multiple", "description": "A control for several files.", "props": {"label": "Attachments", "multiple": true}, "slots": {}},
+                {"name": "images-only", "description": "A control that allows images only.", "props": {"label": "Picture", "accept": "image/*"}, "slots": {}},
+                {"name": "limited", "description": "A control for at most two images of no more than one megabyte each.", "props": {"label": "Pictures", "multiple": true, "accept": "image/*", "max-size": 1048576, "max-files": 2}, "slots": {}},
+                {"name": "uploading", "description": "A control whose files are being sent.", "props": {"label": "Attachment", "progress": 40}, "slots": {}},
+                {"name": "invalid", "description": "A control whose files are refused by the host.", "props": {"label": "Attachment", "error": "The file could not be saved."}, "slots": {}},
+                {"name": "disabled", "description": "A control that cannot be used.", "props": {"label": "Attachment", "disabled": true}, "slots": {}},
+                {"name": "custom-words", "description": "A control with its own words in the place that is clicked.", "props": {"label": "Attachment"}, "slots": {"default": "Add your file"}}
+            ]
+        },
+        {
+            "name": "image-crop",
+            "summary": "A control that takes a picture from the user, lets the user choose the part of it to keep by moving and scaling it behind a frame of the shape that is asked for, and gives the host that part as a file of the size that is asked for.",
+            "status": "draft",
+            "props": [
+                {"name": "output-width", "type": "integer", "required": true, "description": "The width in pixels of the file that the control makes. With the height it sets the shape of the frame: the frame has the ratio of the width to the height. It is the most that the file has: a part of the picture that has fewer pixels is not made larger."},
+                {"name": "output-height", "type": "integer", "required": true, "description": "The height in pixels of the file that the control makes."},
+                {"name": "type", "type": "enum", "values": ["jpeg", "png"], "default": "jpeg", "description": "The kind of file that the control makes. A jpeg has no transparency: the picture is put on white first."},
+                {"name": "quality", "type": "integer", "default": 92, "description": "How much of the detail a jpeg keeps, from 50 to 100. It is not used for a png."},
+                {"name": "max-zoom", "type": "integer", "default": 4, "description": "How many times larger than the smallest scale that covers the frame the picture may be made. The picture is also never made so large that the part inside the frame has fewer pixels than the file to make, unless the picture itself has fewer."},
+                {"name": "accept", "type": "string", "default": "image/jpeg,image/png,image/webp,image/gif", "description": "The kinds of file that can be chosen, written as the accept of the file input. A file that the browser cannot read as a picture is refused with its own message."},
+                {"name": "max-size", "type": "integer", "description": "The most bytes that the chosen picture may have, written as in the file input. A larger one is refused."},
+                {"name": "name", "type": "string", "description": "The name under which the file that is made is sent with the form."},
+                {"name": "label", "type": "string", "description": "The compact form: a label, which builds the field around the chooser."},
+                {"name": "hint", "type": "string", "description": "The compact form: a line that helps to choose the picture."},
+                {"name": "error", "type": "string", "description": "The compact form: the message that says why the file is refused, when the host is the one that refuses it. It also marks the control as invalid."},
+                {"name": "disabled", "type": "boolean", "default": false, "description": "The control cannot be used."},
+                {"name": "control-class", "type": "class", "description": "Classes for the file input that holds the file that is made, merged with its own. The author's classes win over them."},
+                {"name": "stage-class", "type": "class", "description": "Classes for the area that shows the picture and the frame, merged with its own. The author's classes win over them."}
+            ],
+            "slots": [],
+            "attributes": {
+                "root": "data-studeo-image-crop",
+                "parts": [
+                    {"name": "data-studeo-image-crop-file", "description": "The element that holds the chooser, a file input. It is shown until a picture is chosen, and again when the user chooses another. Its words are those of choosing a picture."},
+                    {"name": "data-studeo-image-crop-stage", "description": "The area that shows the picture and, over it, the frame; the part of the picture outside the frame is dimmed. It is hidden until a picture is chosen. It has the role group, takes the focus, and is named from the words of the crop area. The picture is moved by dragging it with a pointer, and a wheel over the area scales it, a pinch of two pointers scales and moves it. The picture always covers the frame."},
+                    {"name": "data-studeo-image-crop-zoom", "description": "The slider that scales the picture. At its smallest the picture just covers the frame; at its largest it has the scale that the zoom limit and the quality guard allow."},
+                    {"name": "data-studeo-image-crop-zoom-in", "description": "The button that scales the picture up by a tenth."},
+                    {"name": "data-studeo-image-crop-zoom-out", "description": "The button that scales the picture down by a tenth."},
+                    {"name": "data-studeo-image-crop-submit", "description": "The button that keeps the part of the picture that is inside the frame: it makes the file and puts it in the file input of the control. It does not send a form. The user may move the picture and press it again, and the new file replaces the old one."},
+                    {"name": "data-studeo-image-crop-change", "description": "The button that goes back to the chooser and takes the file that was made away."},
+                    {"name": "data-studeo-image-crop-status", "description": "The line that says that the file was made. It is announced politely."},
+                    {"name": "data-studeo-image-crop-error", "description": "The element that holds the reason why a chosen file could not be used as a picture. It is announced as an alert."},
+                    {"name": "data-studeo-image-crop-control", "description": "The file input that holds the file that was made, and only that file: the picture that the user chose is never in it. It carries the name and the attributes that the author writes on the component. Without script it is shown as an ordinary file input, so that the server receives the picture as it is."}
+                ],
+                "states": ["data-studeo-invalid", "data-studeo-disabled"]
+            },
+            "attributesTarget": "data-studeo-image-crop-control",
+            "accessibility": {
+                "role": null,
+                "label": "associated-label",
+                "keyboard": [
+                    {"key": "ArrowLeft, ArrowRight, ArrowUp, ArrowDown", "behavior": "On the area: moves the picture one twentieth of the frame in that direction, as a drag that way would. The picture stays covering the frame."},
+                    {"key": "Shift with an arrow key", "behavior": "On the area: moves the picture one fifth of the frame."},
+                    {"key": "Plus or Equal", "behavior": "On the area: scales the picture up by a tenth."},
+                    {"key": "Minus", "behavior": "On the area: scales the picture down by a tenth."},
+                    {"key": "0 or Home", "behavior": "On the area: puts the picture back at the smallest scale that covers the frame, in the middle."},
+                    {"key": "Enter", "behavior": "On the area: keeps the part of the picture that is inside the frame, as the submit button does."},
+                    {"key": "Arrow keys, Home and End", "behavior": "On the zoom slider: scale the picture, as a slider does."}
+                ],
+                "aria": [
+                    {"attribute": "aria-describedby", "when": "On the area, naming the line that says which keys move and scale the picture."},
+                    {"attribute": "aria-valuetext", "when": "On the zoom slider, with the scale as a percentage of the smallest scale that covers the frame, such as 150%."}
+                ]
+            },
+            "script": {"need": "required", "reason": "Choosing the part of the picture, scaling it and making the file are done in the browser, so the component cannot do its job without script. Without it only the file input that carries the name is shown, and the server receives the picture as it was chosen."},
+            "tokens": ["color-surface", "color-overlay", "color-text-muted", "color-danger-text", "color-focus-ring", "radius-container"],
+            "composes": ["file-input", "button", "icon", "error"],
+            "messages": ["image-crop.choose", "image-crop.stage", "image-crop.keys", "image-crop.zoom", "image-crop.zoom-in", "image-crop.zoom-out", "image-crop.submit", "image-crop.change", "image-crop.done", "image-crop.unreadable"],
+            "fixtures": [
+                {"name": "square", "description": "A picture to crop to a square of 100 pixels.", "props": {"label": "Picture", "output-width": 100, "output-height": 100}, "slots": {}},
+                {"name": "banner", "description": "A picture to crop to a wide frame of 300 by 100 pixels.", "props": {"label": "Banner", "output-width": 300, "output-height": 100}, "slots": {}},
+                {"name": "png", "description": "A square that is made as a png.", "props": {"label": "Picture", "output-width": 100, "output-height": 100, "type": "png"}, "slots": {}},
+                {"name": "limited-zoom", "description": "A square whose picture is scaled at most twice.", "props": {"label": "Picture", "output-width": 100, "output-height": 100, "max-zoom": 2}, "slots": {}},
+                {"name": "disabled", "description": "A control that cannot be used.", "props": {"label": "Picture", "output-width": 100, "output-height": 100, "disabled": true}, "slots": {}}
             ]
         }
     ]
