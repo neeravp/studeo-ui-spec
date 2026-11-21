@@ -1467,6 +1467,20 @@
             "steps": [
                 {"action": "expectAttribute", "target": {"attribute": "data-studeo-image-crop"}, "attribute": "data-studeo-disabled"}
             ]
+        },
+        {
+            "id": "image-crop-crops-a-large-picture-when-it-has-finished-reading-it",
+            "component": "image-crop",
+            "fixture": "image-crop.square",
+            "summary": "A picture of many megapixels is read and cropped like a small one: when the step ends the control is idle and the crop area is shown, and the part that is kept is the middle of the picture.",
+            "steps": [
+                {"action": "setFiles", "target": {"attribute": "data-studeo-image-crop-file"}, "files": ["large.png"]},
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-image-crop"}, "attribute": "aria-busy", "value": "false"},
+                {"action": "expectVisible", "target": {"role": "group", "name": "Crop area"}},
+                {"action": "click", "target": {"role": "button", "name": "Crop"}},
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-image-crop"}, "attribute": "aria-busy", "value": "false"},
+                {"action": "expectImage", "target": {"attribute": "data-studeo-image-crop-control"}, "type": "image/jpeg", "width": 100, "height": 100, "colours": [{"x": 25, "y": 25, "colour": "red"}, {"x": 75, "y": 25, "colour": "green"}, {"x": 25, "y": 75, "colour": "blue"}, {"x": 75, "y": 75, "colour": "yellow"}]}
+            ]
         }
     ]
 }

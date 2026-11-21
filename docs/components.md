@@ -1933,6 +1933,7 @@ Role: none. Name from: associated-label.
 | --- | --- |
 | `aria-describedby` | On the area, naming the line that says which keys move and scale the picture. |
 | `aria-valuetext` | On the zoom slider, with the scale as a percentage of the smallest scale that covers the frame, such as 150%. |
+| `aria-busy` | On the root: true while the control reads a chosen picture and while it makes the file, and false while it is idle. Reading a large picture takes time, and a step of a scenario ends when the control is no longer busy. |
 
 **Tokens:** `color-surface`, `color-overlay`, `color-text-muted`, `color-danger-text`, `color-focus-ring`, `radius-container`
 

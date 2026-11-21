@@ -1846,7 +1846,8 @@
                 ],
                 "aria": [
                     {"attribute": "aria-describedby", "when": "On the area, naming the line that says which keys move and scale the picture."},
-                    {"attribute": "aria-valuetext", "when": "On the zoom slider, with the scale as a percentage of the smallest scale that covers the frame, such as 150%."}
+                    {"attribute": "aria-valuetext", "when": "On the zoom slider, with the scale as a percentage of the smallest scale that covers the frame, such as 150%."},
+                    {"attribute": "aria-busy", "when": "On the root: true while the control reads a chosen picture and while it makes the file, and false while it is idle. Reading a large picture takes time, and a step of a scenario ends when the control is no longer busy."}
                 ]
             },
             "script": {"need": "required", "reason": "Choosing the part of the picture, scaling it and making the file are done in the browser, so the component cannot do its job without script. Without it only the file input that carries the name is shown, and the server receives the picture as it was chosen."},

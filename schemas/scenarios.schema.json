@@ -42,7 +42,7 @@
         },
         "sample": {
             "description": "A file that a scenario gives to a control. The runner makes it: the specification says what each one holds.",
-            "enum": ["quadrants-landscape.png", "quadrants-portrait.png", "small.png", "rotated.jpg", "transparent.png", "heavy.png", "notes.txt"]
+            "enum": ["quadrants-landscape.png", "quadrants-portrait.png", "small.png", "large.png", "rotated.jpg", "transparent.png", "heavy.png", "notes.txt"]
         },
         "point": {
             "description": "The colour that an image has at a point, given as percentages of its width and its height from the top left corner.",

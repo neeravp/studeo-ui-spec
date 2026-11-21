@@ -137,7 +137,7 @@ A scenario starts from a fixture, written `<component>.<case>`: an implementatio
 - `expectImage` (target, type, width, height)
 <!-- /generated:actions -->
 
-A target is found by role and accessible name, or by a `data-studeo-*` attribute. A step that checks an attribute names an ARIA attribute or a state that the component of the scenario declares, or `disabled` where the component has a prop of that name. Waiting is not an action: a time limit is stated in the contract of the component.
+A target is found by role and accessible name, or by a `data-studeo-*` attribute. A step that checks an attribute names an ARIA attribute or a state that the component of the scenario declares, or `disabled` where the component has a prop of that name. Waiting is not an action: a step waits by the rule below, and any other time limit is stated in the contract of the component.
 
 ### Finding the target of a step
 
@@ -148,7 +148,7 @@ A target names an element in one of two ways: by its role and its accessible nam
 
 ### What a step means
 
-A step starts when the one before it has finished and waits for nothing else.
+A step starts when the one before it has finished, and ends when the page is quiet. The page is quiet when no element carries `aria-busy="true"` without the state `data-studeo-loading`. A component that does work of its own, which it ends by itself (the image crop while it reads a picture and while it makes a file), sets `aria-busy="true"` on its root while it works and `aria-busy="false"` when it is idle. The loading state belongs to the host, which ends it, so a step does not wait for it. A runner waits a bounded time for the page to be quiet; a page that is still busy when the time is over fails the step. A step waits for nothing else.
 
 - `click`: the target is activated the way a user activates it with a pointer.
 - `focus`: the target is given the keyboard focus.
@@ -178,6 +178,7 @@ A step that gives files to a control names them from this closed list. The runne
 | `small.png` | A png of 100 by 100 pixels, in four quadrants. |
 | `rotated.jpg` | A jpeg stored as 200 by 100 pixels, red in its left half and blue in its right half, with the orientation mark 6 of the camera, so that it is shown turned a quarter clockwise: 100 by 200 pixels, red above and blue below. |
 | `transparent.png` | A png of 300 by 300 pixels with no opaque pixel. |
+| `large.png` | A png of 8000 by 6000 pixels, in four quadrants. |
 | `heavy.png` | A png of 100 by 100 pixels, in four quadrants, followed by padding up to exactly 2097152 bytes. |
 | `notes.txt` | A text file with the words Notes, of the type text/plain. |
 

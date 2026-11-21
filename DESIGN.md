@@ -29,7 +29,7 @@ The principles that components are built on are in [docs/principles.md](docs/pri
 - **A data table is driven by the server.** Its props mirror the answer of a list, sorting is a link on the column header and the search is a form, so that the state is in the address and the page works without script. Paging and sorting in the browser would be wrong for a long list.
 - **A message that stays is an alert; a message that hides itself is a toast, and only for success and information.** A message that vanishes can be missed by anyone who reads slowly and by users of a screen reader. One component with a timer for every variant would make that mistake easy.
 - **A page for one task, such as signing in, is a pattern and not a component.** It is a page, not a part, and the space around its parts belongs to the page.
-- **The scenarios cannot wait.** A closed list of actions stays simple. A time limit is stated in the contract and in the patterns, and each implementation tests it by itself.
+- **The scenarios have no action for waiting.** A closed list of actions stays simple. A step ends when the page is quiet: a component that does work of its own says so with `aria-busy`, which assistive technology reads as well, so a large picture needs no pause written into a scenario. Any other time limit is stated in the contract and in the patterns, and each implementation tests it by itself.
 
 ## Not goals
 
