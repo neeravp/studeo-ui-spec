@@ -1481,6 +1481,87 @@
                 {"action": "expectAttribute", "target": {"attribute": "data-studeo-image-crop"}, "attribute": "aria-busy", "value": "false"},
                 {"action": "expectImage", "target": {"attribute": "data-studeo-image-crop-control"}, "type": "image/jpeg", "width": 100, "height": 100, "colours": [{"x": 25, "y": 25, "colour": "red"}, {"x": 75, "y": 25, "colour": "green"}, {"x": 25, "y": 75, "colour": "blue"}, {"x": 75, "y": 75, "colour": "yellow"}]}
             ]
+        },
+        {
+            "id": "image-crop-shows-the-progress-of-the-sending",
+            "component": "image-crop",
+            "fixture": "image-crop.sending",
+            "summary": "While the host sends the file that was made the control shows how far it has come, as a bar with a name, and it is loading; the buttons of the crop cannot be used.",
+            "steps": [
+                {"action": "setFiles", "target": {"attribute": "data-studeo-image-crop-file"}, "files": ["quadrants-landscape.png"]},
+                {"action": "expectVisible", "target": {"role": "progressbar", "name": "Uploading"}},
+                {"action": "expectAttribute", "target": {"role": "progressbar", "name": "Uploading"}, "attribute": "aria-valuenow", "value": "40"},
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-image-crop"}, "attribute": "data-studeo-loading"},
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-image-crop-submit"}, "attribute": "disabled"},
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-image-crop-change"}, "attribute": "disabled"}
+            ]
+        },
+        {
+            "id": "avatar-upload-shows-the-initials-when-there-is-no-picture",
+            "component": "avatar-upload",
+            "fixture": "avatar-upload.initials",
+            "summary": "A person with no picture is shown by the initials of the name.",
+            "steps": [
+                {"action": "expectText", "target": {"attribute": "data-studeo-avatar-upload-current"}, "text": "AL"}
+            ]
+        },
+        {
+            "id": "avatar-upload-shows-the-current-picture",
+            "component": "avatar-upload",
+            "fixture": "avatar-upload.default",
+            "summary": "The current picture is shown by an avatar that carries the name of the person.",
+            "steps": [
+                {"action": "expectVisible", "target": {"role": "img", "name": "Ada Lovelace"}}
+            ]
+        },
+        {
+            "id": "avatar-upload-offers-the-removal-only-when-it-is-removable",
+            "component": "avatar-upload",
+            "fixture": "avatar-upload.default",
+            "summary": "Unless the control is removable there is no button that takes the picture away.",
+            "steps": [
+                {"action": "expectHidden", "target": {"role": "button", "name": "Remove the picture"}}
+            ]
+        },
+        {
+            "id": "avatar-upload-offers-the-removal-when-it-is-removable",
+            "component": "avatar-upload",
+            "fixture": "avatar-upload.removable",
+            "summary": "A removable control offers the button that takes the picture away.",
+            "steps": [
+                {"action": "expectVisible", "target": {"role": "button", "name": "Remove the picture"}}
+            ]
+        },
+        {
+            "id": "avatar-upload-shows-the-progress-and-cannot-be-used-while-it-sends",
+            "component": "avatar-upload",
+            "fixture": "avatar-upload.sending",
+            "summary": "While the host sends the file the control shows how far it has come, as a bar with a name, it is loading, and the button that takes the picture away cannot be used.",
+            "steps": [
+                {"action": "expectVisible", "target": {"role": "progressbar", "name": "Uploading"}},
+                {"action": "expectAttribute", "target": {"role": "progressbar", "name": "Uploading"}, "attribute": "aria-valuenow", "value": "40"},
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-avatar-upload"}, "attribute": "data-studeo-loading"},
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-avatar-upload-remove"}, "attribute": "disabled"}
+            ]
+        },
+        {
+            "id": "avatar-upload-shows-the-refusal-of-the-host",
+            "component": "avatar-upload",
+            "fixture": "avatar-upload.invalid",
+            "summary": "An error that the host gives marks the control as invalid.",
+            "steps": [
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-avatar-upload"}, "attribute": "data-studeo-invalid"}
+            ]
+        },
+        {
+            "id": "avatar-upload-cannot-be-used-when-it-is-disabled",
+            "component": "avatar-upload",
+            "fixture": "avatar-upload.disabled",
+            "summary": "A disabled control carries the disabled state and its remove button cannot be used.",
+            "steps": [
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-avatar-upload"}, "attribute": "data-studeo-disabled"},
+                {"action": "expectAttribute", "target": {"attribute": "data-studeo-avatar-upload-remove"}, "attribute": "disabled"}
+            ]
         }
     ]
 }

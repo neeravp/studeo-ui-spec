@@ -1891,6 +1891,7 @@ A control that takes a picture from the user, lets the user choose the part of i
 | `label` | string |  | The compact form: a label, which builds the field around the chooser. |
 | `hint` | string |  | The compact form: a line that helps to choose the picture. |
 | `error` | string |  | The compact form: the message that says why the file is refused, when the host is the one that refuses it. It also marks the control as invalid. |
+| `progress` | integer |  | How far the sending of the file that was made has come, from 0 to 100. The host sets it while it sends; without it nothing is shown. While it is below 100 the control is loading and its buttons cannot be used. |
 | `disabled` | boolean | `false` | The control cannot be used. |
 | `control-class` | class |  | Classes for the file input that holds the file that is made, merged with its own. The author's classes win over them. |
 | `stage-class` | class |  | Classes for the area that shows the picture and the frame, merged with its own. The author's classes win over them. |
@@ -1912,6 +1913,7 @@ A control that takes a picture from the user, lets the user choose the part of i
 | `data-studeo-image-crop-control` | part | The file input that holds the file that was made, and only that file: the picture that the user chose is never in it. It carries the name and the attributes that the author writes on the component. Without script it is shown as an ordinary file input, so that the server receives the picture as it is. |
 | `data-studeo-invalid` | state | See the states of the specification. |
 | `data-studeo-disabled` | state | See the states of the specification. |
+| `data-studeo-loading` | state | See the states of the specification. |
 
 Attributes that an author writes on the component go to `data-studeo-image-crop-control`.
 
@@ -1933,6 +1935,7 @@ Role: none. Name from: associated-label.
 | --- | --- |
 | `aria-describedby` | On the area, naming the line that says which keys move and scale the picture. |
 | `aria-valuetext` | On the zoom slider, with the scale as a percentage of the smallest scale that covers the frame, such as 150%. |
+| `aria-valuenow` | On the bar of the progress, with how far the sending has come, from 0 to 100. The bar has the role progressbar and a name from the words of the progress, and is shown while there is progress. |
 | `aria-busy` | On the root: true while the control reads a chosen picture and while it makes the file, and false while it is idle. Reading a large picture takes time, and a step of a scenario ends when the control is no longer busy. |
 
 **Tokens:** `color-surface`, `color-overlay`, `color-text-muted`, `color-danger-text`, `color-focus-ring`, `radius-container`
@@ -1948,4 +1951,68 @@ Role: none. Name from: associated-label.
 | `image-crop.png` | A square that is made as a png. |
 | `image-crop.limited-zoom` | A square whose picture is scaled at most twice. |
 | `image-crop.disabled` | A control that cannot be used. |
+| `image-crop.sending` | A control whose file is being sent. |
+
+## avatar-upload
+
+The control that changes the picture of a person: the current picture, or the initials, with the control that takes a new picture and crops it, and a button that takes the current picture away.
+
+**Script:** required. The crop needs script to choose the part of the picture and to make the file, and the remove button announces its event by script, so the component cannot do its job without it. Without script only the file input that carries the name is shown.
+
+**Props**
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `name` | string | required | The name of the person. The initials come from its first and its last word, and it is the accessible name of the current picture. |
+| `src` | url |  | The address of the current picture. Left out, the initials are shown. |
+| `srcset` | string |  | The pictures of other widths, as the platform names them, for the sharper screens. |
+| `output-width` | integer | required | The width in pixels of the file that the crop makes, as for the image crop. |
+| `output-height` | integer | required | The height in pixels of the file that the crop makes, as for the image crop. |
+| `accept` | string | `image/jpeg,image/png,image/webp,image/gif` | The kinds of file that can be chosen, as for the image crop. |
+| `max-size` | integer |  | The most bytes that the chosen picture may have, as for the image crop. |
+| `error` | string |  | The message that says why the file is refused, when the host is the one that refuses it. It is shown by the crop and marks the control as invalid. |
+| `progress` | integer |  | How far the sending of the file that was made has come, from 0 to 100, as for the image crop. While it is below 100 the control is loading and the buttons of the crop and the button that removes cannot be used. |
+| `removable` | boolean | `false` | The button that takes the current picture away is offered. The host sets it while there is a picture to take away. |
+| `disabled` | boolean | `false` | The control cannot be used. |
+| `class` | class |  | Classes for the root, merged with its own. The author's classes win over them. |
+| `control-class` | class |  | Classes for the file input that holds the file that the crop made, merged with its own. The author's classes win over them. |
+| `current-class` | class |  | Classes for the element that holds the current picture, merged with its own. The author's classes win over them. |
+| `crop-class` | class |  | Classes for the crop, merged with its own. The author's classes win over them. |
+
+**Attributes**
+
+| Attribute | Kind | Description |
+| --- | --- | --- |
+| `data-studeo-avatar-upload` | root | The root element. |
+| `data-studeo-avatar-upload-current` | part | The element that holds the avatar of the current picture, or of the initials. |
+| `data-studeo-avatar-upload-remove` | part | The button that takes the current picture away. It is left out unless the control is removable. It sends the event studeo-avatar-upload-remove, which bubbles, and changes nothing by itself: the host takes the picture away. |
+| `data-studeo-avatar-upload-control` | part | The file input that holds the file that the crop made, which is the control of the crop. It carries the name and the attributes that the author writes on the component. |
+| `data-studeo-invalid` | state | See the states of the specification. |
+| `data-studeo-disabled` | state | See the states of the specification. |
+| `data-studeo-loading` | state | See the states of the specification. |
+
+Attributes that an author writes on the component go to `data-studeo-avatar-upload-control`.
+
+**Accessibility**
+
+Role: none. Name from: associated-label.
+
+| ARIA attribute | When |
+| --- | --- |
+| `aria-valuenow` | On the bar of the progress, with how far the sending has come, from 0 to 100. The bar has the role progressbar and a name from the words of the progress, and is shown while there is progress. |
+
+**Tokens:** —
+
+**Composes:** `avatar`, `image-crop`, `button`
+
+**Fixtures**
+
+| Fixture | Description |
+| --- | --- |
+| `avatar-upload.initials` | A person with no picture: the initials are shown. |
+| `avatar-upload.default` | A person with a picture that cannot be taken away. |
+| `avatar-upload.removable` | A person with a picture that can be taken away. |
+| `avatar-upload.sending` | A control whose file is being sent. |
+| `avatar-upload.invalid` | A control whose file was refused by the host. |
+| `avatar-upload.disabled` | A control that cannot be used. |
 <!-- /generated:reference -->

@@ -457,7 +457,7 @@ it('declares an image crop that makes a file of the size that is asked for and k
     expect($parts['data-studeo-image-crop-control']['description'])->toContain('never in it')->toContain('Without script');
     expect($parts['data-studeo-image-crop-submit']['description'])->toContain('does not send a form');
     expect($crop['composes'])->toBe(['file-input', 'button', 'icon', 'error']);
-    expect($crop['attributes']['states'])->toBe(['data-studeo-invalid', 'data-studeo-disabled']);
+    expect($crop['attributes']['states'])->toBe(['data-studeo-invalid', 'data-studeo-disabled', 'data-studeo-loading']);
 });
 
 it('says how the picture of an image crop is moved and scaled by the keys, in a way that does not need a pointer', function () {
@@ -498,4 +498,33 @@ it('checks every claim of the crop by a scenario that looks at the pixels of the
         'image-crop-puts-a-jpeg-on-white',
         'image-crop-keeps-the-transparency-in-a-png',
     );
+});
+
+it('lets the host tell an image crop how far the sending of its file has come, and shows it as a bar that stops the buttons', function () {
+    $crop = array_column(Spec::data('components')['components'], null, 'name')['image-crop'];
+    $props = array_column($crop['props'], null, 'name');
+
+    expect($props['progress']['type'])->toBe('integer');
+    expect($props['progress']['description'])->toContain('below 100')->toContain('cannot be used');
+    expect(array_column($crop['accessibility']['aria'], 'attribute'))->toContain('aria-valuenow');
+    expect($crop['messages'])->toContain('image-crop.progress');
+});
+
+it('declares an avatar upload that composes the avatar, the image crop and a button, and leaves the removal to the host', function () {
+    $components = array_column(Spec::data('components')['components'], null, 'name');
+    $upload = $components['avatar-upload'];
+    $props = array_column($upload['props'], null, 'name');
+    $parts = array_column($upload['attributes']['parts'], null, 'name');
+
+    expect($upload['composes'])->toBe(['avatar', 'image-crop', 'button']);
+    expect($upload['script']['need'])->toBe('required');
+    expect($upload['attributesTarget'])->toBe('data-studeo-avatar-upload-control');
+    expect(array_keys($parts))->toBe(['data-studeo-avatar-upload-current', 'data-studeo-avatar-upload-remove', 'data-studeo-avatar-upload-control']);
+    expect($parts['data-studeo-avatar-upload-remove']['description'])->toContain('studeo-avatar-upload-remove')->toContain('the host takes the picture away');
+    expect($props['name']['required'])->toBeTrue();
+    expect($props['output-width']['required'])->toBeTrue();
+    expect($props['removable']['default'])->toBeFalse();
+    expect($props['progress']['description'])->toContain('cannot be used');
+    expect($upload['messages'])->toBe(['avatar-upload.remove']);
+    expect($upload['attributes']['states'])->toBe(['data-studeo-invalid', 'data-studeo-disabled', 'data-studeo-loading']);
 });

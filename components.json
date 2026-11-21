@@ -63,7 +63,9 @@
         {"key": "image-crop.submit", "text": "Crop", "description": "The words of the button that keeps the part of the picture that is inside the frame."},
         {"key": "image-crop.change", "text": "Choose another picture", "description": "The words of the button that goes back to choosing a picture."},
         {"key": "image-crop.done", "text": "Picture cropped", "description": "The line that says that the file was made."},
-        {"key": "image-crop.unreadable", "text": "This file cannot be read as a picture", "description": "The reason why a chosen file could not be used as a picture, such as a file that is cut short or a kind that the browser cannot show."}
+        {"key": "image-crop.unreadable", "text": "This file cannot be read as a picture", "description": "The reason why a chosen file could not be used as a picture, such as a file that is cut short or a kind that the browser cannot show."},
+        {"key": "image-crop.progress", "text": "Uploading", "description": "The accessible name of the bar that shows how far the sending of the file that was made has come."},
+        {"key": "avatar-upload.remove", "text": "Remove the picture", "description": "The words of the button that takes the current picture away."}
     ],
     "components": [
         {
@@ -1810,6 +1812,7 @@
                 {"name": "label", "type": "string", "description": "The compact form: a label, which builds the field around the chooser."},
                 {"name": "hint", "type": "string", "description": "The compact form: a line that helps to choose the picture."},
                 {"name": "error", "type": "string", "description": "The compact form: the message that says why the file is refused, when the host is the one that refuses it. It also marks the control as invalid."},
+                {"name": "progress", "type": "integer", "description": "How far the sending of the file that was made has come, from 0 to 100. The host sets it while it sends; without it nothing is shown. While it is below 100 the control is loading and its buttons cannot be used."},
                 {"name": "disabled", "type": "boolean", "default": false, "description": "The control cannot be used."},
                 {"name": "control-class", "type": "class", "description": "Classes for the file input that holds the file that is made, merged with its own. The author's classes win over them."},
                 {"name": "stage-class", "type": "class", "description": "Classes for the area that shows the picture and the frame, merged with its own. The author's classes win over them."}
@@ -1829,7 +1832,7 @@
                     {"name": "data-studeo-image-crop-error", "description": "The element that holds the reason why a chosen file could not be used as a picture. It is announced as an alert."},
                     {"name": "data-studeo-image-crop-control", "description": "The file input that holds the file that was made, and only that file: the picture that the user chose is never in it. It carries the name and the attributes that the author writes on the component. Without script it is shown as an ordinary file input, so that the server receives the picture as it is."}
                 ],
-                "states": ["data-studeo-invalid", "data-studeo-disabled"]
+                "states": ["data-studeo-invalid", "data-studeo-disabled", "data-studeo-loading"]
             },
             "attributesTarget": "data-studeo-image-crop-control",
             "accessibility": {
@@ -1847,19 +1850,74 @@
                 "aria": [
                     {"attribute": "aria-describedby", "when": "On the area, naming the line that says which keys move and scale the picture."},
                     {"attribute": "aria-valuetext", "when": "On the zoom slider, with the scale as a percentage of the smallest scale that covers the frame, such as 150%."},
+                    {"attribute": "aria-valuenow", "when": "On the bar of the progress, with how far the sending has come, from 0 to 100. The bar has the role progressbar and a name from the words of the progress, and is shown while there is progress."},
                     {"attribute": "aria-busy", "when": "On the root: true while the control reads a chosen picture and while it makes the file, and false while it is idle. Reading a large picture takes time, and a step of a scenario ends when the control is no longer busy."}
                 ]
             },
             "script": {"need": "required", "reason": "Choosing the part of the picture, scaling it and making the file are done in the browser, so the component cannot do its job without script. Without it only the file input that carries the name is shown, and the server receives the picture as it was chosen."},
             "tokens": ["color-surface", "color-overlay", "color-text-muted", "color-danger-text", "color-focus-ring", "radius-container"],
             "composes": ["file-input", "button", "icon", "error"],
-            "messages": ["image-crop.choose", "image-crop.stage", "image-crop.keys", "image-crop.zoom", "image-crop.zoom-in", "image-crop.zoom-out", "image-crop.submit", "image-crop.change", "image-crop.done", "image-crop.unreadable"],
+            "messages": ["image-crop.choose", "image-crop.stage", "image-crop.keys", "image-crop.zoom", "image-crop.zoom-in", "image-crop.zoom-out", "image-crop.submit", "image-crop.change", "image-crop.done", "image-crop.unreadable", "image-crop.progress"],
             "fixtures": [
                 {"name": "square", "description": "A picture to crop to a square of 100 pixels.", "props": {"label": "Picture", "output-width": 100, "output-height": 100}, "slots": {}},
                 {"name": "banner", "description": "A picture to crop to a wide frame of 300 by 100 pixels.", "props": {"label": "Banner", "output-width": 300, "output-height": 100}, "slots": {}},
                 {"name": "png", "description": "A square that is made as a png.", "props": {"label": "Picture", "output-width": 100, "output-height": 100, "type": "png"}, "slots": {}},
                 {"name": "limited-zoom", "description": "A square whose picture is scaled at most twice.", "props": {"label": "Picture", "output-width": 100, "output-height": 100, "max-zoom": 2}, "slots": {}},
-                {"name": "disabled", "description": "A control that cannot be used.", "props": {"label": "Picture", "output-width": 100, "output-height": 100, "disabled": true}, "slots": {}}
+                {"name": "disabled", "description": "A control that cannot be used.", "props": {"label": "Picture", "output-width": 100, "output-height": 100, "disabled": true}, "slots": {}},
+                {"name": "sending", "description": "A control whose file is being sent.", "props": {"label": "Picture", "output-width": 100, "output-height": 100, "progress": 40}, "slots": {}}
+            ]
+        },
+        {
+            "name": "avatar-upload",
+            "summary": "The control that changes the picture of a person: the current picture, or the initials, with the control that takes a new picture and crops it, and a button that takes the current picture away.",
+            "status": "draft",
+            "props": [
+                {"name": "name", "type": "string", "required": true, "description": "The name of the person. The initials come from its first and its last word, and it is the accessible name of the current picture."},
+                {"name": "src", "type": "url", "description": "The address of the current picture. Left out, the initials are shown."},
+                {"name": "srcset", "type": "string", "description": "The pictures of other widths, as the platform names them, for the sharper screens."},
+                {"name": "output-width", "type": "integer", "required": true, "description": "The width in pixels of the file that the crop makes, as for the image crop."},
+                {"name": "output-height", "type": "integer", "required": true, "description": "The height in pixels of the file that the crop makes, as for the image crop."},
+                {"name": "accept", "type": "string", "default": "image/jpeg,image/png,image/webp,image/gif", "description": "The kinds of file that can be chosen, as for the image crop."},
+                {"name": "max-size", "type": "integer", "description": "The most bytes that the chosen picture may have, as for the image crop."},
+                {"name": "error", "type": "string", "description": "The message that says why the file is refused, when the host is the one that refuses it. It is shown by the crop and marks the control as invalid."},
+                {"name": "progress", "type": "integer", "description": "How far the sending of the file that was made has come, from 0 to 100, as for the image crop. While it is below 100 the control is loading and the buttons of the crop and the button that removes cannot be used."},
+                {"name": "removable", "type": "boolean", "default": false, "description": "The button that takes the current picture away is offered. The host sets it while there is a picture to take away."},
+                {"name": "disabled", "type": "boolean", "default": false, "description": "The control cannot be used."},
+                {"name": "class", "type": "class", "description": "Classes for the root, merged with its own. The author's classes win over them."},
+                {"name": "control-class", "type": "class", "description": "Classes for the file input that holds the file that the crop made, merged with its own. The author's classes win over them."},
+                {"name": "current-class", "type": "class", "description": "Classes for the element that holds the current picture, merged with its own. The author's classes win over them."},
+                {"name": "crop-class", "type": "class", "description": "Classes for the crop, merged with its own. The author's classes win over them."}
+            ],
+            "slots": [],
+            "attributes": {
+                "root": "data-studeo-avatar-upload",
+                "parts": [
+                    {"name": "data-studeo-avatar-upload-current", "description": "The element that holds the avatar of the current picture, or of the initials."},
+                    {"name": "data-studeo-avatar-upload-remove", "description": "The button that takes the current picture away. It is left out unless the control is removable. It sends the event studeo-avatar-upload-remove, which bubbles, and changes nothing by itself: the host takes the picture away."},
+                    {"name": "data-studeo-avatar-upload-control", "description": "The file input that holds the file that the crop made, which is the control of the crop. It carries the name and the attributes that the author writes on the component."}
+                ],
+                "states": ["data-studeo-invalid", "data-studeo-disabled", "data-studeo-loading"]
+            },
+            "attributesTarget": "data-studeo-avatar-upload-control",
+            "accessibility": {
+                "role": null,
+                "label": "associated-label",
+                "keyboard": [],
+                "aria": [
+                    {"attribute": "aria-valuenow", "when": "On the bar of the progress, with how far the sending has come, from 0 to 100. The bar has the role progressbar and a name from the words of the progress, and is shown while there is progress."}
+                ]
+            },
+            "script": {"need": "required", "reason": "The crop needs script to choose the part of the picture and to make the file, and the remove button announces its event by script, so the component cannot do its job without it. Without script only the file input that carries the name is shown."},
+            "tokens": [],
+            "composes": ["avatar", "image-crop", "button"],
+            "messages": ["avatar-upload.remove"],
+            "fixtures": [
+                {"name": "initials", "description": "A person with no picture: the initials are shown.", "props": {"name": "Ada Lovelace", "output-width": 100, "output-height": 100}, "slots": {}},
+                {"name": "default", "description": "A person with a picture that cannot be taken away.", "props": {"name": "Ada Lovelace", "src": "/avatars/ada.png", "output-width": 100, "output-height": 100}, "slots": {}},
+                {"name": "removable", "description": "A person with a picture that can be taken away.", "props": {"name": "Ada Lovelace", "src": "/avatars/ada.png", "output-width": 100, "output-height": 100, "removable": true}, "slots": {}},
+                {"name": "sending", "description": "A control whose file is being sent.", "props": {"name": "Ada Lovelace", "src": "/avatars/ada.png", "output-width": 100, "output-height": 100, "removable": true, "progress": 40}, "slots": {}},
+                {"name": "invalid", "description": "A control whose file was refused by the host.", "props": {"name": "Ada Lovelace", "output-width": 100, "output-height": 100, "error": "The picture is too large"}, "slots": {}},
+                {"name": "disabled", "description": "A control that cannot be used.", "props": {"name": "Ada Lovelace", "src": "/avatars/ada.png", "output-width": 100, "output-height": 100, "removable": true, "disabled": true}, "slots": {}}
             ]
         }
     ]

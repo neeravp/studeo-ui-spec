@@ -62,6 +62,7 @@ A component in `components.json` has:
 | [`menu-separator`](docs/components.md#menu-separator) | A line between two groups of items of a menu. | none |
 | [`file-input`](docs/components.md#file-input) | A control that takes files from the user: a place to click or to drop files on, the list of what was chosen, and the refusal of a file that is not allowed, before anything is sent. | optional |
 | [`image-crop`](docs/components.md#image-crop) | A control that takes a picture from the user, lets the user choose the part of it to keep by moving and scaling it behind a frame of the shape that is asked for, and gives the host that part as a file of the size that is asked for. | required |
+| [`avatar-upload`](docs/components.md#avatar-upload) | The control that changes the picture of a person: the current picture, or the initials, with the control that takes a new picture and crops it, and a button that takes the current picture away. | required |
 <!-- /generated:components -->
 
 ### Messages and variables
