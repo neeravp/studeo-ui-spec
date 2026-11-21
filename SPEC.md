@@ -148,7 +148,7 @@ A target names an element in one of two ways: by its role and its accessible nam
 
 ### What a step means
 
-A step starts when the one before it has finished, and ends when the page is quiet. The page is quiet when no element carries `aria-busy="true"` without the state `data-studeo-loading`. A component that does work of its own, which it ends by itself (the image crop while it reads a picture and while it makes a file), sets `aria-busy="true"` on its root while it works and `aria-busy="false"` when it is idle. The loading state belongs to the host, which ends it, so a step does not wait for it. A runner waits a bounded time for the page to be quiet; a page that is still busy when the time is over fails the step. A step waits for nothing else.
+A step starts when the one before it has finished, and ends when the page is quiet. The page is quiet when no element carries `aria-busy="true"`, except an element that is in the state `data-studeo-loading` or inside an element that is (a component puts `aria-busy` on its inner control while its root carries the state). A component that does work of its own, which it ends by itself (the image crop while it reads a picture and while it makes a file), sets `aria-busy="true"` on its root while it works and `aria-busy="false"` when it is idle. The loading state belongs to the host, which ends it, so a step does not wait for what is in it. A runner waits a bounded time for the page to be quiet; a page that is still busy when the time is over fails the step. A step waits for nothing else.
 
 - `click`: the target is activated the way a user activates it with a pointer.
 - `focus`: the target is given the keyboard focus.
